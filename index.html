@@ -7366,5 +7366,143 @@
     try { renderNav(); } catch (x) {}
   })();
   </script>
+  <!-- ===== STE · Meu Estúdio (planejamento de conteúdo) ===== -->
+  <script>
+  (function () {
+    var STS = ['Ideia', 'Planejamento', 'Roteiro pronto', 'Gravação', 'Edição', 'Agendado', 'Publicado', 'Analisado'];
+    var STYLES = ['Espontâneo', 'Divertido', 'Educativo', 'Storytelling', 'Resenha', 'Conteúdo comercial'];
+    var ST = getStore('studio', null) || { projects: [], ideas: [], imp: 0 };
+    var V = { view: 'home', pid: null, wk: 0, busy: '', err: '', theme: '', fq: '', fs: '' };
+    var $e = function (x) { return esc(x == null ? '' : String(x)); };
+    var save = function () { setStore('studio', ST); };
+    var P = function (id) { return ST.projects.find(function (p) { return p.id === id; }); };
+    var KEY = function () { try { return localStorage.getItem('ste_ai_key') || ''; } catch (x) { return ''; } };
+    function mk(o) {
+      var now = new Date().toISOString();
+      return Object.assign({ id: Date.now() + Math.floor(Math.random() * 999), title: '', desc: '', pilar: '', objetivo: '', publico: '', formato: '', duracao: '', refs: '', materiais: '', gancho: '', roteiro: '', cenas: '', legenda: '', capa: '', obs: '', prio: 'Média', planDate: '', pubDate: '', status: 'Ideia', arch: false, check: [], hist: [{ s: 'Ideia', at: now }], m: {}, learn: '', fav: false }, o);
+    }
+    if (!ST.imp) { (eduData.ideas || []).forEach(function (i) { ST.projects.push(mk({ id: 100000 + i.id, title: i.text, status: i.used ? 'Publicado' : 'Ideia' })); }); ST.imp = 1; save(); }
+
+    // ---------- IA real (sem simulação) ----------
+    async function ai(prompt) {
+      var k = KEY(); if (!k) throw new Error('A IA não está configurada. Informe sua chave da API em "Configurar IA" para gerar sugestões e roteiros.');
+      var r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': k, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2500, system: 'Você ajuda uma criadora brasileira de conteúdo para TikTok. Responda SOMENTE com JSON válido, em português do Brasil, com falas naturais e sem tom publicitário genérico. Nunca prometa viralização nem invente métricas.', messages: [{ role: 'user', content: prompt }] }) });
+      if (!r.ok) throw new Error(r.status === 401 ? 'Chave da API recusada. Confira a chave em "Configurar IA".' : 'A IA não respondeu (erro ' + r.status + '). Tente de novo.');
+      var d = await r.json(), t = (d.content || []).map(function (c) { return c.text || ''; }).join('').replace(/```json|```/g, '').trim();
+      try { return JSON.parse(t); } catch (x) { throw new Error('A resposta da IA veio em formato inesperado. Tente de novo.'); }
+    }
+    function run(tag, fn) { V.busy = tag; V.err = ''; draw(); return fn().catch(function (x) { V.err = x.message || 'Erro inesperado.'; }).then(function () { V.busy = ''; draw(); }); }
+    window.stIdeas = function (more) {
+      var th = (document.getElementById('st-theme') || {}).value || V.theme; th = (th || '').trim(); if (!th) { V.err = 'Escreva um tema primeiro.'; return draw(); } V.theme = th;
+      var ja = ST.ideas.map(function (i) { return i.titulo; }).concat(ST.projects.map(function (p) { return p.title; })).slice(-25).join('; ');
+      run('ideas', async function () {
+        var r = await ai('Tema livre: "' + th + '". Gere ' + (more ? '5 NOVAS ideias, diferentes das já existentes: ' + ja : 'pelo menos 5 ideias distintas') + '. Devolva um array JSON de objetos com as chaves: titulo, resumo, formato, objetivo, publico, gancho, diferencial, potencial (conexão, compartilhamento e descoberta, em uma frase), justificativa, passo (próximo passo recomendado).');
+        if (!Array.isArray(r)) throw new Error('A resposta da IA veio em formato inesperado. Tente de novo.');
+        r.forEach(function (o) { if (o && o.titulo) ST.ideas.unshift(Object.assign({ id: Date.now() + Math.floor(Math.random() * 99999), tema: th, fav: false }, o)); }); save();
+      });
+    };
+    window.stScript = function (id) {
+      var p = P(id), sty = document.getElementById('st-sty').value;
+      run('script', async function () {
+        var r = await ai('Crie um roteiro de vídeo curto no estilo "' + sty + '". Ideia: ' + p.title + '. Descrição: ' + p.desc + '. Objetivo: ' + p.objetivo + '. Público: ' + p.publico + '. Formato: ' + p.formato + '. Chaves JSON: gancho, desenvolvimento, demonstracao, encerramento, cta, cenas (array de objetos: filmar, enquadramento, texto, edicao).');
+        p.gancho = r.gancho || p.gancho;
+        p.roteiro = ['GANCHO: ' + r.gancho, 'DESENVOLVIMENTO: ' + r.desenvolvimento, 'DEMONSTRAÇÃO/NARRATIVA: ' + r.demonstracao, 'ENCERRAMENTO: ' + r.encerramento, 'CHAMADA PARA AÇÃO: ' + r.cta].join('\n\n');
+        p.cenas = (r.cenas || []).map(function (c, i) { return (i + 1) + '. Filmar: ' + c.filmar + ' | Enquadramento: ' + c.enquadramento + ' | Texto na tela: ' + c.texto + ' | Edição: ' + c.edicao; }).join('\n');
+        save();
+      });
+    };
+    window.stInsights = function (id) {
+      var p = P(id);
+      run('ins', async function () {
+        var r = await ai('Com base APENAS nestes dados reais, sugira melhorias para os próximos vídeos, sem prometer viralização. Tipo: ' + p.pilar + ' / ' + p.formato + '. Métricas: ' + JSON.stringify(p.m) + '. Gancho usado: ' + p.gancho + '. Devolva JSON {aprendizados: string}.');
+        p.learn = String(r.aprendizados || ''); save();
+      });
+    };
+    window.stCfg = function () { var k = prompt('Cole sua chave da API da Anthropic. Ela fica salva só neste aparelho (localStorage). Deixe vazio para remover.', KEY()); if (k === null) return; try { k.trim() ? localStorage.setItem('ste_ai_key', k.trim()) : localStorage.removeItem('ste_ai_key'); } catch (x) {} draw(); };
+
+    // ---------- Ações ----------
+    window.stGo = function (v, id) { V.view = v; if (id != null) V.pid = id; V.err = ''; draw(); };
+    window.stNew = function (title) { var t = (title || prompt('Nome da ideia')) || ''; t = t.trim(); if (!t) return; var p = mk({ title: t.slice(0, 140) }); ST.projects.unshift(p); save(); stGo('proj', p.id); };
+    window.stFromIdea = function (id) { var i = ST.ideas.find(function (x) { return x.id === id; }); if (!i) return; var p = mk({ title: i.titulo, desc: i.resumo, formato: i.formato, objetivo: i.objetivo, publico: i.publico, gancho: i.gancho, obs: [i.diferencial, i.potencial, i.passo].filter(Boolean).join('\n'), status: 'Planejamento' }); p.hist.push({ s: 'Planejamento', at: new Date().toISOString() }); ST.projects.unshift(p); ST.ideas = ST.ideas.filter(function (x) { return x.id !== id; }); save(); stGo('proj', p.id); };
+    window.stIdeaFav = function (id) { var i = ST.ideas.find(function (x) { return x.id === id; }); i.fav = !i.fav; save(); draw(); };
+    window.stIdeaDel = function (id) { ST.ideas = ST.ideas.filter(function (x) { return x.id !== id; }); save(); draw(); };
+    window.stF = function (k, v) { var p = P(V.pid); p[k] = v; save(); };
+    window.stM = function (k, v) { var p = P(V.pid); p.m[k] = v === '' ? '' : Math.max(0, parseInt(v, 10) || 0); save(); };
+    window.stStatus = function (id, s) { var p = P(id); if (!p || p.status === s) return; p.status = s; p.hist.push({ s: s, at: new Date().toISOString() }); if (s === 'Publicado' && !p.pubDate) p.pubDate = isoDay(new Date()); save(); draw(); };
+    window.stDup = function (id) { var p = P(id), c = JSON.parse(JSON.stringify(p)); c.id = Date.now(); c.title += ' (cópia)'; c.status = 'Ideia'; c.hist = [{ s: 'Ideia', at: new Date().toISOString() }]; c.m = {}; c.pubDate = ''; ST.projects.unshift(c); save(); stGo('proj', c.id); };
+    window.stArch = function (id) { var p = P(id); p.arch = !p.arch; save(); stGo('lib'); };
+    window.stDel = function (id) { if (!confirm('Excluir este projeto para sempre?')) return; ST.projects = ST.projects.filter(function (p) { return p.id !== id; }); save(); stGo('home'); };
+    window.stChk = function (i) { var p = P(V.pid); p.check[i].d = !p.check[i].d; save(); draw(); };
+    window.stChkAdd = function () { var el = document.getElementById('st-chk'), t = el.value.trim(); if (!t) return; P(V.pid).check.push({ t: t.slice(0, 120), d: false }); save(); draw(); };
+    window.stChkDef = function () { var p = P(V.pid); ['Preparar materiais e luz', 'Gravar o gancho', 'Gravar as cenas', 'Editar e legendar', 'Escolher capa', 'Revisar legenda e CTA'].forEach(function (t) { p.check.push({ t: t, d: false }); }); save(); draw(); };
+    window.stPlan = function () {
+      var days = [].slice.call(document.querySelectorAll('.st-day:checked')).map(function (c) { return +c.value; }), per = Math.max(1, +document.getElementById('st-per').value || 1);
+      if (!days.length) { V.err = 'Marque ao menos um dia disponível.'; return draw(); }
+      var pr = { Alta: 0, Média: 1, Baixa: 2 }, list = ST.projects.filter(function (p) { return !p.arch && ['Ideia', 'Planejamento', 'Roteiro pronto'].indexOf(p.status) >= 0 && !p.planDate; }).sort(function (a, b) { return pr[a.prio] - pr[b.prio]; });
+      var d = new Date(), n = 0, cnt = {}; for (var g = 0; g < 14 && list.length; g++) { d.setDate(d.getDate() + (g ? 1 : 0)); if (days.indexOf(d.getDay()) < 0) continue; var k = isoDay(d); while ((cnt[k] || 0) < per && list.length) { var p = list.shift(); p.planDate = k; cnt[k] = (cnt[k] || 0) + 1; if (p.status === 'Ideia') stStatusQuiet(p, 'Planejamento'); n++; } }
+      save(); V.err = n ? '' : 'Nenhum projeto disponível para planejar. Crie ou desbloqueie ideias.'; V.view = 'cal'; V.wk = 0; draw();
+    };
+    function stStatusQuiet(p, s) { p.status = s; p.hist.push({ s: s, at: new Date().toISOString() }); }
+
+    // ---------- Telas ----------
+    var CARD = 'custom-card rounded-2xl p-4 mb-3', BTN = 'px-3 py-2 rounded-xl text-xs font-bold ', PRI = BTN + 'bg-[#A56ABD] text-white', SEC = BTN + 'border border-[#A56ABD] text-[#A56ABD]', INP = 'w-full px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs';
+    function nav() { var t = [['home', 'Estúdio'], ['ideas', 'Ideias'], ['board', 'Quadro'], ['cal', 'Semana'], ['lib', 'Biblioteca']]; return '<div class="flex gap-1.5 overflow-x-auto mb-4">' + t.map(function (x) { return '<button onclick="stGo(\'' + x[0] + '\')" class="' + BTN + (V.view === x[0] ? 'bg-[#A56ABD] text-white' : 'border border-[#EFE1F5] dark:border-[#3D224D]') + '">' + x[1] + '</button>'; }).join('') + '</div>'; }
+    function msg() { return V.err ? '<p role="alert" class="text-xs font-semibold text-red-600 dark:text-red-400 mb-3">' + $e(V.err) + '</p>' : ''; }
+    function pc(p) { return '<button onclick="stGo(\'proj\',' + p.id + ')" class="w-full text-left ' + CARD + '"><p class="font-bold text-sm">' + (p.fav ? '★ ' : '') + $e(p.title || 'Sem título') + '</p><p class="text-[11px] text-[#8B7D95]">' + $e(p.status) + (p.planDate ? ' · ' + $e(p.planDate.split('-').reverse().slice(0, 2).join('/')) : '') + ' · prioridade ' + $e(p.prio) + '</p></button>'; }
+    function home() {
+      var a = ST.projects.filter(function (p) { return !p.arch; }), c = function (f) { return a.filter(f).length; }, t = isoDay(new Date());
+      var kp = [['Ideias salvas', ST.ideas.length + c(function (p) { return p.status === 'Ideia'; })], ['Em planejamento', c(function (p) { return p.status === 'Planejamento'; })], ['Roteiros em andamento', c(function (p) { return p.roteiro && ['Planejamento', 'Roteiro pronto'].indexOf(p.status) >= 0 && p.status !== 'Roteiro pronto'; })], ['Prontos para gravar', c(function (p) { return p.status === 'Roteiro pronto'; })], ['Agendados', c(function (p) { return p.status === 'Agendado'; })], ['Publicados', c(function (p) { return p.status === 'Publicado' || p.status === 'Analisado'; })]];
+      var fol = a.reduce(function (s, p) { return s + (+p.m.follows || 0); }, 0), prox = a.filter(function (p) { return p.planDate && p.planDate >= t && p.status !== 'Publicado' && p.status !== 'Analisado'; }).sort(function (x, y) { return x.planDate < y.planDate ? -1 : 1; }).slice(0, 4);
+      return '<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">' + kp.map(function (k) { return '<div class="custom-card rounded-2xl p-4"><p class="font-serif-display text-3xl font-bold">' + k[1] + '</p><p class="text-[11px] text-[#8B7D95]">' + k[0] + '</p></div>'; }).join('') + '</div>' +
+        '<div class="flex flex-wrap gap-2 mb-4"><button onclick="stNew()" class="' + PRI + '">Nova ideia</button><button onclick="stGo(\'ideas\')" class="' + SEC + '">Gerar sugestões</button><button onclick="stGo(\'cal\')" class="' + SEC + '">Planejar minha semana</button></div>' +
+        '<div class="' + CARD + '"><p class="font-bold text-sm mb-1">Crescimento do perfil</p><p class="text-xs text-[#8B7D95]">Novos seguidores registrados nos vídeos: <b>' + fol + '</b>. Registre as métricas de cada vídeo publicado para acompanhar.</p></div>' +
+        '<p class="font-bold text-sm mb-2">Próximas gravações e tarefas</p>' + (prox.map(pc).join('') || '<p class="text-xs text-[#8B7D95]">Nada agendado. Use "Planejar minha semana".</p>');
+    }
+    function ideas() {
+      var cfg = KEY() ? '' : '<p class="text-xs mb-2 text-[#8B7D95]">A IA ainda não está configurada, então não vou gerar sugestões. Toque em Configurar IA.</p>';
+      var list = ST.ideas.map(function (i) { return '<div class="' + CARD + '"><p class="font-bold text-sm">' + $e(i.titulo) + '</p><p class="text-xs mt-1">' + $e(i.resumo) + '</p><div class="text-[11px] text-[#8B7D95] mt-2 space-y-0.5"><p><b>Formato:</b> ' + $e(i.formato) + ' · <b>Objetivo:</b> ' + $e(i.objetivo) + '</p><p><b>Público:</b> ' + $e(i.publico) + '</p><p><b>Gancho:</b> ' + $e(i.gancho) + '</p><p><b>Diferencial:</b> ' + $e(i.diferencial) + '</p><p><b>Potencial:</b> ' + $e(i.potencial) + '</p><p><b>Por quê:</b> ' + $e(i.justificativa) + '</p><p><b>Próximo passo:</b> ' + $e(i.passo) + '</p></div><div class="flex gap-2 mt-3 flex-wrap"><button onclick="stFromIdea(' + i.id + ')" class="' + PRI + '">Virar projeto</button><button onclick="stIdeaFav(' + i.id + ')" class="' + SEC + '">' + (i.fav ? '★ Favorita' : '☆ Favoritar') + '</button><button onclick="stIdeaDel(' + i.id + ')" class="' + SEC + '">Descartar</button></div></div>'; }).join('');
+      return '<div class="' + CARD + '"><p class="font-bold text-sm mb-2">Sobre o que você quer falar?</p><input id="st-theme" class="' + INP + '" maxlength="120" value="' + $e(V.theme) + '" placeholder="Ex.: maquiagem, perfumes, rotina, bastidores do trabalho"><div class="flex gap-2 mt-2 flex-wrap"><button onclick="stIdeas(false)" class="' + PRI + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'ideas' ? 'Pensando…' : 'Me ajude a desenvolver essa ideia') + '</button><button onclick="stCfg()" class="' + SEC + '">Configurar IA</button></div></div>' + cfg + msg() + list + (ST.ideas.length ? '<button onclick="stIdeas(true)" class="' + SEC + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'ideas' ? 'Pensando…' : 'Gerar mais sugestões') + '</button>' : '<p class="text-xs text-[#8B7D95]">Nenhuma sugestão ainda.</p>');
+    }
+    function board() { var a = ST.projects.filter(function (p) { return !p.arch; }); return '<div class="flex gap-3 overflow-x-auto pb-2">' + STS.map(function (s) { var l = a.filter(function (p) { return p.status === s; }); return '<div class="min-w-[220px] w-[220px]"><p class="text-[10px] uppercase font-bold text-[#A56ABD] mb-2">' + s + ' (' + l.length + ')</p>' + (l.map(pc).join('') || '<p class="text-[11px] text-[#8B7D95]">Vazio</p>') + '</div>'; }).join('') + '</div>'; }
+    function cal() {
+      var d0 = new Date(); d0.setDate(d0.getDate() + V.wk * 7); var rows = '';
+      for (var i = 0; i < 7; i++) { var d = new Date(d0); d.setDate(d0.getDate() + i); var k = isoDay(d), l = ST.projects.filter(function (p) { return !p.arch && (p.planDate === k || p.pubDate === k); }); rows += '<div class="' + CARD + '"><p class="text-xs font-bold">' + ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][d.getDay()] + ' ' + k.split('-').reverse().slice(0, 2).join('/') + '</p>' + (l.map(function (p) { return '<button onclick="stGo(\'proj\',' + p.id + ')" class="block w-full text-left text-xs mt-1">• ' + $e(p.title) + ' <span class="text-[#8B7D95]">(' + $e(p.status) + ')</span></button>'; }).join('') || '<p class="text-[11px] text-[#8B7D95] mt-1">Livre</p>') + '</div>'; }
+      var dn = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(function (n, i) { return '<label class="text-xs mr-3"><input type="checkbox" class="st-day" value="' + i + '"> ' + n + '</label>'; }).join('');
+      return '<div class="' + CARD + '"><p class="font-bold text-sm mb-2">Planejar minha semana</p><p class="text-[11px] text-[#8B7D95] mb-2">Marque os dias em que você pode gravar. Distribuo suas ideias por prioridade nos próximos dias.</p>' + dn + '<div class="mt-2 flex items-center gap-2"><span class="text-xs">Vídeos por dia:</span><input id="st-per" type="number" min="1" max="5" value="1" class="' + INP + '" style="width:70px"><button onclick="stPlan()" class="' + PRI + '">Planejar</button></div></div>' + msg() +
+        '<div class="flex justify-between mb-2"><button onclick="V_wk(-1)" class="' + SEC + '">‹ Anterior</button><button onclick="V_wk(0)" class="' + SEC + '">Hoje</button><button onclick="V_wk(1)" class="' + SEC + '">Próxima ›</button></div>' + rows;
+    }
+    window.V_wk = function (n) { V.wk = n === 0 ? 0 : V.wk + n; draw(); };
+    window.stFq = function (k, v) { V[k] = v; draw(); };
+    function lib() {
+      var q = V.fq.toLowerCase(), l = ST.projects.filter(function (p) { return (!V.fs || (V.fs === 'Arquivados' ? p.arch : (!p.arch && p.status === V.fs))) && (V.fs === 'Arquivados' || V.fs || !p.arch) && (!q || [p.title, p.desc, p.pilar, p.formato, p.objetivo, p.refs, p.obs].join(' ').toLowerCase().indexOf(q) >= 0); });
+      return '<div class="flex gap-2 mb-3"><input class="' + INP + '" placeholder="Buscar por tema, pilar, formato, objetivo…" value="' + $e(V.fq) + '" onchange="stFq(\'fq\',this.value)"><select class="' + INP + '" style="width:150px" onchange="stFq(\'fs\',this.value)"><option value="">Todos</option>' + STS.concat(['Arquivados']).map(function (s) { return '<option ' + (V.fs === s ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></div>' + (l.map(pc).join('') || '<p class="text-xs text-[#8B7D95]">Nenhum projeto encontrado.</p>');
+    }
+    function f(p, k, lab, type) { var v = $e(p[k]); return '<label class="block mb-3"><span class="text-[11px] font-bold text-[#8B7D95]">' + lab + '</span>' + (type === 'ta' ? '<textarea rows="5" class="' + INP + '" onchange="stF(\'' + k + '\',this.value)">' + v + '</textarea>' : '<input ' + (type === 'date' ? 'type="date"' : '') + ' class="' + INP + '" value="' + v + '" onchange="stF(\'' + k + '\',this.value)">') + '</label>'; }
+    function det(t, b, o) { return '<details class="custom-card rounded-2xl mb-3" ' + (o ? 'open' : '') + '><summary class="cursor-pointer p-4 font-bold text-sm">' + t + '</summary><div class="px-4 pb-4">' + b + '</div></details>'; }
+    function proj() {
+      var p = P(V.pid); if (!p) return '<p class="text-xs">Projeto não encontrado.</p>';
+      var mt = [['views', 'Visualizações'], ['likes', 'Curtidas'], ['comments', 'Comentários'], ['shares', 'Compartilhamentos'], ['saves', 'Salvamentos'], ['follows', 'Novos seguidores']];
+      var ck = p.check.map(function (c, i) { return '<label class="flex gap-2 text-xs mb-1.5"><input type="checkbox" ' + (c.d ? 'checked' : '') + ' onchange="stChk(' + i + ')"><span class="' + (c.d ? 'line-through text-[#8B7D95]' : '') + '">' + $e(c.t) + '</span></label>'; }).join('');
+      var h = p.hist.map(function (x) { return '<p class="text-[11px] text-[#8B7D95]">' + $e(x.s) + ' · ' + new Date(x.at).toLocaleDateString('pt-BR') + '</p>'; }).join('');
+      return '<button onclick="stGo(\'lib\')" class="' + SEC + ' mb-3">‹ Voltar</button><div class="' + CARD + '">' + f(p, 'title', 'Título') + '<label class="block mb-2"><span class="text-[11px] font-bold text-[#8B7D95]">Status</span><select class="' + INP + '" onchange="stStatus(' + p.id + ',this.value)">' + STS.map(function (s) { return '<option ' + (p.status === s ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></label><label class="block"><span class="text-[11px] font-bold text-[#8B7D95]">Prioridade</span><select class="' + INP + '" onchange="stF(\'prio\',this.value)">' + ['Alta', 'Média', 'Baixa'].map(function (s) { return '<option ' + (p.prio === s ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></label><div class="flex gap-2 mt-3 flex-wrap"><button onclick="stDup(' + p.id + ')" class="' + SEC + '">Duplicar</button><button onclick="stArch(' + p.id + ')" class="' + SEC + '">' + (p.arch ? 'Desarquivar' : 'Arquivar') + '</button><button onclick="stDel(' + p.id + ')" class="' + SEC + '">Excluir</button></div></div>' +
+        det('Visão geral', f(p, 'desc', 'Descrição', 'ta') + f(p, 'pilar', 'Pilar de conteúdo') + f(p, 'objetivo', 'Objetivo') + f(p, 'publico', 'Público pretendido') + f(p, 'formato', 'Formato') + f(p, 'duracao', 'Duração estimada'), true) +
+        det('Roteiro e cenas', msg() + '<div class="flex gap-2 mb-3"><select id="st-sty" class="' + INP + '">' + STYLES.map(function (s) { return '<option>' + s + '</option>'; }).join('') + '</select><button onclick="stScript(' + p.id + ')" class="' + PRI + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'script' ? 'Criando…' : 'Gerar roteiro') + '</button></div>' + f(p, 'gancho', 'Gancho inicial') + f(p, 'roteiro', 'Roteiro', 'ta') + f(p, 'cenas', 'Lista de cenas (o que filmar, enquadramento, texto na tela, edição)', 'ta'), false) +
+        det('Publicação', f(p, 'legenda', 'Legenda e chamada para ação', 'ta') + f(p, 'capa', 'Sugestão de capa') + f(p, 'planDate', 'Data planejada', 'date') + f(p, 'pubDate', 'Data de publicação', 'date') + f(p, 'refs', 'Referências e links', 'ta') + f(p, 'materiais', 'Materiais necessários', 'ta'), false) +
+        det('Checklist de gravação e edição', ck + '<div class="flex gap-2 mt-2"><input id="st-chk" class="' + INP + '" placeholder="Nova tarefa"><button onclick="stChkAdd()" class="' + PRI + '">+</button></div><button onclick="stChkDef()" class="' + SEC + ' mt-2">Usar checklist padrão</button>', false) +
+        det('Resultados', mt.map(function (m) { return '<label class="block mb-2"><span class="text-[11px] font-bold text-[#8B7D95]">' + m[1] + '</span><input type="number" min="0" class="' + INP + '" value="' + $e(p.m[m[0]]) + '" onchange="stM(\'' + m[0] + '\',this.value)"></label>'; }).join('') + '<button onclick="stInsights(' + p.id + ')" class="' + SEC + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'ins' ? 'Analisando…' : 'Sugerir melhorias com a IA') + '</button>' + f(p, 'learn', 'Aprendizados', 'ta'), false) +
+        det('Observações e histórico', f(p, 'obs', 'Observações pessoais', 'ta') + '<p class="text-[11px] font-bold mb-1">Histórico de etapas</p>' + h, false);
+    }
+    function html() {
+      var b = { home: home, ideas: ideas, board: board, cal: cal, lib: lib, proj: proj }[V.view]();
+      return '<header class="mb-4"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">TikTok</p><h1 class="font-serif-display text-3xl font-bold">Meu Estúdio</h1><p class="text-xs text-[#8B7D95] mt-1">Da primeira ideia à publicação e à análise, num só lugar.</p></header>' + nav() + b;
+    }
+    function draw() { var c = document.getElementById('main-screen-container'); if (c && currentScreen === 'estudio') { var y = scrollY; c.innerHTML = html(); scrollTo(0, y); } }
+    var _rs3 = window.renderScreen;
+    window.renderScreen = function () { var r = _rs3.apply(this, arguments); draw(); return r; };
+    if (!NAV_ITEMS.some(function (x) { return x.id === 'estudio'; })) NAV_ITEMS.splice(NAV_ITEMS.findIndex(function (x) { return x.id === 'cabelo'; }) + 1, 0, { id: 'estudio', label: 'Meu Estúdio', icon: 'sparkles', group: 'Bem-estar' });
+    try { renderNav(); } catch (x) {}
+  })();
+  </script>
 </body>
 </html>
