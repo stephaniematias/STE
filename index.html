@@ -524,6 +524,8 @@
       { id: 'financas', label: 'Finanças', icon: 'gem', group: 'Vida' },
       { id: 'estudos', label: 'Estudos & Carreira', icon: 'book-open', group: 'Vida' },
       { id: 'ciclo', label: 'Ciclo menstrual', icon: 'droplet', group: 'Bem-estar' },
+      { id: 'signos', label: 'Signos & Lua', icon: 'moon', group: 'Vida' },
+      { id: 'backup', label: 'Backup dos dados', icon: 'download', group: 'Sistema' },
       { id: 'documentos', label: 'Documentos & Vencimentos', icon: 'bell', group: 'Vida' },
       { id: 'revisao', label: 'Revisão semanal', icon: 'check-circle', group: 'Vida' },
       { id: 'pessoas', label: 'Pessoas & Datas', icon: 'users', group: 'Vida' },
@@ -1017,7 +1019,7 @@
 
     function renderNav() {
       const container = document.getElementById('nav-links-container');
-      const groups = ['Geral', 'Organização', 'Bem-estar', 'Vida'];
+      const groups = ['Geral', 'Organização', 'Bem-estar', 'Vida', 'Sistema'];
       let html = '';
 
       groups.forEach(group => {
@@ -1138,6 +1140,8 @@
       else if (currentScreen === 'revisao') renderRevisao(container);
       else if (currentScreen === 'documentos') renderDocumentos(container);
       else if (currentScreen === 'ciclo') renderCiclo(container);
+      else if (currentScreen === 'signos') renderSignos(container);
+      else if (currentScreen === 'backup') renderBackup(container);
       else if (currentScreen === 'viagens') renderViagens(container);
       else if (currentScreen === 'mais') renderMais(container);
     }
@@ -3500,7 +3504,7 @@
 
 
     // ================= Sonhos & Fé =================
-    const DREAM_CATS = ['Viagem', 'Carreira', 'Casa', 'Estudos', 'Família', 'Saúde', 'Outro'];
+    const DREAM_CATS = ['Viagem', 'Carreira', 'Casa', 'Compras', 'Estudos', 'Família', 'Saúde', 'Outro'];
     let sonhosData = getStore('sonhosfe', null);
     if (!sonhosData || typeof sonhosData !== 'object' || !Array.isArray(sonhosData.items)) {
       sonhosData = {
@@ -4346,6 +4350,9 @@
       casa: { nome: 'Casa ou reforma', meses: 36, dinheiro: true, passos: [
         'Definir o orçamento e a região', 'Guardar a entrada ou o valor da obra todo mês', 'Organizar os documentos e conferir o crédito', 'Simular financiamentos ou pedir orçamentos',
         'Visitar as opções ou escolher o profissional', 'Fechar o negócio'] },
+      compras: { nome: 'Compra', meses: 6, dinheiro: true, passos: [
+        'Definir o que quero comprar e para quê', 'Pesquisar preços em pelo menos 3 lugares', 'Fixar o valor máximo que posso pagar', 'Guardar um valor todo mês até chegar lá',
+        'Esperar 7 dias para confirmar que ainda quero', 'Comprar e guardar a nota fiscal'] },
       projeto: { nome: 'Projeto ou carreira', meses: 6, dinheiro: true, passos: [
         'Escrever a ideia em uma página', 'Definir para quem é e que problema resolve', 'Listar o que falta para começar', 'Fazer uma primeira versão pequena',
         'Mostrar para 3 pessoas e ouvir o retorno', 'Marcar a data de lançamento', 'Divulgar para quem precisa conhecer'] },
@@ -4363,6 +4370,7 @@
       if (/emagrec|perder peso|perder \d|secar|barriga|queimar gordura|peso ideal/.test(t)) return 'peso';
       if (/reserva|poupar|guardar dinheiro|investir|quitar|divida|independencia financeira/.test(t)) return 'dinheiro';
       if (it.cat === 'Viagem' || /viaj|viagem|europa|intercambio|conhecer/.test(t)) return 'viagem';
+      if (it.cat === 'Compras' || /comprar|compra de|ganhar um|adquirir/.test(t)) return 'compras';
       if (it.cat === 'Casa' || /casa propria|apartamento|imovel|reforma|financiamento/.test(t)) return 'casa';
       if (it.cat === 'Estudos' || /curso|faculdade|estudar|concurso|idioma|ingles|certifica|mestrado/.test(t)) return 'estudos';
       if (it.cat === 'Carreira' || /projeto|empreend|negocio|lancar|carreira|promocao|emprego/.test(t)) return 'projeto';
@@ -4550,6 +4558,33 @@
       `;
     }
 
+    function backupCardHtml() {
+      return `
+        <div class="custom-card rounded-2xl p-5 mt-6">
+          <h2 class="font-serif-display text-xl font-bold mb-1">Backup dos dados</h2>
+          <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-4">Seus dados ficam só neste navegador. Se você limpar o histórico ou trocar de aparelho, eles somem. Baixe uma cópia de tempos em tempos.</p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <button onclick="exportBackup()" class="px-5 py-2.5 bg-[#A56ABD] hover:bg-[#8E4EA7] text-white font-bold text-xs rounded-xl inline-flex items-center justify-center gap-2">${ico('download', 16)} Baixar backup</button>
+            <button onclick="document.getElementById('backup-file').click()" class="px-5 py-2.5 border border-[#EFE1F5] dark:border-[#3D224D] bg-[#FAF5FC] dark:bg-[#2C153A] font-bold text-xs rounded-xl inline-flex items-center justify-center gap-2">${ico('upload', 16)} Restaurar backup</button>
+            <input type="file" id="backup-file" accept="application/json,.json" class="hidden" onchange="importBackup(this)">
+          </div>
+          <p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-3">${(() => { const d = getStore('lastbackup', null); const dt = d ? new Date(d) : null; return dt && !isNaN(dt) ? 'Último backup: ' + dt.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : 'Você ainda não baixou nenhum backup.'; })()}</p>
+          <p id="backup-msg" aria-live="polite" class="text-xs"></p>
+        </div>
+      `;
+    }
+
+    function renderBackup(container) {
+      container.innerHTML = `
+        <header class="mb-2">
+          <p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Sistema</p>
+          <h1 class="font-serif-display text-3xl font-bold">Backup dos dados</h1>
+          <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Baixe uma cópia dos seus dados e restaure em outro aparelho ou depois de limpar o navegador.</p>
+        </header>
+        ${backupCardHtml()}
+      `;
+    }
+
     function renderMais(container) {
       container.innerHTML = `
         <header class="mb-6">
@@ -4568,17 +4603,7 @@
 
         ${renderAppCard()}
 
-        <div class="custom-card rounded-2xl p-5 mt-6">
-          <h2 class="font-serif-display text-xl font-bold mb-1">Backup dos dados</h2>
-          <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-4">Seus dados ficam só neste navegador. Se você limpar o histórico ou trocar de aparelho, eles somem. Baixe uma cópia de tempos em tempos.</p>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <button onclick="exportBackup()" class="px-5 py-2.5 bg-[#A56ABD] hover:bg-[#8E4EA7] text-white font-bold text-xs rounded-xl inline-flex items-center justify-center gap-2">${ico('download', 16)} Baixar backup</button>
-            <button onclick="document.getElementById('backup-file').click()" class="px-5 py-2.5 border border-[#EFE1F5] dark:border-[#3D224D] bg-[#FAF5FC] dark:bg-[#2C153A] font-bold text-xs rounded-xl inline-flex items-center justify-center gap-2">${ico('upload', 16)} Restaurar backup</button>
-            <input type="file" id="backup-file" accept="application/json,.json" class="hidden" onchange="importBackup(this)">
-          </div>
-          <p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-3">${(() => { const d = getStore('lastbackup', null); const dt = d ? new Date(d) : null; return dt && !isNaN(dt) ? 'Último backup: ' + dt.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : 'Você ainda não baixou nenhum backup.'; })()}</p>
-          <p id="backup-msg" aria-live="polite" class="text-xs"></p>
-        </div>
+        ${backupCardHtml()}
       `;
     }
 
@@ -5426,6 +5451,82 @@
         '<label style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;margin-top:12px"><input type="checkbox"' + (cyData.set.remind ? ' checked' : '') + ' onchange="cyRemind(this.checked)"> Avisar quando a menstruação estiver chegando (até 2 dias antes)</label>' +
         (hist ? '<div style="margin-top:12px">' + hist + '</div>' : '') +
         '<p class="cy-note" style="margin-top:12px">As datas de ovulação e do período fértil são estimativas calculadas com a média dos seus ciclos. Elas não são método contraceptivo nem diagnóstico. Em caso de dúvida, atraso ou dor forte, procure um profissional de saúde. Esta tela não aparece na busca nem em Hoje, para manter o assunto reservado.</p></div>';
+    }
+
+
+    // ================= Signos & Lua: tudo calculado pela data de nascimento e pelo calendário, sem textos inventados =================
+    // [nome, início (mês, dia), elemento, modalidade, regente, palavras-chave tradicionais]
+    const SG = [
+      ['Áries', 3, 21, 'Fogo', 'Cardinal', 'Marte', 'iniciativa, coragem, impulso'], ['Touro', 4, 20, 'Terra', 'Fixo', 'Vênus', 'constância, prazer, segurança'],
+      ['Gêmeos', 5, 21, 'Ar', 'Mutável', 'Mercúrio', 'curiosidade, conversa, versatilidade'], ['Câncer', 6, 21, 'Água', 'Cardinal', 'Lua', 'cuidado, memória, acolhimento'],
+      ['Leão', 7, 23, 'Fogo', 'Fixo', 'Sol', 'expressão, generosidade, brilho'], ['Virgem', 8, 23, 'Terra', 'Mutável', 'Mercúrio', 'método, detalhe, utilidade'],
+      ['Libra', 9, 23, 'Ar', 'Cardinal', 'Vênus', 'equilíbrio, harmonia, parceria'], ['Escorpião', 10, 23, 'Água', 'Fixo', 'Plutão e Marte', 'intensidade, profundidade, transformação'],
+      ['Sagitário', 11, 22, 'Fogo', 'Mutável', 'Júpiter', 'liberdade, otimismo, busca de sentido'], ['Capricórnio', 12, 22, 'Terra', 'Cardinal', 'Saturno', 'disciplina, ambição, responsabilidade'],
+      ['Aquário', 1, 20, 'Ar', 'Fixo', 'Urano e Saturno', 'originalidade, coletivo, independência'], ['Peixes', 2, 19, 'Água', 'Mutável', 'Netuno e Júpiter', 'sensibilidade, intuição, imaginação']
+    ];
+    const SG_COL = { Fogo: '#D1607A', Terra: '#C6A467', Ar: '#7A8CC4', Água: '#A56ABD' };
+    let sgData = getStore('signos', null);
+    if (!sgData || typeof sgData !== 'object' || Array.isArray(sgData)) sgData = {};
+    function sgSave() { setStore('signos', sgData); }
+    function sgIdx(m, d) {
+      const v = m * 100 + d;
+      if (v >= 1222 || v < 120) return 9;
+      if (v < 219) return 10;
+      if (v < 321) return 11;
+      let r = 0;
+      for (let i = 0; i < 10; i++) if (v >= SG[i][1] * 100 + SG[i][2]) r = i;
+      return r;
+    }
+    function sgFim(i) { const n = SG[(i + 1) % 12]; const dt = new Date(2025, n[1] - 1, n[2] - 1); return pad2(dt.getDate()) + '/' + pad2(dt.getMonth() + 1); }
+    function sgAfin(a, b) {
+      const x = SG[a][3], y = SG[b][3];
+      if (x === y) return { t: 'Alta afinidade', d: 'mesmo elemento (' + x + ')' };
+      const par = k => (x === k[0] && y === k[1]) || (x === k[1] && y === k[0]);
+      if (par(['Fogo', 'Ar']) || par(['Terra', 'Água'])) return { t: 'Combinam bem', d: x + ' e ' + y + ' se complementam' };
+      return { t: 'Pedem ajustes', d: x + ' e ' + y + ' têm ritmos diferentes' };
+    }
+    function sgSetMe() {
+      const d = +(document.getElementById('sg-d') || {}).value, m = +(document.getElementById('sg-m') || {}).value, msg = document.getElementById('sg-msg');
+      if (!pdValidMD(m, d)) { if (msg) msg.textContent = 'Escolha um dia e um mês que existam.'; return; }
+      sgData.me = { d, m }; sgSave(); renderScreen();
+    }
+    function sgClear() { if (!confirm('Remover a sua data de nascimento daqui?')) return; delete sgData.me; sgSave(); renderScreen(); }
+    // Lua: média astronômica (referência: lua nova de 06/01/2000 18:14 UTC). Erro de cerca de 1 dia. O desenho segue o céu do Brasil (hemisfério sul): crescente com a luz à esquerda.
+    const MOON_SYN = 29.530588853, MOON_REF = Date.UTC(2000, 0, 6, 18, 14);
+    function moonAge(ms) { const d = (ms - MOON_REF) / 86400000; return ((d % MOON_SYN) + MOON_SYN) % MOON_SYN; }
+    function moonInfo(ms) {
+      const age = moonAge(ms), f = (1 - Math.cos(2 * Math.PI * age / MOON_SYN)) / 2, n = ['Lua nova', 'Lua crescente', 'Quarto crescente', 'Crescente gibosa', 'Lua cheia', 'Minguante gibosa', 'Quarto minguante', 'Lua minguante'];
+      const k = Math.floor(((age / MOON_SYN) * 8 + .5) % 8);
+      const proxNova = ms + (MOON_SYN - age) * 86400000, proxCheia = ms + (((MOON_SYN / 2 - age) + MOON_SYN) % MOON_SYN) * 86400000;
+      return { age, f, nome: n[k], proxNova, proxCheia };
+    }
+    function moonSvg(age) {
+      const r = 46, cx = 55, cy = 55, a = age > MOON_SYN / 2 ? MOON_SYN - age : age, c = Math.cos(2 * Math.PI * a / MOON_SYN), rx = Math.abs(c) * r;
+      const lit = 'M' + cx + ' ' + (cy - r) + ' A' + r + ' ' + r + ' 0 0 1 ' + cx + ' ' + (cy + r) + ' A' + rx.toFixed(2) + ' ' + r + ' 0 0 ' + (c > 0 ? 0 : 1) + ' ' + cx + ' ' + (cy - r) + 'z';
+      return '<svg viewBox="0 0 110 110" width="110" height="110" role="img" aria-label="Fase da Lua"><circle cx="55" cy="55" r="46" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".3"/><g transform="' + (age > MOON_SYN / 2 ? '' : 'translate(110,0) scale(-1,1)') + '"><path d="' + lit + '" fill="#C6A467"/></g></svg>';
+    }
+    function sgWheel(hi) {
+      const cx = 110, cy = 110, R = 84; let h = '';
+      SG.forEach((x, i) => {
+        const a0 = i * 30 - 90 + 1.5, a1 = (i + 1) * 30 - 90 - 1.5, am = (a0 + a1) / 2, tx = cx + (R + 0) * Math.cos(am * Math.PI / 180), ty = cy + R * Math.sin(am * Math.PI / 180) + 3;
+        h += '<path d="' + cyArc(cx, cy, R, a0, a1) + '" fill="none" stroke="' + SG_COL[x[3]] + '" stroke-width="' + (i === hi ? 26 : 16) + '" stroke-opacity="' + (i === hi ? 1 : .55) + '"/><text x="' + tx.toFixed(1) + '" y="' + ty.toFixed(1) + '" text-anchor="middle" style="font:700 7px Manrope,sans-serif;fill:#fff">' + x[0].slice(0, 3).toUpperCase() + '</text>';
+      });
+      return '<svg viewBox="0 0 220 220" width="100%" style="max-width:240px;display:block;margin:0 auto" role="img" aria-label="Roda dos signos">' + h + '</svg>';
+    }
+    function renderSignos(container) {
+      const now = new Date(), ms = now.getTime(), hoje = isoDay(now), mo = moonInfo(ms), sol = sgIdx(now.getMonth() + 1, now.getDate()), me = sgData.me ? sgIdx(sgData.me.m, sgData.me.d) : -1;
+      const fm = x => fmtDM(isoDay(new Date(x)));
+      let meu;
+      if (me < 0) meu = '<p class="cy-note" style="margin-bottom:10px">Informe o dia e o mês do seu nascimento, uma vez só, e o STE descobre seu signo.</p><div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><input id="sg-d" class="cy-in" type="number" min="1" max="31" placeholder="Dia" aria-label="Dia do nascimento"><select id="sg-m" class="cy-in" style="width:140px" aria-label="Mês do nascimento">' + PD_MESES.map((x, i) => '<option value="' + (i + 1) + '">' + x + '</option>').join('') + '</select><button class="cy-btn" style="margin:0" onclick="sgSetMe()">Descobrir</button></div><p id="sg-msg" aria-live="polite" style="font-size:11px;font-weight:700;color:#c0392b;margin-top:6px"></p>';
+      else { const x = SG[me]; meu = sgWheel(me) + '<h2 class="cy-h" style="text-align:center;margin-top:8px;font-size:26px;color:' + SG_COL[x[3]] + '">' + x[0] + '</h2><p style="text-align:center;font-size:12px;margin-bottom:8px">' + pad2(x[2]) + '/' + pad2(x[1]) + ' a ' + sgFim(me) + ' · ' + x[3] + ' · ' + x[4] + ' · regente ' + x[5] + '</p><p style="text-align:center;font-size:13px">Palavras-chave da tradição: <b>' + x[6] + '</b></p><p style="text-align:center;margin-top:8px"><button class="cy-btn alt" style="margin:0" onclick="sgClear()">Trocar data</button></p>'; }
+      const pessoas = pdData.people.filter(p => p.bm).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR')).map(p => { const i = sgIdx(p.bm, p.bd), af = me >= 0 ? sgAfin(me, i) : null;
+        return '<div style="display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid var(--border-color);font-size:13px"><span><b>' + esc(p.name) + '</b> · ' + SG[i][0] + ' <span style="color:var(--text-muted);font-size:11px">' + SG[i][3] + '</span></span>' + (af ? '<span style="text-align:right;font-weight:700;font-size:12px;color:' + (af.t === 'Pedem ajustes' ? 'var(--text-muted)' : 'var(--primary)') + '">' + af.t + '<br><span style="font-weight:500;font-size:10px;color:var(--text-muted)">' + af.d + '</span></span>' : '') + '</div>'; }).join('');
+      container.innerHTML =
+        '<header class="mb-6"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Vida</p><h1 class="font-serif-display text-3xl font-bold">Signos & Lua</h1><p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Calculado pela data de nascimento e pelo calendário. Nada aqui é inventado nem previsão do seu dia.</p></header>' +
+        '<div class="cy-card"><h2 class="cy-h">Meu signo</h2>' + meu + '</div>' +
+        '<div class="cy-card"><h2 class="cy-h">Lua agora</h2><div style="display:flex;align-items:center;gap:16px"><div style="color:var(--text-main)">' + moonSvg(mo.age) + '</div><div><p style="font-size:20px;font-weight:700;font-family:Fraunces,serif">' + mo.nome + '</p><p style="font-size:12px;color:var(--text-muted)">Iluminação ≈ ' + Math.round(mo.f * 100) + '% · ' + Math.floor(mo.age) + ' dias desde a nova</p><p style="font-size:12px;margin-top:6px">Próxima cheia: <b>' + fm(mo.proxCheia) + '</b><br>Próxima nova: <b>' + fm(mo.proxNova) + '</b></p></div></div><p class="cy-note" style="margin-top:8px">Datas aproximadas, com diferença de até 1 dia. O Sol está em <b>' + SG[sol][0] + '</b> hoje (de ' + pad2(SG[sol][2]) + '/' + pad2(SG[sol][1]) + ' a ' + sgFim(sol) + ').</p></div>' +
+        '<div class="cy-card"><h2 class="cy-h">Pessoas e afinidade</h2>' + (pessoas || '<p class="cy-note">Cadastre aniversários em Pessoas & Datas e o signo de cada pessoa aparece aqui sozinho.</p>') + (pessoas && me < 0 ? '<p class="cy-note" style="margin-top:8px">Informe seu nascimento acima para ver a afinidade.</p>' : '') + '</div>' +
+        '<p class="cy-note" style="margin:0 4px 16px">Astrologia é uma tradição simbólica, sem comprovação científica. A afinidade segue só a regra clássica dos elementos e não diz nada sobre como uma relação vai ser. Quem nasce nos dias de troca de signo pode ser de um signo ou do outro, dependendo do horário e do ano.</p>';
     }
 
     function externalRowHtml(x) {
@@ -6517,9 +6618,28 @@
     function ptSave() { setStore('ponto', pontoData); }
     function ptValid(m) { return typeof m === 'string' && /^\d{2}:\d{2}$/.test(m) && timeToMin(m) !== null; }
     function ptMarks(iso) { const d = pontoData.days[iso]; return d && Array.isArray(d.marks) ? d.marks.filter(ptValid).slice().sort() : []; }
-    function ptIsOff(iso) { const d = pontoData.days[iso]; return !!(d && d.off); }
+    const PT_ST = { folga: 'Folga', feriado: 'Feriado', atestado: 'Atestado', ferias: 'Férias', banco: 'Folga do banco de horas', treino: 'Treinamento' };
+    const PT_ST_OFF = ['folga', 'feriado', 'atestado', 'ferias'];
+    function ptDay(iso) { return pontoData.days[iso] || null; }
+    function ptStatus(iso) { const d = ptDay(iso); if (!d) return ''; return PT_ST[d.st] ? d.st : (d.off ? 'folga' : ''); }
+    function ptIsOff(iso) { return PT_ST_OFF.includes(ptStatus(iso)); }
+    function ptNote(iso) { const d = ptDay(iso); return d && typeof d.note === 'string' ? d.note : ''; }
+    function ptAbono(iso) { const d = ptDay(iso); return d && d.abono > 0 ? Math.round(d.abono) : 0; }
+    function ptHasInfo(iso) { return ptMarks(iso).length > 0 || !!ptStatus(iso) || !!ptNote(iso) || ptAbono(iso) > 0; }
+    // Início da contagem: a data escolhida em "Minha jornada"; sem ela, o primeiro dia registrado (ou hoje, se ainda não há nada).
+    function ptStart() {
+      const c = pontoData.cfg.start;
+      if (typeof c === 'string' && validIsoDate(c)) return c;
+      const ks = Object.keys(pontoData.days).filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k) && ptHasInfo(k)).sort();
+      return ks.length ? ks[0] : isoDay(new Date());
+    }
     function ptDow(iso) { const p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]).getDay(); }
-    function ptExpected(iso) { return ptIsOff(iso) ? 0 : (pontoData.cfg.workdays.includes(ptDow(iso)) ? pontoData.cfg.daily : 0); }
+    function ptExpected(iso) {
+      if (iso < ptStart() || ptIsOff(iso) || !pontoData.cfg.workdays.includes(ptDow(iso))) return 0;
+      const base = pontoData.cfg.daily, ab = ptAbono(iso);
+      if (ab > 0) return Math.max(0, base - ab);
+      return ptStatus(iso) === 'treino' && !ptMarks(iso).length ? 0 : base;
+    }
     function ptWorked(iso, nowMin) {
       const m = ptMarks(iso).map(timeToMin);
       let sum = 0, open = false;
@@ -6553,18 +6673,29 @@
     }
 
     function ptTotalBalance() {
-      const keys = Object.keys(pontoData.days).filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k) && (ptMarks(k).length || ptIsOff(k))).sort();
-      if (!keys.length) return null;
+      const start = ptStart(), opening = Math.round(+pontoData.cfg.opening || 0);
+      const hasData = Object.keys(pontoData.days).some(k => ptHasInfo(k)), has = hasData || opening !== 0 || !!pontoData.cfg.start;
+      if (!has) return null;
       const now = new Date(), today = isoDay(now), nowMin = now.getHours() * 60 + now.getMinutes();
-      const p = keys[0].split('-'); let d = new Date(+p[0], +p[1] - 1, +p[2]), bal = 0, guard = 0;
+      const p = start.split('-'); let d = new Date(+p[0], +p[1] - 1, +p[2]), bal = opening, guard = 0;
       while (isoDay(d) <= today && guard++ < 4000) {
         const iso = isoDay(d), exp = ptExpected(iso), w = ptWorked(iso, iso === today ? nowMin : null).min;
         bal += iso < today ? w - exp : w - Math.min(exp, w);
         d.setDate(d.getDate() + 1);
       }
-      return { balance: bal, since: keys[0] };
+      return { balance: bal, since: start, opening };
     }
-
+    // Mês a mês: saldo de cada mês e o acumulado até ele
+    function ptMonthsList() {
+      const start = ptStart(), now = new Date(), cur = isoDay(now).slice(0, 7), out = [];
+      let y = +start.slice(0, 4), m = +start.slice(5, 7), run = Math.round(+pontoData.cfg.opening || 0), guard = 0;
+      while ((y + '-' + pad2(m)) <= cur && guard++ < 120) {
+        const ym = y + '-' + pad2(m), st = ptMonthStats(ym); run += st.balance;
+        out.push({ ym, worked: st.worked, bal: st.balance, acc: run });
+        m++; if (m > 12) { m = 1; y++; }
+      }
+      return out.reverse();
+    }
     function ptRegister() {
       const now = new Date(), iso = isoDay(now), hm = pad2(now.getHours()) + ':' + pad2(now.getMinutes());
       const marks = ptMarks(iso);
@@ -6590,11 +6721,11 @@
       ptFlash = null; clearTimeout(ptFlashTimer);
       ptSetMarks(u.iso, arr);
     }
+    function ptClean(iso) { const d = pontoData.days[iso]; if (d && !(Array.isArray(d.marks) && d.marks.length) && !d.off && !d.st && !d.note && !(d.abono > 0)) delete pontoData.days[iso]; }
     function ptSetMarks(iso, arr) {
       const d = pontoData.days[iso] || (pontoData.days[iso] = {});
       d.marks = arr.filter(ptValid).sort();
-      if (!d.marks.length && !d.off) delete pontoData.days[iso];
-      ptSave(); renderScreen();
+      ptClean(iso); ptSave(); renderScreen();
     }
     function ptEditMark(iso, i, val) { if (!ptValid(val)) return; const arr = ptMarks(iso); arr[i] = val; ptSetMarks(iso, arr); }
     function ptDelMark(iso, i) { const arr = ptMarks(iso); arr.splice(i, 1); ptSetMarks(iso, arr); }
@@ -6604,12 +6735,24 @@
       const arr = ptMarks(iso); if (arr.includes(el.value)) return;
       arr.push(el.value); ptSetMarks(iso, arr);
     }
-    function ptSetOff(iso, on) {
+    function ptSetStatus(iso, v) {
       const d = pontoData.days[iso] || (pontoData.days[iso] = { marks: [] });
-      d.off = !!on; if (!d.off) delete d.off;
-      if (!ptMarks(iso).length && !d.off) delete pontoData.days[iso];
-      ptSave(); renderScreen();
+      delete d.off; if (PT_ST[v]) d.st = v; else delete d.st;
+      ptClean(iso); ptSave(); renderScreen();
     }
+    function ptSetAbono(iso, v) {
+      const d = pontoData.days[iso] || (pontoData.days[iso] = { marks: [] }), m = v ? timeToMin(v) : null;
+      if (m && m > 0) d.abono = m; else delete d.abono;
+      ptClean(iso); ptSave(); renderScreen();
+    }
+    function ptSetNote(iso, v) {
+      const d = pontoData.days[iso] || (pontoData.days[iso] = { marks: [] }), t = String(v || '').trim().slice(0, 200);
+      if (t) d.note = t; else delete d.note;
+      ptClean(iso); ptSave(); renderScreen();
+    }
+    function ptOpenToday() { const t = isoDay(new Date()); ptMonth = t.slice(0, 7); ptOpenDay = t; renderScreen(); setTimeout(() => { const e = document.getElementById('pt-month'); if (e && e.scrollIntoView) e.scrollIntoView({ behavior: steScroll(), block: 'start' }); }, 50); }
+    function ptSetStart(v) { if (!v) delete pontoData.cfg.start; else if (validIsoDate(v)) pontoData.cfg.start = v; else return; ptSave(); renderScreen(); }
+    function ptSetOpening(v) { const n = parseFloat(String(v).replace(',', '.')); if (!v || isNaN(n)) delete pontoData.cfg.opening; else pontoData.cfg.opening = Math.round(Math.max(-9999, Math.min(9999, n)) * 60); ptSave(); renderScreen(); }
     function ptToggleDay(iso) { ptOpenDay = ptOpenDay === iso ? null : iso; renderScreen(); }
     function ptOpenDate() {
       const el = document.getElementById('pt-date'); if (!el || !/^\d{4}-\d{2}-\d{2}$/.test(el.value)) return;
@@ -6658,15 +6801,16 @@
         '<button type="button" class="pt-btn' + (nextIn ? '' : ' out') + '" onclick="ptRegister()">' + ico('clock', 24, '', 2) + ptBtnLabel(nextIdx) + '</button>' +
         flash +
         (chips ? '<div class="pt-chips">' + chips + '</div>' : '') +
-        (info ? '<p class="pt-info">' + info + '</p>' : '') + '</div>';
+        (info ? '<p class="pt-info">' + info + '</p>' : '') +
+        '<p style="text-align:center;margin-top:10px"><button type="button" class="pt-sbtn ghost" onclick="ptOpenToday()">Folga, atestado ou observação de hoje</button></p></div>';
     }
 
     function ptRowHtml(iso, today, nowMin) {
-      const marks = ptMarks(iso), w = ptWorked(iso, iso === today ? nowMin : null), exp = ptExpected(iso), off = ptIsOff(iso), p = iso.split('-');
+      const marks = ptMarks(iso), w = ptWorked(iso, iso === today ? nowMin : null), exp = ptExpected(iso), st = ptStatus(iso), off = ptIsOff(iso), p = iso.split('-'), note = ptNote(iso), ab = ptAbono(iso);
       let pairs = '';
       for (let i = 0; i < marks.length; i += 2) pairs += (i ? ' · ' : '') + marks[i] + '–' + (marks[i + 1] || '…');
       let sum;
-      if (!marks.length) sum = off ? '<span class="pt-muted">Folga</span>' : (exp && iso < today ? '<span class="pt-neg">−' + ptFmt(exp) + '</span><small class="pt-muted">sem registro</small>' : '<span class="pt-muted">—</span>');
+      if (!marks.length) sum = off ? '<span class="pt-muted">' + PT_ST[st] + '</span>' : (exp && iso < today && iso >= ptStart() ? '<span class="pt-neg">−' + ptFmt(exp) + '</span><small class="pt-muted">' + (st ? PT_ST[st] : 'sem registro') + '</small>' : (st ? '<span class="pt-muted">' + PT_ST[st] + '</span>' : '<span class="pt-muted">—</span>'));
       else {
         const diff = w.min - exp;
         let sub;
@@ -6675,6 +6819,7 @@
         else sub = '<small class="' + (diff >= 0 ? 'pt-pos' : 'pt-neg') + '">' + ptSigned(diff) + '</small>';
         sum = ptFmt(w.min) + sub;
       }
+      const tag = (st && marks.length ? '<span class="pt-muted" style="font-size:11px;font-weight:700">' + PT_ST[st] + '</span> ' : '') + (ab ? '<span class="pt-muted" style="font-size:11px">· abono ' + ptFmt(ab) + '</span> ' : '');
       let edit = '';
       if (ptOpenDay === iso) {
         edit = '<div class="pt-edit">' + marks.map((m, i) =>
@@ -6682,50 +6827,57 @@
           '<input type="time" class="pt-in" value="' + m + '" onchange="ptEditMark(\'' + iso + '\',' + i + ',this.value)">' +
           '<button type="button" class="pt-sbtn ghost" aria-label="Apagar horário" onclick="ptDelMark(\'' + iso + '\',' + i + ')">' + ico('x', 14) + '</button></div>').join('') +
           '<div class="pt-edit-row"><input type="time" class="pt-in" id="pt-add-' + iso + '"><button type="button" class="pt-sbtn" onclick="ptAddMark(\'' + iso + '\')">+ Adicionar horário</button></div>' +
-          '<label class="pt-edit-row" style="margin:0"><input type="checkbox"' + (off ? ' checked' : '') + ' onchange="ptSetOff(\'' + iso + '\',this.checked)"> Folga, feriado ou atestado (não conta horas a cumprir)</label></div>';
+          '<div class="pt-edit-row"><span style="min-width:96px;font-weight:700">Situação do dia</span><select class="pt-in" aria-label="Situação do dia" onchange="ptSetStatus(\'' + iso + '\',this.value)"><option value="">Dia normal</option>' + Object.keys(PT_ST).map(k => '<option value="' + k + '"' + (st === k ? ' selected' : '') + '>' + PT_ST[k] + '</option>').join('') + '</select></div>' +
+          (off ? '<p class="pt-note" style="margin:0 0 6px">Dia sem horas a cumprir: não entra como falta.</p>' : st === 'banco' ? '<p class="pt-note" style="margin:0 0 6px">As horas do dia são descontadas do seu banco de horas.</p>' : '<div class="pt-edit-row"><span style="min-width:96px;font-weight:700">Horas abonadas</span><input type="time" class="pt-in" value="' + (ab ? ptHM(ab) : '') + '" aria-label="Horas abonadas" onchange="ptSetAbono(\'' + iso + '\',this.value)"></div>' + (st === 'treino' ? '<p class="pt-note" style="margin:0 0 6px">Treinamento sem horário batido e sem abono conta o dia inteiro como cumprido.</p>' : '<p class="pt-note" style="margin:0 0 6px">Saiu mais cedo com autorização? Informe quantas horas foram abonadas e elas deixam de ser cobradas.</p>')) +
+          '<div class="pt-edit-row"><input type="text" class="pt-in" maxlength="200" style="flex:1;min-width:0" placeholder="Observação (ex.: treinamento da empresa)" aria-label="Observação do dia" value="' + esc(note) + '" onchange="ptSetNote(\'' + iso + '\',this.value)"></div></div>';
       }
       return '<div class="pt-row"><button type="button" class="pt-row-main" onclick="ptToggleDay(\'' + iso + '\')">' +
         '<div class="pt-dnum">' + p[2] + '<span>' + PT_DIAS[ptDow(iso)] + (iso === today ? ' · hoje' : '') + '</span></div>' +
-        '<div class="pt-times">' + (pairs || '<span class="pt-muted">—</span>') + '</div>' +
+        '<div class="pt-times">' + (pairs || '<span class="pt-muted">—</span>') + (tag || note ? '<div style="margin-top:2px">' + tag + (note ? '<span class="pt-muted" style="font-size:11px">' + esc(note) + '</span>' : '') + '</div>' : '') + '</div>' +
         '<div class="pt-sum">' + sum + '</div></button>' + edit + '</div>';
     }
 
     function ptMonthHtml() {
       const ym = ptMonth, p = ym.split('-'), st = ptMonthStats(ym);
       const now = new Date(), today = isoDay(now), nowMin = now.getHours() * 60 + now.getMinutes();
-      const last = new Date(+p[0], +p[1], 0).getDate(), neg = st.balance < 0, tot = ptTotalBalance();
+      const last = new Date(+p[0], +p[1], 0).getDate(), neg = st.balance < 0, tot = ptTotalBalance(), start = ptStart();
       const pct = st.expTotal ? Math.min(100, Math.round(st.worked / st.expTotal * 100)) : 0;
-      const balLbl = Math.round(st.balance) === 0 ? 'Saldo zerado' : (neg ? 'Você deve' : 'Você tem de saldo');
+      const balLbl = Math.round(st.balance) === 0 ? 'Saldo do mês zerado' : (neg ? 'Neste mês você deve' : 'Neste mês você tem de saldo');
       let rows = '';
       for (let d = last; d >= 1; d--) {
         const iso = ym + '-' + pad2(d);
-        if (iso > today && ptOpenDay !== iso) continue;
-        if (!(ptExpected(iso) > 0 || ptMarks(iso).length || ptIsOff(iso) || ptOpenDay === iso)) continue;
+        if (iso > today && ptOpenDay !== iso && !ptHasInfo(iso)) continue;
+        if (!(ptExpected(iso) > 0 || ptHasInfo(iso) || ptOpenDay === iso)) continue;
         rows += ptRowHtml(iso, today, nowMin);
       }
+      const lista = ptMonthsList().map(m => { const q = m.ym.split('-');
+        return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 0;border-top:1px solid var(--border-color);font-size:12px"><span><b>' + PT_MESES[+q[1] - 1] + ' ' + q[0] + '</b><br><span class="pt-muted">trabalhou ' + ptFmt(m.worked) + '</span></span><span style="text-align:right"><span class="' + (m.bal < 0 ? 'pt-neg' : 'pt-pos') + '"><b>' + (Math.round(m.bal) === 0 ? '0h' : ptSigned(m.bal)) + '</b> no mês</span><br><span class="pt-muted">acumulado ' + (Math.round(m.acc) === 0 ? '0h' : ptSigned(m.acc)) + '</span></span></div>'; }).join('');
       return '<div id="pt-month"><div class="custom-card pt-card">' +
+        (tot ? '<div class="pt-balance' + (tot.balance < 0 ? ' neg' : '') + '"><small>Banco de horas acumulado</small><strong>' + (Math.round(tot.balance) === 0 ? '0h' : ptSigned(tot.balance)) + '</strong></div><p class="pt-note" style="text-align:center;margin:-4px 0 14px">Soma de todos os meses desde ' + fmtDMY(tot.since) + (tot.opening ? ', já com o saldo anterior de ' + ptSigned(tot.opening) : '') + '. Dias antes dessa data não contam.</p>' : '<p class="pt-note" style="margin-bottom:14px">O banco de horas começa a contar a partir de ' + fmtDMY(start) + '. Você pode mudar essa data em "Minha jornada".</p>') +
         '<div class="pt-head"><button type="button" class="pt-nav" aria-label="Mês anterior" onclick="ptShiftMonth(-1)">‹</button>' +
         '<h2>' + PT_MESES[+p[1] - 1] + ' ' + p[0] + '</h2>' +
         '<button type="button" class="pt-nav" aria-label="Próximo mês" onclick="ptShiftMonth(1)">›</button></div>' +
-        '<div class="pt-balance' + (neg ? ' neg' : '') + '"><small>' + balLbl + '</small><strong>' + (Math.round(st.balance) === 0 ? '0h' : ptFmt(st.balance)) + '</strong></div>' +
+        '<div class="pt-balance' + (neg ? ' neg' : '') + '" style="margin-top:6px"><small>' + balLbl + '</small><strong>' + (Math.round(st.balance) === 0 ? '0h' : ptFmt(st.balance)) + '</strong></div>' +
         '<div class="pt-tiles">' +
         '<div class="pt-tile"><small>Trabalhadas</small><strong>' + ptFmt(st.worked) + '</strong></div>' +
         '<div class="pt-tile"><small>A cumprir até agora</small><strong>' + ptFmt(st.expToDate) + '</strong></div>' +
         '<div class="pt-tile"><small>Previsto no mês</small><strong>' + ptFmt(st.expTotal) + '</strong></div>' +
-        '<div class="pt-tile"><small>Faltam p/ fechar o mês</small><strong>' + (st.remaining > 0 ? ptFmt(st.remaining) : '0h') + '</strong></div>' +
-        (tot ? '<div class="pt-tile" style="grid-column:1/-1"><small>Banco de horas total (desde ' + tot.since.split('-').reverse().join('/') + ')</small><strong class="' + (tot.balance < 0 ? 'pt-neg' : 'pt-pos') + '">' + (Math.round(tot.balance) === 0 ? '0h' : ptSigned(tot.balance)) + '</strong></div>' : '') + '</div>' +
+        '<div class="pt-tile"><small>Faltam p/ fechar o mês</small><strong>' + (st.remaining > 0 ? ptFmt(st.remaining) : '0h') + '</strong></div></div>' +
         '<div class="pt-bar" aria-hidden="true"><i style="width:' + pct + '%"></i></div>' +
         '<p class="pt-note">O dia de hoje só pesa no saldo quando você passa da carga; se faltar, a falta entra ao virar o dia.</p></div>' +
+        (lista ? '<div class="custom-card pt-card"><h3 class="pt-title">Mês a mês</h3>' + lista + '</div>' : '') +
         '<div class="custom-card pt-card"><h3 class="pt-title">Dias do mês</h3>' +
-        '<p class="pt-note" style="margin:0 0 6px">Toque em um dia para corrigir horários ou marcar folga.</p>' +
+        '<p class="pt-note" style="margin:0 0 6px">Toque em um dia para corrigir horários, marcar folga, atestado, treinamento ou escrever uma observação.</p>' +
         (rows || '<p class="pt-note">Nenhum dia para mostrar neste mês.</p>') +
-        '<div class="pt-edit-row" style="margin-top:14px"><input type="date" class="pt-in" id="pt-date" max="' + today + '" aria-label="Dia esquecido"><button type="button" class="pt-sbtn" onclick="ptOpenDate()">Lançar dia esquecido</button></div></div></div>';
+        '<div class="pt-edit-row" style="margin-top:14px"><input type="date" class="pt-in" id="pt-date" aria-label="Escolher um dia"><button type="button" class="pt-sbtn" onclick="ptOpenDate()">Abrir um dia</button></div></div></div>';
     }
 
     function ptCfgHtml() {
       const w = pontoData.cfg.workdays;
       return '<div class="custom-card pt-card"><button type="button" class="pt-row-main" onclick="ptToggleCfg()"><h3 class="pt-title" style="flex:1;margin:0">Minha jornada</h3><span class="pt-muted" style="font-size:12px;font-weight:700">' + (ptCfgOpen ? 'Fechar' : ptFmt(pontoData.cfg.daily) + ' por dia') + '</span></button>' +
         (ptCfgOpen ? '<p class="pt-note">Carga diária</p><input type="time" class="pt-in" value="' + ptHM(pontoData.cfg.daily) + '" onchange="ptSetDaily(this.value)">' +
+          '<p class="pt-note" style="margin-top:14px">Começar a contar o banco de horas em</p><input type="date" class="pt-in" value="' + (pontoData.cfg.start || '') + '" onchange="ptSetStart(this.value)"><p class="pt-note" style="margin:4px 0 0">Os dias antes dessa data não contam como horas devidas. Vazio = a partir do primeiro dia que você registrou.</p>' +
+          '<p class="pt-note" style="margin-top:14px">Saldo que você já trazia (em horas, pode ser negativo)</p><input type="text" inputmode="decimal" class="pt-in" style="width:110px" placeholder="0" value="' + (pontoData.cfg.opening ? String(+(pontoData.cfg.opening / 60).toFixed(2)).replace('.', ',') : '') + '" onchange="ptSetOpening(this.value)">' +
           '<p class="pt-note" style="margin-top:14px">Dias de trabalho</p><div class="pt-days">' + PT_DIAS.map((n, i) => '<button type="button" class="pt-day' + (w.includes(i) ? ' on' : '') + '" onclick="ptToggleDow(' + i + ')">' + n + '</button>').join('') + '</div>' +
           '<label class="pt-edit-row" style="margin-top:18px"><input type="checkbox"' + (pontoData.cfg.remind.on ? ' checked' : '') + ' onchange="ptSetRemind(this.checked)"> <b>Lembrar de bater o ponto</b></label>' +
           (pontoData.cfg.remind.on ? '<p class="pt-note" style="margin:0 0 8px">Horário em que você costuma bater cada ponto. O lembrete aparece nessa hora e some sozinho depois que você registrar.</p>' +
