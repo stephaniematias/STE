@@ -7059,5 +7059,229 @@
       window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
     }
   </script>
+  <!-- ===== STE · Conquistas: confete, som, sequência e orbes ===== -->
+  <style>
+    .gm-chips{display:flex;align-items:center;gap:6px}
+    .gm-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:700;background:var(--card-bg);border:1px solid var(--border-color);color:var(--text-main);line-height:1}
+    .gm-chip svg{flex:none}
+    .gm-chip.gm-snd{padding:4px 7px;color:var(--text-muted)}
+    .gm-chip.gm-snd[aria-pressed="true"]{color:var(--primary)}
+    .gm-bump{animation:gmBump .5s ease}
+    @keyframes gmBump{40%{transform:scale(1.25)}}
+    .gm-orb{width:44px;height:44px;border-radius:50%;flex:none;position:relative;
+      background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.75),rgba(255,255,255,0) 38%),radial-gradient(circle at 50% 55%,var(--c1),var(--c2));
+      box-shadow:0 4px 14px -4px var(--c2)}
+    .gm-orb.lock{filter:grayscale(1);opacity:.28;box-shadow:none}
+    .gm-orb.big{width:76px;height:76px}
+    .gm-orb.pop{animation:gmPop .9s cubic-bezier(.2,1.4,.4,1)}
+    @keyframes gmPop{0%{transform:scale(.2) rotate(-40deg);opacity:0}100%{transform:none;opacity:1}}
+    .gm-card{padding:18px;border-radius:20px;margin-bottom:24px}
+    .gm-stats{display:grid;grid-template-columns:1fr 1fr;gap:0}
+    .gm-stat{text-align:center;padding:4px 8px}
+    .gm-stat + .gm-stat{border-left:1px solid var(--border-color)}
+    .gm-num{font-family:'Fraunces',serif;font-size:34px;font-weight:600;line-height:1.1}
+    .gm-lab{font-size:10px;letter-spacing:.12em;font-weight:800;text-transform:uppercase;color:var(--text-muted);margin-top:2px}
+    .gm-bar{height:6px;border-radius:99px;background:var(--border-color);overflow:hidden;margin:10px auto 4px;max-width:140px}
+    .gm-bar i{display:block;height:100%;border-radius:99px;background:var(--primary);transition:width .6s ease}
+    .gm-sub{font-size:11px;color:var(--text-muted)}
+    .gm-row{display:flex;gap:12px;overflow-x:auto;padding:16px 2px 4px;margin-top:14px;border-top:1px solid var(--border-color);scrollbar-width:none}
+    .gm-row::-webkit-scrollbar{display:none}
+    .gm-it{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--text-muted);min-width:52px}
+    #gm-toast{position:fixed;left:50%;top:max(12px,env(safe-area-inset-top));transform:translate(-50%,-140%);z-index:9999;width:min(92vw,380px);
+      display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:22px;background:#1b0d26;color:#f7edfb;
+      box-shadow:0 18px 40px -12px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);transition:transform .55s cubic-bezier(.2,1.2,.3,1)}
+    #gm-toast.on{transform:translate(-50%,0)}
+    #gm-toast h4{font-family:'Fraunces',serif;font-size:19px;font-weight:500;margin:0}
+    #gm-toast p{font-size:12px;opacity:.75;margin:2px 0 0}
+    #gm-toast .gm-tb{height:5px;border-radius:99px;background:rgba(255,255,255,.18);margin-top:10px;overflow:hidden}
+    #gm-toast .gm-tb i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width 1.2s ease .2s}
+    #gm-toast .gm-tn{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-align:center;margin-top:5px;opacity:.8}
+    #gm-confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998}
+    @media (prefers-reduced-motion:reduce){.gm-orb.pop,.gm-bump{animation:none}#gm-toast{transition:none}}
+  </style>
+  <canvas id="gm-confetti" aria-hidden="true"></canvas>
+  <div id="gm-toast" role="status" aria-live="polite"></div>
+  <script>
+  (function () {
+    'use strict';
+    var ORBS = [
+      { n: 'Faísca', t: 1, c1: '#7f6bff', c2: '#2b1fbf' },
+      { n: 'Brisa', t: 5, c1: '#8fe3d6', c2: '#2c7f86' },
+      { n: 'Aurora', t: 10, c1: '#f7b6d8', c2: '#a8479a' },
+      { n: 'Cometa', t: 25, c1: '#ffd98a', c2: '#c6823a' },
+      { n: 'Nebulosa', t: 50, c1: '#c9a6ff', c2: '#6a35c4' },
+      { n: 'Eclipse', t: 100, c1: '#9aa4c7', c2: '#2d3558' },
+      { n: 'Galáxia', t: 200, c1: '#ff9bd0', c2: '#4b2bb0' },
+      { n: 'Supernova', t: 365, c1: '#ffe27a', c2: '#e0553a' },
+      { n: 'Cosmos', t: 500, c1: '#7fd0ff', c2: '#2a3fb8' },
+      { n: 'Infinito', t: 1000, c1: '#ffffff', c2: '#a56abd' }
+    ];
+    var STREAK_MARKS = [3, 7, 14, 30, 60, 100, 365];
+    var G = getStore('gami', null) || { days: {}, sound: true, orbs: 0, mark: 0 };
+    if (!G.days) G.days = {};
+    function save() { setStore('gami', G); }
+    function today() { return isoDay(new Date()); }
+    function total() { var s = 0; for (var k in G.days) s += G.days[k]; return s; }
+    function streak() {
+      var d = new Date(); if (!(G.days[isoDay(d)] > 0)) d.setDate(d.getDate() - 1);
+      var n = 0; while (G.days[isoDay(d)] > 0) { n++; d.setDate(d.getDate() - 1); }
+      return n;
+    }
+    function reached(tot) { var n = 0; ORBS.forEach(function (o) { if (tot >= o.t) n++; }); return n; }
+
+    // A contagem começa do zero a partir de agora (não puxa histórico antigo).
+
+    // ---------- Som (sintetizado, sem arquivos) ----------
+    var ac = null;
+    function ctx() {
+      try {
+        var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+        ac = ac || new AC(); if (ac.state === 'suspended') ac.resume(); return ac;
+      } catch (e) { return null; }
+    }
+    function tone(freq, at, dur, vol, type) {
+      var c = ctx(); if (!c) return;
+      var o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + at;
+      o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t0);
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(vol, t0 + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + dur + 0.05);
+    }
+    function sfx(kind) {
+      if (!G.sound) return;
+      if (kind === 'done') { tone(784, 0, 0.22, 0.16, 'triangle'); tone(1175, 0.09, 0.4, 0.14, 'sine'); }
+      else if (kind === 'undo') { tone(520, 0, 0.18, 0.1, 'sine'); tone(392, 0.08, 0.22, 0.08, 'sine'); }
+      else if (kind === 'trophy') {
+        [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * 0.11, 0.35, 0.15, 'triangle'); });
+        tone(1319, 0.5, 0.9, 0.13, 'sine'); tone(1047, 0.5, 0.9, 0.09, 'sine');
+      }
+    }
+
+    // ---------- Confete de pétalas ----------
+    var cv = document.getElementById('gm-confetti'), cx = cv.getContext('2d'), parts = [], raf = 0, last = { x: 0, y: 0 };
+    document.addEventListener('pointerdown', function (e) { last.x = e.clientX; last.y = e.clientY; }, true);
+    function fit() { var r = window.devicePixelRatio || 1; cv.width = innerWidth * r; cv.height = innerHeight * r; cx.setTransform(r, 0, 0, r, 0, 0); }
+    window.addEventListener('resize', fit); fit();
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function burst(x, y, big) {
+      var n = reduce ? 10 : (big ? 90 : 46), cols = ['#b7a3ff', '#8f7bff', '#d9ccff', '#a56abd', '#e8d2a7', '#7fd0ff'];
+      for (var i = 0; i < n; i++) {
+        var a = Math.random() * Math.PI * 2, v = 2 + Math.random() * (big ? 8 : 6);
+        parts.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2.5, r: Math.random() * 6, vr: (Math.random() - .5) * .35,
+          w: 3 + Math.random() * 4, h: 6 + Math.random() * 6, c: cols[i % cols.length], life: 1, d: .012 + Math.random() * .012 });
+      }
+      if (!raf) raf = requestAnimationFrame(step);
+    }
+    function step() {
+      cx.clearRect(0, 0, cv.width, cv.height);
+      parts = parts.filter(function (p) { return p.life > 0; });
+      parts.forEach(function (p) {
+        p.vy += .22; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life -= p.d;
+        cx.save(); cx.globalAlpha = Math.max(0, p.life); cx.translate(p.x, p.y); cx.rotate(p.r); cx.fillStyle = p.c;
+        cx.beginPath(); cx.ellipse(0, 0, p.w, p.h, 0, 0, 7); cx.fill(); cx.restore();
+      });
+      raf = parts.length ? requestAnimationFrame(step) : 0;
+      if (!raf) cx.clearRect(0, 0, cv.width, cv.height);
+    }
+
+    // ---------- Troféu ----------
+    var toast = document.getElementById('gm-toast'), tt = 0;
+    function orbHtml(o, cls) { return '<div class="gm-orb ' + (cls || '') + '" style="--c1:' + o.c1 + ';--c2:' + o.c2 + '"></div>'; }
+    function showToast(title, sub, o, pct) {
+      toast.innerHTML = '<div style="flex:1;min-width:0"><h4>' + title + '</h4><p>' + sub + '</p><div class="gm-tb"><i></i></div></div>' +
+        '<div style="text-align:center">' + orbHtml(o, 'big pop') + '<div class="gm-tn">' + o.n + '</div></div>';
+      toast.classList.add('on');
+      setTimeout(function () { var b = toast.querySelector('.gm-tb i'); if (b) b.style.width = pct + '%'; }, 30);
+      clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('on'); }, 3800);
+    }
+    toast.addEventListener('click', function () { toast.classList.remove('on'); });
+
+    // ---------- Contadores e cartão ----------
+    var FLAME = '<svg width="14" height="14" viewBox="0 0 24 24" fill="#a78bfa" stroke="#7c5cf0" stroke-width="1.4"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.2 1.5 1 2.3 2 2.5-.6-3 .3-6 1-9z"/></svg>';
+    var MINI = '<span class="gm-orb" style="width:14px;height:14px;box-shadow:none;--c1:#8fe3d6;--c2:#2c7f86"></span>';
+    function spk(on) {
+      return on ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>'
+        : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m17 9 5 6m0-6-5 6"/></svg>';
+    }
+    function chipsHtml() {
+      return '<button class="gm-chip" data-k="s" onclick="gamiGoHoje()" aria-label="Sequência de dias">' + FLAME + '<span>' + streak() + '</span></button>' +
+        '<button class="gm-chip" data-k="t" onclick="gamiGoHoje()" aria-label="Tarefas concluídas">' + MINI + '<span>' + total() + '</span></button>' +
+        '<button class="gm-chip gm-snd" onclick="gamiSound()" aria-pressed="' + !!G.sound + '" aria-label="' + (G.sound ? 'Desligar som' : 'Ligar som') + '">' + spk(G.sound) + '</button>';
+    }
+    function mountChips() {
+      document.querySelectorAll('.gm-chips').forEach(function (e) { e.innerHTML = chipsHtml(); });
+      if (document.querySelector('.gm-chips')) return;
+      var mh = document.querySelector('header.md\\:hidden > div:last-child');
+      if (mh) { var a = document.createElement('div'); a.className = 'gm-chips'; mh.insertBefore(a, mh.firstChild); a.innerHTML = chipsHtml(); }
+      var side = document.querySelector('aside');
+      if (side) { var b = document.createElement('div'); b.className = 'gm-chips'; b.style.cssText = 'padding:0 8px 16px'; var srch = side.querySelector('.relative'); side.insertBefore(b, srch || null); b.innerHTML = chipsHtml(); }
+    }
+    function cardHtml() {
+      var tot = total(), st = streak(), r = reached(tot), next = ORBS[r], prev = r ? ORBS[r - 1].t : 0;
+      var pct = next ? Math.round((tot - prev) / (next.t - prev) * 100) : 100;
+      var nm = 0; for (var i = 0; i < STREAK_MARKS.length; i++) if (STREAK_MARKS[i] > st) { nm = STREAK_MARKS[i]; break; }
+      var sp = nm ? Math.min(100, Math.round(st / nm * 100)) : 100;
+      var row = ORBS.map(function (o, i) { return '<div class="gm-it">' + orbHtml(o, i < r ? '' : 'lock') + '<span>' + o.n + '</span></div>'; }).join('');
+      return '<div id="gm-card" class="custom-card gm-card"><div class="gm-stats">' +
+        '<div class="gm-stat"><div class="gm-num">' + st + '</div><div class="gm-lab">Sequência de dias</div><div class="gm-bar"><i style="width:' + sp + '%"></i></div><div class="gm-sub">' + (nm ? st + '/' + nm + ' dias' : 'Meta máxima!') + '</div></div>' +
+        '<div class="gm-stat"><div class="gm-num">' + tot + '</div><div class="gm-lab">Concluído</div><div class="gm-bar"><i style="width:' + pct + '%;background:#2c9aa0"></i></div><div class="gm-sub">' + (next ? tot + '/' + next.t + ' · próximo: ' + next.n : 'Todos os orbes!') + '</div></div>' +
+        '</div><div class="gm-row">' + row + '</div></div>';
+    }
+    function refreshUI() {
+      mountChips();
+      var c = document.getElementById('gm-card'); if (c) c.outerHTML = cardHtml();
+    }
+    function injectCard() {
+      if (typeof currentScreen === 'undefined' || currentScreen !== 'hoje') return;
+      var box = document.getElementById('main-screen-container'); if (!box || document.getElementById('gm-card')) return;
+      var h = box.querySelector('header'); if (h) h.insertAdjacentHTML('afterend', cardHtml());
+    }
+
+    // ---------- Eventos ----------
+    function bump() { document.querySelectorAll('.gm-chip[data-k]').forEach(function (e) { e.classList.remove('gm-bump'); void e.offsetWidth; e.classList.add('gm-bump'); }); }
+    function onDone() {
+      var d = today(); G.days[d] = (G.days[d] || 0) + 1;
+      var tot = total(), r = reached(tot), st = streak(), unlocked = r > (G.orbs || 0), mark = 0;
+      for (var i = 0; i < STREAK_MARKS.length; i++) if (st >= STREAK_MARKS[i] && STREAK_MARKS[i] > (G.mark || 0)) mark = STREAK_MARKS[i];
+      burst(last.x || innerWidth / 2, last.y || innerHeight / 2, unlocked || !!mark);
+      if (unlocked) {
+        G.orbs = r; var o = ORBS[r - 1];
+        sfx('trophy'); showToast('Troféu desbloqueado!', 'Você concluiu ' + tot + (tot === 1 ? ' tarefa' : ' tarefas'), o, 100);
+      } else if (mark) {
+        G.mark = mark; sfx('trophy');
+        showToast('Sequência de ' + mark + ' dias!', 'Você não parou. Continue assim.', ORBS[Math.max(0, r - 1)], 100);
+      } else sfx('done');
+      save(); refreshUI(); bump();
+    }
+    function onUndo() {
+      var d = today(); if (G.days[d] > 0) G.days[d]--; if (!G.days[d]) delete G.days[d];
+      sfx('undo'); save(); refreshUI();
+    }
+
+    var _tt = window.toggleTask, _ro = window.reopenTask, _th = window.toggleHabit, _rs = window.renderScreen;
+    window.toggleTask = function (id) {
+      var t = tasks.find(function (x) { return x.id === id; }), b = t ? { done: !!t.done, due: t.due } : null;
+      _tt.apply(this, arguments); if (!b) return;
+      var a = tasks.find(function (x) { return x.id === id; }); if (!a) return;
+      if ((!b.done && a.done) || (!b.done && a.recur && a.due !== b.due)) onDone(); else if (b.done && !a.done) onUndo();
+    };
+    window.reopenTask = function (id) {
+      var t = tasks.find(function (x) { return x.id === id; }), was = t && t.done;
+      _ro.apply(this, arguments); if (was) onUndo();
+    };
+    window.toggleHabit = function (id) {
+      var before = (habitLog[today()] || []).indexOf(id) >= 0;
+      _th.apply(this, arguments);
+      var after = (habitLog[today()] || []).indexOf(id) >= 0;
+      if (!before && after) onDone(); else if (before && !after) onUndo();
+    };
+    window.renderScreen = function () { var r = _rs.apply(this, arguments); injectCard(); mountChips(); return r; };
+    window.gamiSound = function () { G.sound = !G.sound; save(); refreshUI(); sfx('done'); };
+    window.gamiGoHoje = function () { try { if (typeof navigate === 'function') navigate('hoje'); } catch (e) {} };
+
+    mountChips(); injectCard();
+  })();
+  </script>
 </body>
 </html>
