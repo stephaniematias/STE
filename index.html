@@ -7283,5 +7283,88 @@
     mountChips(); injectCard();
   })();
   </script>
+  <!-- ===== STE · Cabelo: guia completo por etapa e por área ===== -->
+  <script>
+  (function () {
+    var S = function (x) { return x.split('|'); };
+    var ET = {
+      'Hidratação': { c: '#3b9ae1', r: 'Repõe água nos fios para deixá-los macios, flexíveis e menos ressecados.', t: '10 a 30 min', f: '1x por semana, ou a cada 10 dias se o cabelo estiver bem seco', i: 'Ressecamento, opacidade, frizz, cabelo áspero ou embaraçado', q: 'Quando o fio estiver áspero, opaco, embaraçando fácil ou com sensação de palha.',
+        n: S('Shampoo|Máscara hidratante|Condicionador|Pente ou escova|Toalha|Touca (opcional)'), s: ['Lave os fios com shampoo, massageando o couro cabeludo. Enxágue bem.', 'Retire o excesso de água com a toalha, só apertando. Não enxugue torcendo.', 'Aplique a máscara em mechas, do comprimento às pontas. Evite a raiz se ela for oleosa.', 'Deixe agir o tempo da embalagem (em geral 10 a 30 min). Com touca ou calor morno rende mais.', 'Enxágue bem com água morna ou fria.', 'Finalize com condicionador, se precisar, e o seu método de secagem.'],
+        d: S('Ingredientes bons: pantenol, glicerina, aloe vera, ureia, ácido hialurônico, babosa.|Não use produto demais: pesa e desfaz o efeito.|Água morna ou fria no final fecha a cutícula e dá brilho.|Tire uma foto antes e depois para ver a evolução.'), e: S('Passar na raiz se o couro cabeludo for oleoso.|Deixar mais tempo que o indicado achando que potencializa.|Hidratar toda semana sem nutrir: o cabelo pode ficar pesado e sem força.'), ok: 'Fio macio, com brilho e mais fácil de pentear.' },
+      'Nutrição': { c: '#2fa56a', r: 'Devolve lipídios (óleos) para selar a cutícula, dar brilho e reduzir o frizz.', t: '15 a 30 min', f: 'A cada 10 a 15 dias (ou 1x por semana em cabelo muito poroso)', i: 'Frizz, falta de brilho, fios elétricos, pontas ásperas, cabelo com química', q: 'Quando o cabelo estiver fosco, com frizz que volta rápido ou com cara de "sem vida" mesmo depois de hidratar.',
+        n: S('Shampoo|Máscara de nutrição|Óleo ou manteiga vegetal|Pente de dentes largos|Toalha|Touca'), s: ['Lave com shampoo e enxágue bem.', 'Tire o excesso de água.', 'Aplique a máscara de nutrição do comprimento às pontas, dividindo em mechas.', 'Penteie com pente de dentes largos para distribuir.', 'Deixe agir o tempo indicado (15 a 30 min).', 'Enxágue completamente e finalize.'],
+        d: S('Ingredientes bons: óleo de coco, argan, abacate, karité, manteiga de cacau, macadâmia.|Cabelo oleoso: use só da metade para as pontas.|Cabelo com baixa porosidade pede produtos mais leves.|Alterne com hidratação, não faça sempre a mesma etapa.'), e: S('Excesso de óleo: deixa o cabelo pesado, com cara de sujo.|Aplicar no couro cabeludo se ele já for oleoso.|Nutrir sem lavar bem antes: o produto não penetra.'), ok: 'Brilho, maciez, fios soltos e menos frizz.' },
+      'Reconstrução': { c: '#d6457a', r: 'Repõe proteínas (queratina, aminoácidos) onde o fio perdeu massa por química, calor ou quebra.', t: '10 a 20 min (respeite o tempo, não passe)', f: 'A cada 15 a 30 dias. Em cabelo muito danificado, no máximo 1x por semana por um período curto', i: 'Quebra, elasticidade ruim (estica e não volta), fios fracos, química ou muito calor', q: 'Fio elástico demais (estica e arrebenta), quebra no pente, ponta afinando ou cabelo com descoloração.',
+        n: S('Shampoo|Máscara de reconstrução|Condicionador ou hidratação depois|Pente ou escova|Toalha|Touca (opcional)'), s: ['Lave com shampoo e enxágue.', 'Retire o excesso de água.', 'Aplique a máscara de reconstrução em mechas, do comprimento às pontas.', 'Deixe agir exatamente o tempo da embalagem (geralmente 10 a 20 min).', 'Enxágue bem.', 'Faça uma hidratação em seguida para equilibrar, se o cabelo ficar rígido.'],
+        d: S('Ingredientes bons: queratina hidrolisada, aminoácidos, proteína do trigo, arginina, colágeno.|Teste de elasticidade: molhe um fio e estique. Se arrebenta, precisa de proteína; se estica e não volta, precisa de hidratação.|Depois da reconstrução, alterne com hidratação e nutrição.|Reconstrução é tratamento, não rotina semanal fixa.'), e: S('Reconstruir toda semana: deixa o fio rígido e quebradiço (excesso de proteína).|Passar do tempo de pausa.|Aplicar na raiz.'), ok: 'Fio mais firme, com corpo, sem quebrar tanto ao pentear.' }
+    };
+    var AR = [
+      ['Couro cabeludo e raiz', 'É a base: um couro saudável faz o fio nascer melhor.', S('Lave com frequência adequada ao seu tipo: oleoso 2 a 3x por semana, normal 2x, seco 1 a 2x.|Massageie com a ponta dos dedos (nunca com as unhas) por 2 a 3 min.|Faça esfoliação do couro cabeludo 1x a cada 15 dias para tirar resíduos.|Enxágue por completo: resíduo causa coceira e caspa.'), 'Oleosidade, caspa, coceira, descamação, queda acima do normal (mais de 100 fios por dia por muito tempo: procure dermatologista).'],
+      ['Comprimento (meio dos fios)', 'A parte mais exposta a atrito, calor e química.', S('Hidrate e nutrie de forma alternada, conforme a necessidade.|Desembarace sempre de baixo para cima, com condicionador.|Use leave-in ou creme de pentear.|Proteja do sol, cloro e sal com protetor ou touca.'), 'Frizz, opacidade, nós, quebra no meio, ressecamento.'],
+      ['Pontas', 'A parte mais antiga e frágil do fio.', S('Corte as pontas a cada 2 a 3 meses (1 a 2 cm já ajuda).|Aplique finalizador ou óleo nas pontas.|Evite elásticos apertados e secador quente nelas.|Reconstrução se estiverem afinando.'), 'Pontas duplas, ressecadas, ásperas e com nós.']
+    ];
+    var PB = [
+      ['Frizz', 'Nutrição + selar com leave-in; reduza calor; durma com touca de cetim; use pente de dentes largos.'],
+      ['Ressecamento', 'Hidratação semanal; menos shampoo forte; água morna, não quente; proteja do sol.'],
+      ['Queda', 'Veja se é só por escovação (normal até ~100 fios/dia); cuide do couro; se a queda persistir ou for em falhas, consulte dermatologista (estresse, ferro e tireoide influenciam).'],
+      ['Oleosidade', 'Shampoo para raiz oleosa, condicionador só do meio às pontas, não use água muito quente.'],
+      ['Caspa e coceira', 'Esfoliação do couro, shampoo específico, enxágue completo; persistindo, procure dermatologista.'],
+      ['Quebra', 'Reconstrução moderada, evite chapinha/secador no máximo, trocar elástico por modelo sem metal.'],
+      ['Sem brilho', 'Nutrição, enxágue frio no final e finalizador leve; diminua acúmulo de produto com shampoo de limpeza profunda 1x por mês.']
+    ];
+    var TESTES = [
+      ['Porosidade', 'Coloque um fio limpo num copo d’água. Boia: baixa porosidade (use produtos leves). Afunda devagar: média. Afunda rápido: alta (precisa de selar com nutrição e creme).'],
+      ['Elasticidade', 'Molhe um fio e estique. Estica e volta: saudável. Estica e não volta: falta hidratação. Arrebenta logo: falta proteína (reconstrução).'],
+      ['Frequência de lavagem', 'Oleoso: dia sim, dia não ou 2 a 3x por semana. Normal: 2x. Seco ou cacheado: 1 a 2x. Lavar menos não é regra: se o couro estiver sujo, lave.']
+    ];
+    var GL = [['Pantenol', 'Retém água no fio (hidratação).'], ['Glicerina', 'Umectante: puxa água.'], ['Queratina', 'Proteína que reconstrói falhas.'], ['Aminoácidos', 'Blocos de proteína, reforçam o fio.'], ['Óleos e manteigas', 'Selam a cutícula (nutrição).'], ['Silicones', 'Dão brilho e deslize, mas podem acumular; remova com shampoo de limpeza.'], ['Sulfatos', 'Limpam bastante; em couro seco podem ressecar.']];
+
+    function e(x) { return typeof esc === 'function' ? esc(x) : String(x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+    function li(a, cls) { return a.map(function (x) { return '<li class="' + (cls || '') + '">' + e(x) + '</li>'; }).join(''); }
+    function ol(a) { return a.map(function (x, i) { return '<li class="flex gap-2 mb-1.5"><span class="flex-none w-5 h-5 rounded-full bg-[#A56ABD] text-white text-[10px] font-bold flex items-center justify-center">' + (i + 1) + '</span><span>' + e(x) + '</span></li>'; }).join(''); }
+    function sec(title, sub, body, open) {
+      return '<details class="custom-card rounded-2xl mb-3" ' + (open ? 'open' : '') + '><summary class="cursor-pointer p-4 list-none"><p class="font-bold text-sm">' + e(title) + '</p>' + (sub ? '<p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-0.5">' + e(sub) + '</p>' : '') + '</summary><div class="px-4 pb-4 text-xs leading-relaxed">' + body + '</div></details>';
+    }
+    function prods() { return Array.isArray(healthData.hairProducts) ? healthData.hairProducts : []; }
+    function etapaHtml(nome) {
+      var d = ET[nome], log = hairLogList().filter(function (x) { return x.stage === nome; }), ult = log.length ? log[log.length - 1].date : null;
+      var mine = prods().filter(function (p) { return p.stage === nome; });
+      var info = [['Tempo', d.t], ['Frequência', d.f], ['Ideal para', d.i]].map(function (x) { return '<div class="p-2.5 rounded-xl bg-[#FAF5FC] dark:bg-[#2C153A]"><p class="text-[10px] uppercase font-bold" style="color:' + d.c + '">' + x[0] + '</p><p>' + e(x[1]) + '</p></div>'; }).join('');
+      return '<p class="mb-3">' + e(d.r) + '</p><div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">' + info + '</div>' +
+        '<p class="mb-3"><b>Quando fazer:</b> ' + e(d.q) + '</p><p class="font-bold mb-1">Você vai precisar</p><ul class="flex flex-wrap gap-1.5 mb-3">' + li(d.n, 'px-2.5 py-1 rounded-full border border-[#EFE1F5] dark:border-[#3D224D]') + '</ul>' +
+        '<p class="font-bold mb-1">Passo a passo</p><ol class="mb-3">' + ol(d.s) + '</ol><p class="font-bold mb-1">Dicas importantes</p><ul class="list-disc pl-4 mb-3">' + li(d.d) + '</ul>' +
+        '<p class="font-bold mb-1 text-red-600 dark:text-red-400">Evite</p><ul class="list-disc pl-4 mb-3">' + li(d.e) + '</ul><p class="mb-3"><b>Resultado esperado:</b> ' + e(d.ok) + '</p>' +
+        '<p class="text-[11px] text-[#8B7D95] mb-2">' + (ult ? 'Última vez: ' + fmtDM(ult) + ', ' + fmtAgo(daysBetween(ult, isoDay(new Date()))) + '.' : 'Ainda sem registro dessa etapa.') + '</p>' +
+        '<p class="font-bold mb-1">Seus produtos de ' + e(nome.toLowerCase()) + '</p>' + (mine.length ? mine.map(function (p) { return '<div class="flex items-center justify-between py-1.5 border-b border-[#EFE1F5] dark:border-[#3D224D]"><span>' + e(p.name) + '</span><button onclick="hcDel(' + p.id + ')" aria-label="Remover produto" class="text-[#8B7D95] px-2">×</button></div>'; }).join('') : '<p class="text-[11px] text-[#8B7D95]">Nenhum produto ainda.</p>');
+    }
+    function html() {
+      var etapas = Object.keys(ET).map(function (n) { return sec(n, ET[n].r, etapaHtml(n)); }).join('');
+      var areas = AR.map(function (a) { return sec(a[0], a[1], '<p class="font-bold mb-1">Como cuidar</p><ul class="list-disc pl-4 mb-3">' + li(a[2]) + '</ul><p><b>Problemas comuns:</b> ' + e(a[3]) + '</p>'); }).join('');
+      var testes = TESTES.map(function (t) { return '<p class="mb-2"><b>' + e(t[0]) + ':</b> ' + e(t[1]) + '</p>'; }).join('');
+      var probs = PB.map(function (t) { return '<p class="mb-2"><b>' + e(t[0]) + ':</b> ' + e(t[1]) + '</p>'; }).join('');
+      var gl = GL.map(function (t) { return '<p class="mb-1.5"><b>' + e(t[0]) + ':</b> ' + e(t[1]) + '</p>'; }).join('');
+      var opts = Object.keys(ET).map(function (n) { return '<option>' + n + '</option>'; }).join('');
+      var add = '<div class="flex gap-2 mt-1"><input id="hc-name" maxlength="60" placeholder="Nome do produto" class="flex-1 min-w-0 px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs"><select id="hc-stage" class="px-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs">' + opts + '</select><button onclick="hcAdd()" class="px-3 rounded-xl bg-[#A56ABD] text-white text-xs font-bold">Salvar</button></div>';
+      return '<header class="mb-6"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Bem-estar</p><h1 class="font-serif-display text-3xl font-bold">Áreas do cabelo</h1><p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB] mt-1">Rotina, guia de cada etapa e cuidados por área, tudo num lugar só.</p></header>' +
+        '<div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">' + hairCardHtml() + '</div>' +
+        '<h2 class="font-serif-display text-xl font-bold mb-2">Etapas: como fazer</h2>' + etapas +
+        '<h2 class="font-serif-display text-xl font-bold mt-6 mb-2">Por área do cabelo</h2>' + areas +
+        '<h2 class="font-serif-display text-xl font-bold mt-6 mb-2">Descubra o que seu cabelo precisa</h2>' + sec('Testes em casa', 'Porosidade, elasticidade e frequência de lavagem', testes) +
+        sec('Problemas e soluções', 'Frizz, queda, oleosidade, caspa e mais', probs) + sec('Glossário de ingredientes', 'O que cada ativo faz', gl) +
+        sec('Meus produtos', 'Salve o que você usa em cada etapa', add, false) +
+        '<p class="text-[10px] text-[#8B7D95] mt-4">Informações gerais de cuidado capilar. Queda intensa, falhas ou coceira que não passa pedem avaliação de um dermatologista.</p>';
+    }
+    window.hcAdd = function () { var n = document.getElementById('hc-name'), s = document.getElementById('hc-stage'); if (!n || !n.value.trim()) return; var l = prods(); l.push({ id: Date.now(), name: n.value.trim().slice(0, 60), stage: s.value }); healthData.hairProducts = l; setStore('health', healthData); renderScreen(); };
+    window.hcDel = function (id) { healthData.hairProducts = prods().filter(function (p) { return p.id !== id; }); setStore('health', healthData); renderScreen(); };
+    var _rs2 = window.renderScreen;
+    window.renderScreen = function () {
+      var r = _rs2.apply(this, arguments);
+      if (currentScreen === 'cabelo') { var c = document.getElementById('main-screen-container'); if (c) { var open = Array.prototype.map.call(c.querySelectorAll('details'), function (d) { return d.open; }); c.innerHTML = html(); Array.prototype.forEach.call(c.querySelectorAll('details'), function (d, i) { if (open[i]) d.open = true; }); } }
+      return r;
+    };
+    if (!NAV_ITEMS.some(function (x) { return x.id === 'cabelo'; })) NAV_ITEMS.splice(NAV_ITEMS.findIndex(function (x) { return x.id === 'saude'; }) + 1, 0, { id: 'cabelo', label: 'Áreas do cabelo', icon: 'sparkles', group: 'Bem-estar' });
+    try { renderNav(); } catch (x) {}
+  })();
+  </script>
 </body>
 </html>
