@@ -109,6 +109,18 @@
     .cy-btn { padding: 9px 14px; border-radius: 12px; border: 0; background: var(--primary); color: #fff; font: 700 12px 'Manrope', sans-serif; cursor: pointer; margin: 0 8px 8px 0; }
     .cy-btn.alt { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
     .cy-in { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border-color); background: transparent; color: inherit; font: 500 13px 'Manrope', sans-serif; width: 72px; }
+    /* ---- Celebrações: confete, conquistas e contadores ---- */
+    .cg-conf { position: fixed; inset: 0; z-index: 9700; pointer-events: none; }
+    .cg-win { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); z-index: 9800; width: min(92vw, 420px); background: var(--card-bg); color: var(--text-main); border: 1px solid var(--gold); border-radius: 20px; padding: 14px 16px; box-shadow: 0 14px 40px rgba(73, 34, 91, .45); transition: transform .45s cubic-bezier(.2, .9, .3, 1.2); }
+    .cg-win.on { transform: translate(-50%, 0); }
+    .cg-win b { font-family: 'Fraunces', serif; font-size: 17px; }
+    .cg-win small { display: block; font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .cg-win i { display: block; height: 5px; border-radius: 99px; background: var(--primary); margin-top: 10px; transform-origin: left; animation: cgBar 3.6s linear forwards; }
+    @keyframes cgBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+    .cg-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+    .cg-chip { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--card-bg); border: 1px solid var(--border-color); font: 700 13px 'Manrope', sans-serif; color: var(--text-main); }
+    .cg-chip svg { color: var(--primary); }
+    @media (prefers-reduced-motion: reduce) { .cg-win { transition: none; } .cg-win i { animation: none; } }
     /* ---- Captura rápida ---- */
     .qc-fab { position: fixed; right: 16px; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); z-index: 8000; width: 54px; height: 54px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; background: var(--primary); color: #fff; box-shadow: 0 8px 22px rgba(94, 40, 112, .4), 0 0 0 2px var(--gold); cursor: pointer; }
     .qc-fab:active { transform: scale(.94); }
@@ -525,7 +537,7 @@
       { id: 'estudos', label: 'Estudos & Carreira', icon: 'book-open', group: 'Vida' },
       { id: 'ciclo', label: 'Ciclo menstrual', icon: 'droplet', group: 'Bem-estar' },
       { id: 'signos', label: 'Signos & Lua', icon: 'moon', group: 'Vida' },
-      { id: 'backup', label: 'Backup dos dados', icon: 'download', group: 'Sistema' },
+      { id: 'backup', label: 'Sons e backup', icon: 'download', group: 'Sistema' },
       { id: 'documentos', label: 'Documentos & Vencimentos', icon: 'bell', group: 'Vida' },
       { id: 'revisao', label: 'Revisão semanal', icon: 'check-circle', group: 'Vida' },
       { id: 'pessoas', label: 'Pessoas & Datas', icon: 'users', group: 'Vida' },
@@ -1293,6 +1305,125 @@
       return '<div class="custom-card rounded-2xl p-5 mb-6"><h2 class="font-serif-display text-lg font-bold mb-1">Também hoje</h2>' + rows.map(r =>
         '<button onclick="navigate(\'' + r.tab + '\')" class="w-full flex items-center gap-3 py-2 border-t border-[#EFE1F5] dark:border-[#3D224D] text-left"><span class="text-[#A56ABD] shrink-0">' + ico(r.icon, 18) + '</span><span class="min-w-0"><span class="block text-sm font-semibold truncate">' + esc(r.t) + '</span><span class="block text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] truncate">' + esc(r.s) + '</span></span></button>').join('') + '</div>';
     }
+
+    // ================= Celebrações: som, confete, sequência de dias e conquistas =================
+    let cgData = getStore('celebra', null);
+    if (!cgData || typeof cgData !== 'object' || Array.isArray(cgData)) cgData = {};
+    if (!cgData.days || typeof cgData.days !== 'object') cgData.days = {};
+    if (!Array.isArray(cgData.won)) cgData.won = [];
+    if (typeof cgData.total !== 'number') cgData.total = 0;
+    if (!cgData.set) cgData.set = { sound: true, confetti: true };
+    let cgKeys = {}, cgCtx = null, cgUnlocked = false;
+    function cgSave() { setStore('celebra', cgData); }
+    function cgAudio() { try { if (!cgCtx) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; cgCtx = new A(); } if (cgCtx.state === 'suspended') cgCtx.resume(); return cgCtx; } catch (e) { return null; } }
+    // iPhone/iPad: o som do navegador fica mudo com o botão lateral de silencioso ligado. Para tocar mesmo assim, a sessão de áudio vira "reprodução"
+    // (navigator.audioSession, no iOS recente) e um áudio mudo de HTML é tocado no primeiro toque na tela, que também libera o som.
+    function cgSilentUrl() {
+      const n = 2205, b = new ArrayBuffer(44 + n * 2), v = new DataView(b), w = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+      w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVEfmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 22050, true); v.setUint32(28, 44100, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+      return URL.createObjectURL(new Blob([b], { type: 'audio/wav' }));
+    }
+    function cgUnlock() {
+      if (cgUnlocked) return;
+      try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+      try { const el = document.createElement('audio'); el.setAttribute('playsinline', ''); el.src = cgSilentUrl(); const pr = el.play(); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {}
+      const c = cgAudio(); if (c) { try { const bf = c.createBuffer(1, 1, 22050), sr = c.createBufferSource(); sr.buffer = bf; sr.connect(c.destination); sr.start(0); cgUnlocked = true; } catch (e) {} }
+      if (cgUnlocked) ['touchend', 'pointerdown', 'click', 'keydown'].forEach(ev => document.removeEventListener(ev, cgUnlock, true));
+    }
+    ['touchend', 'pointerdown', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, cgUnlock, true));
+    // Sons gerados no próprio aparelho (sem arquivos de áudio). "done": toque curto e brilhante, em torno de 950 Hz; "win": três notas subindo.
+    function cgTone(c, t, f0, f1, dur, vol) {
+      const o = c.createOscillator(), g = c.createGain(), h = c.createOscillator(), hg = c.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + Math.min(.09, dur / 2));
+      h.type = 'sine'; h.frequency.setValueAtTime(f0 * 2, t); h.frequency.exponentialRampToValueAtTime(f1 * 2, t + Math.min(.09, dur / 2)); hg.gain.value = .18;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .008); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); h.connect(hg); hg.connect(g); g.connect(c.destination); o.start(t); h.start(t); o.stop(t + dur + .05); h.stop(t + dur + .05);
+    }
+    function steSound(kind) {
+      if (!cgData.set.sound) return; const c = cgAudio(); if (!c) return; const t = c.currentTime + .01;
+      if (kind === 'win') { [784, 988, 1319].forEach((f, i) => cgTone(c, t + i * .13, f, f, .5, .16)); }
+      else if (kind === 'soft') cgTone(c, t, 620, 760, .16, .1);
+      else { cgTone(c, t, 680, 960, .2, .2); cgTone(c, t + .07, 960, 1000, .16, .1); }
+    }
+    function cgConfetti(x, y) {
+      if (!cgData.set.confetti || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+      const cv = document.createElement('canvas'), W = innerWidth, H = innerHeight, dpr = Math.min(2, devicePixelRatio || 1); cv.className = 'cg-conf'; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+      document.body.appendChild(cv); const g = cv.getContext('2d'); g.scale(dpr, dpr);
+      const cols = ['#A56ABD', '#6E3482', '#C6A467', '#E7DBEF', '#7A8CC4'], ps = [];
+      for (let i = 0; i < 46; i++) { const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * 6; ps.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 3, r: 2 + Math.random() * 3.2, c: cols[i % cols.length], rot: Math.random() * 6, vr: (Math.random() - .5) * .4, life: 1 }); }
+      let last = performance.now();
+      (function tick(now) {
+        const dt = Math.min(2, (now - last) / 16.7); last = now; g.clearRect(0, 0, W, H); let alive = 0;
+        ps.forEach(p => { p.vy += .22 * dt; p.vx *= .985; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt; p.life -= .014 * dt; if (p.life > 0) { alive++; g.save(); g.globalAlpha = Math.max(0, p.life); g.translate(p.x, p.y); g.rotate(p.rot); g.fillStyle = p.c; g.fillRect(-p.r, -p.r * .55, p.r * 2, p.r * 1.1); g.restore(); } });
+        if (alive) requestAnimationFrame(tick); else cv.remove();
+      })(last);
+    }
+    function cgStreak() {
+      const hoje = isoDay(new Date()); let d = hoje, n = 0;
+      if (!cgData.days[d]) d = qcAddDays(hoje, -1);
+      while (cgData.days[d] > 0 && n < 4000) { n++; d = qcAddDays(d, -1); }
+      return n;
+    }
+    const CG_WINS = [
+      { id: 'primeira', t: 'Primeira conclusão', s: 'Você concluiu a primeira tarefa no STE.', ok: () => cgData.total >= 1 },
+      { id: 'tot10', t: '10 conclusões', s: 'Dez coisas feitas. Seguindo no seu ritmo.', ok: () => cgData.total >= 10 },
+      { id: 'tot50', t: '50 conclusões', s: 'Cinquenta coisas feitas.', ok: () => cgData.total >= 50 },
+      { id: 'tot100', t: '100 conclusões', s: 'Cem coisas feitas. Constância é isso.', ok: () => cgData.total >= 100 },
+      { id: 'seq3', t: 'Sequência de 3 dias', s: 'Três dias seguidos com algo concluído.', ok: () => cgStreak() >= 3 },
+      { id: 'seq7', t: 'Sequência de 7 dias', s: 'Uma semana inteira de constância.', ok: () => cgStreak() >= 7 },
+      { id: 'seq14', t: 'Sequência de 14 dias', s: 'Duas semanas seguidas.', ok: () => cgStreak() >= 14 },
+      { id: 'seq30', t: 'Sequência de 30 dias', s: 'Um mês seguido. Isso é hábito.', ok: () => cgStreak() >= 30 }
+    ];
+    function cgWinBanner(w) {
+      const old = document.getElementById('cg-win'); if (old) old.remove();
+      const el = document.createElement('div'); el.id = 'cg-win'; el.className = 'cg-win'; el.setAttribute('role', 'status');
+      el.innerHTML = '<b>Conquista desbloqueada!</b><small>' + esc(w.t) + ': ' + esc(w.s) + '</small><i></i>'; document.body.appendChild(el);
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('on')));
+      setTimeout(() => { el.classList.remove('on'); setTimeout(() => el.remove(), 600); }, 3700);
+    }
+    // Chame quando algo for concluído de verdade. key evita contar a mesma coisa duas vezes no mesmo dia.
+    function steCelebrate(key, ev) {
+      const hoje = isoDay(new Date()); if (cgKeys.__d !== hoje) cgKeys = { __d: hoje };
+      const novo = !cgKeys[key]; cgKeys[key] = 1;
+      let x = innerWidth / 2, y = innerHeight * .45;
+      try { const e = ev || window.event, t = e && e.target && e.target.getBoundingClientRect ? e.target.getBoundingClientRect() : null; if (t && t.width) { x = t.left + t.width / 2; y = t.top + t.height / 2; } } catch (er) {}
+      if (!novo) { steSound('soft'); return; }
+      cgData.total++; cgData.days[hoje] = (cgData.days[hoje] || 0) + 1;
+      const keep = Object.keys(cgData.days).sort().slice(-400); Object.keys(cgData.days).forEach(k => { if (!keep.includes(k)) delete cgData.days[k]; });
+      const w = CG_WINS.find(x => !cgData.won.includes(x.id) && x.ok());
+      if (w) cgData.won.push(w.id);
+      cgSave(); cgConfetti(x, y);
+      if (w) { steSound('win'); setTimeout(() => cgWinBanner(w), 250); } else steSound('done');
+    }
+    function cgChipsHtml() {
+      const n = cgStreak();
+      return '<div class="cg-chips"><span class="cg-chip" title="Dias seguidos com algo concluído">' + ico('flame', 16) + n + (n === 1 ? ' dia seguido' : ' dias seguidos') + '</span><span class="cg-chip" title="Total de coisas concluídas">' + ico('check-circle', 16) + cgData.total + ' concluídas</span></div>';
+    }
+    function cgSetOpt(k, v) { cgData.set[k] = !!v; cgSave(); cgUnlock(); if (k === 'sound' && v) steSound('done'); if (k === 'confetti' && v) cgConfetti(innerWidth / 2, innerHeight * .4); }
+    function cgCardHtml() {
+      return '<div class="cy-card" style="margin-top:16px"><h2 class="cy-h">Sons e celebrações</h2><p class="cy-note" style="margin-bottom:10px">Ao concluir uma tarefa, um hábito ou um treino, o STE toca um som curto, solta confete e conta sua sequência de dias. Os sons são gerados no aparelho, sem baixar nada.</p>' +
+        '<label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:8px"><input type="checkbox"' + (cgData.set.sound ? ' checked' : '') + ' onchange="cgSetOpt(\'sound\',this.checked)"> Som ao concluir</label>' +
+        '<label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:12px"><input type="checkbox"' + (cgData.set.confetti ? ' checked' : '') + ' onchange="cgSetOpt(\'confetti\',this.checked)"> Confete</label>' +
+        '<button class="cy-btn alt" onclick="cgUnlock();steSound(\'done\')">Ouvir o som</button><button class="cy-btn alt" onclick="cgUnlock();steSound(\'win\')">Ouvir o de conquista</button>' +
+        '<p class="cy-note" style="margin-top:8px">Se o som não tocar, aumente o volume do aparelho e toque em "Ouvir o som". Se mesmo assim ficar mudo, desligue o botão lateral de silencioso.</p></div>';
+    }
+    // Ganchos nas ações que concluem algo
+    (function () {
+      const tt = toggleTask; toggleTask = function (id) {
+        const t = tasks.find(x => x.id === id), ev = window.event, antes = t ? { d: t.done, due: t.due } : null; tt.apply(this, arguments);
+        if (t && antes && !antes.d && (t.done || t.due !== antes.due)) steCelebrate('t' + id, ev);
+      };
+      const th = toggleHabit; toggleHabit = function (id) {
+        const ev = window.event, a = (habitLog[isoDay(new Date())] || []).includes(id); th.apply(this, arguments);
+        if (!a && (habitLog[isoDay(new Date())] || []).includes(id)) steCelebrate('h' + id, ev);
+      };
+      const tw = toggleWorkoutDone; toggleWorkoutDone = function (id) {
+        const ev = window.event, a = wkDoneOn(isoDay(new Date())).includes(id); tw.apply(this, arguments);
+        if (!a && wkDoneOn(isoDay(new Date())).includes(id)) steCelebrate('w' + id, ev);
+      };
+      const pr = ptRegister; ptRegister = function () { pr.apply(this, arguments); steSound('soft'); };
+    })();
+
     function renderHoje(container) {
       const primKey = hojePrimary(new Date());
       hojePrimaryKey = primKey;
@@ -1325,6 +1456,8 @@
           </p>
           <p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-2">Toque para abrir · ler o salmo completo</p>
         </div>
+
+        ${cgChipsHtml()}
 
         ${hojePrincipalHtml(primKey)}
 
@@ -4578,9 +4711,10 @@
       container.innerHTML = `
         <header class="mb-2">
           <p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Sistema</p>
-          <h1 class="font-serif-display text-3xl font-bold">Backup dos dados</h1>
-          <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Baixe uma cópia dos seus dados e restaure em outro aparelho ou depois de limpar o navegador.</p>
+          <h1 class="font-serif-display text-3xl font-bold">Sons e backup</h1>
+          <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Ajuste os sons de conclusão e baixe uma cópia dos seus dados.</p>
         </header>
+        ${cgCardHtml()}
         ${backupCardHtml()}
       `;
     }
@@ -7058,451 +7192,6 @@
     if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
       window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
     }
-  </script>
-  <!-- ===== STE · Conquistas: confete, som, sequência e orbes ===== -->
-  <style>
-    .gm-chips{display:flex;align-items:center;gap:6px}
-    .gm-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:700;background:var(--card-bg);border:1px solid var(--border-color);color:var(--text-main);line-height:1}
-    .gm-chip svg{flex:none}
-    .gm-chip.gm-snd{padding:4px 7px;color:var(--text-muted)}
-    .gm-chip.gm-snd[aria-pressed="true"]{color:var(--primary)}
-    .gm-bump{animation:gmBump .5s ease}
-    @keyframes gmBump{40%{transform:scale(1.25)}}
-    .gm-orb{width:44px;height:44px;border-radius:50%;flex:none;position:relative;
-      background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.75),rgba(255,255,255,0) 38%),radial-gradient(circle at 50% 55%,var(--c1),var(--c2));
-      box-shadow:0 4px 14px -4px var(--c2)}
-    .gm-orb.lock{filter:grayscale(1);opacity:.28;box-shadow:none}
-    .gm-orb.big{width:76px;height:76px}
-    .gm-orb.pop{animation:gmPop .9s cubic-bezier(.2,1.4,.4,1)}
-    @keyframes gmPop{0%{transform:scale(.2) rotate(-40deg);opacity:0}100%{transform:none;opacity:1}}
-    .gm-card{padding:18px;border-radius:20px;margin-bottom:24px}
-    .gm-stats{display:grid;grid-template-columns:1fr 1fr;gap:0}
-    .gm-stat{text-align:center;padding:4px 8px}
-    .gm-stat + .gm-stat{border-left:1px solid var(--border-color)}
-    .gm-num{font-family:'Fraunces',serif;font-size:34px;font-weight:600;line-height:1.1}
-    .gm-lab{font-size:10px;letter-spacing:.12em;font-weight:800;text-transform:uppercase;color:var(--text-muted);margin-top:2px}
-    .gm-bar{height:6px;border-radius:99px;background:var(--border-color);overflow:hidden;margin:10px auto 4px;max-width:140px}
-    .gm-bar i{display:block;height:100%;border-radius:99px;background:var(--primary);transition:width .6s ease}
-    .gm-sub{font-size:11px;color:var(--text-muted)}
-    .gm-row{display:flex;gap:12px;overflow-x:auto;padding:16px 2px 4px;margin-top:14px;border-top:1px solid var(--border-color);scrollbar-width:none}
-    .gm-row::-webkit-scrollbar{display:none}
-    .gm-it{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--text-muted);min-width:52px}
-    #gm-toast{position:fixed;left:50%;top:max(12px,env(safe-area-inset-top));transform:translate(-50%,-140%);z-index:9999;width:min(92vw,380px);
-      display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:22px;background:#1b0d26;color:#f7edfb;
-      box-shadow:0 18px 40px -12px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);transition:transform .55s cubic-bezier(.2,1.2,.3,1)}
-    #gm-toast.on{transform:translate(-50%,0)}
-    #gm-toast h4{font-family:'Fraunces',serif;font-size:19px;font-weight:500;margin:0}
-    #gm-toast p{font-size:12px;opacity:.75;margin:2px 0 0}
-    #gm-toast .gm-tb{height:5px;border-radius:99px;background:rgba(255,255,255,.18);margin-top:10px;overflow:hidden}
-    #gm-toast .gm-tb i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width 1.2s ease .2s}
-    #gm-toast .gm-tn{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-align:center;margin-top:5px;opacity:.8}
-    #gm-confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998}
-    @media (prefers-reduced-motion:reduce){.gm-orb.pop,.gm-bump{animation:none}#gm-toast{transition:none}}
-  </style>
-  <canvas id="gm-confetti" aria-hidden="true"></canvas>
-  <div id="gm-toast" role="status" aria-live="polite"></div>
-  <script>
-  (function () {
-    'use strict';
-    var ORBS = [
-      { n: 'Faísca', t: 1, c1: '#7f6bff', c2: '#2b1fbf' },
-      { n: 'Brisa', t: 5, c1: '#8fe3d6', c2: '#2c7f86' },
-      { n: 'Aurora', t: 10, c1: '#f7b6d8', c2: '#a8479a' },
-      { n: 'Cometa', t: 25, c1: '#ffd98a', c2: '#c6823a' },
-      { n: 'Nebulosa', t: 50, c1: '#c9a6ff', c2: '#6a35c4' },
-      { n: 'Eclipse', t: 100, c1: '#9aa4c7', c2: '#2d3558' },
-      { n: 'Galáxia', t: 200, c1: '#ff9bd0', c2: '#4b2bb0' },
-      { n: 'Supernova', t: 365, c1: '#ffe27a', c2: '#e0553a' },
-      { n: 'Cosmos', t: 500, c1: '#7fd0ff', c2: '#2a3fb8' },
-      { n: 'Infinito', t: 1000, c1: '#ffffff', c2: '#a56abd' }
-    ];
-    var STREAK_MARKS = [3, 7, 14, 30, 60, 100, 365];
-    var G = getStore('gami', null) || { days: {}, sound: true, orbs: 0, mark: 0 };
-    if (!G.days) G.days = {};
-    function save() { setStore('gami', G); }
-    function today() { return isoDay(new Date()); }
-    function total() { var s = 0; for (var k in G.days) s += G.days[k]; return s; }
-    function streak() {
-      var d = new Date(); if (!(G.days[isoDay(d)] > 0)) d.setDate(d.getDate() - 1);
-      var n = 0; while (G.days[isoDay(d)] > 0) { n++; d.setDate(d.getDate() - 1); }
-      return n;
-    }
-    function reached(tot) { var n = 0; ORBS.forEach(function (o) { if (tot >= o.t) n++; }); return n; }
-
-    // A contagem começa do zero a partir de agora (não puxa histórico antigo).
-
-    // ---------- Som (sintetizado, sem arquivos) ----------
-    var ac = null;
-    function ctx() {
-      try {
-        var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
-        ac = ac || new AC(); if (ac.state === 'suspended') ac.resume(); return ac;
-      } catch (e) { return null; }
-    }
-    function tone(freq, at, dur, vol, type) {
-      var c = ctx(); if (!c) return;
-      var o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + at;
-      o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t0);
-      g.gain.setValueAtTime(0.0001, t0);
-      g.gain.exponentialRampToValueAtTime(vol, t0 + 0.015);
-      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-      o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + dur + 0.05);
-    }
-    function sfx(kind) {
-      if (!G.sound) return;
-      if (kind === 'done') { tone(784, 0, 0.22, 0.16, 'triangle'); tone(1175, 0.09, 0.4, 0.14, 'sine'); }
-      else if (kind === 'undo') { tone(520, 0, 0.18, 0.1, 'sine'); tone(392, 0.08, 0.22, 0.08, 'sine'); }
-      else if (kind === 'trophy') {
-        [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * 0.11, 0.35, 0.15, 'triangle'); });
-        tone(1319, 0.5, 0.9, 0.13, 'sine'); tone(1047, 0.5, 0.9, 0.09, 'sine');
-      }
-    }
-
-    // ---------- Confete de pétalas ----------
-    var cv = document.getElementById('gm-confetti'), cx = cv.getContext('2d'), parts = [], raf = 0, last = { x: 0, y: 0 };
-    document.addEventListener('pointerdown', function (e) { last.x = e.clientX; last.y = e.clientY; }, true);
-    function fit() { var r = window.devicePixelRatio || 1; cv.width = innerWidth * r; cv.height = innerHeight * r; cx.setTransform(r, 0, 0, r, 0, 0); }
-    window.addEventListener('resize', fit); fit();
-    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function burst(x, y, big) {
-      var n = reduce ? 10 : (big ? 90 : 46), cols = ['#b7a3ff', '#8f7bff', '#d9ccff', '#a56abd', '#e8d2a7', '#7fd0ff'];
-      for (var i = 0; i < n; i++) {
-        var a = Math.random() * Math.PI * 2, v = 2 + Math.random() * (big ? 8 : 6);
-        parts.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2.5, r: Math.random() * 6, vr: (Math.random() - .5) * .35,
-          w: 3 + Math.random() * 4, h: 6 + Math.random() * 6, c: cols[i % cols.length], life: 1, d: .012 + Math.random() * .012 });
-      }
-      if (!raf) raf = requestAnimationFrame(step);
-    }
-    function step() {
-      cx.clearRect(0, 0, cv.width, cv.height);
-      parts = parts.filter(function (p) { return p.life > 0; });
-      parts.forEach(function (p) {
-        p.vy += .22; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life -= p.d;
-        cx.save(); cx.globalAlpha = Math.max(0, p.life); cx.translate(p.x, p.y); cx.rotate(p.r); cx.fillStyle = p.c;
-        cx.beginPath(); cx.ellipse(0, 0, p.w, p.h, 0, 0, 7); cx.fill(); cx.restore();
-      });
-      raf = parts.length ? requestAnimationFrame(step) : 0;
-      if (!raf) cx.clearRect(0, 0, cv.width, cv.height);
-    }
-
-    // ---------- Troféu ----------
-    var toast = document.getElementById('gm-toast'), tt = 0;
-    function orbHtml(o, cls) { return '<div class="gm-orb ' + (cls || '') + '" style="--c1:' + o.c1 + ';--c2:' + o.c2 + '"></div>'; }
-    function showToast(title, sub, o, pct) {
-      toast.innerHTML = '<div style="flex:1;min-width:0"><h4>' + title + '</h4><p>' + sub + '</p><div class="gm-tb"><i></i></div></div>' +
-        '<div style="text-align:center">' + orbHtml(o, 'big pop') + '<div class="gm-tn">' + o.n + '</div></div>';
-      toast.classList.add('on');
-      setTimeout(function () { var b = toast.querySelector('.gm-tb i'); if (b) b.style.width = pct + '%'; }, 30);
-      clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('on'); }, 3800);
-    }
-    toast.addEventListener('click', function () { toast.classList.remove('on'); });
-
-    // ---------- Contadores e cartão ----------
-    var FLAME = '<svg width="14" height="14" viewBox="0 0 24 24" fill="#a78bfa" stroke="#7c5cf0" stroke-width="1.4"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.2 1.5 1 2.3 2 2.5-.6-3 .3-6 1-9z"/></svg>';
-    var MINI = '<span class="gm-orb" style="width:14px;height:14px;box-shadow:none;--c1:#8fe3d6;--c2:#2c7f86"></span>';
-    function spk(on) {
-      return on ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>'
-        : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m17 9 5 6m0-6-5 6"/></svg>';
-    }
-    function chipsHtml() {
-      return '<button class="gm-chip" data-k="s" onclick="gamiGoHoje()" aria-label="Sequência de dias">' + FLAME + '<span>' + streak() + '</span></button>' +
-        '<button class="gm-chip" data-k="t" onclick="gamiGoHoje()" aria-label="Tarefas concluídas">' + MINI + '<span>' + total() + '</span></button>' +
-        '<button class="gm-chip gm-snd" onclick="gamiSound()" aria-pressed="' + !!G.sound + '" aria-label="' + (G.sound ? 'Desligar som' : 'Ligar som') + '">' + spk(G.sound) + '</button>';
-    }
-    function mountChips() {
-      document.querySelectorAll('.gm-chips').forEach(function (e) { e.innerHTML = chipsHtml(); });
-      if (document.querySelector('.gm-chips')) return;
-      var mh = document.querySelector('header.md\\:hidden > div:last-child');
-      if (mh) { var a = document.createElement('div'); a.className = 'gm-chips'; mh.insertBefore(a, mh.firstChild); a.innerHTML = chipsHtml(); }
-      var side = document.querySelector('aside');
-      if (side) { var b = document.createElement('div'); b.className = 'gm-chips'; b.style.cssText = 'padding:0 8px 16px'; var srch = side.querySelector('.relative'); side.insertBefore(b, srch || null); b.innerHTML = chipsHtml(); }
-    }
-    function cardHtml() {
-      var tot = total(), st = streak(), r = reached(tot), next = ORBS[r], prev = r ? ORBS[r - 1].t : 0;
-      var pct = next ? Math.round((tot - prev) / (next.t - prev) * 100) : 100;
-      var nm = 0; for (var i = 0; i < STREAK_MARKS.length; i++) if (STREAK_MARKS[i] > st) { nm = STREAK_MARKS[i]; break; }
-      var sp = nm ? Math.min(100, Math.round(st / nm * 100)) : 100;
-      var row = ORBS.map(function (o, i) { return '<div class="gm-it">' + orbHtml(o, i < r ? '' : 'lock') + '<span>' + o.n + '</span></div>'; }).join('');
-      return '<div id="gm-card" class="custom-card gm-card"><div class="gm-stats">' +
-        '<div class="gm-stat"><div class="gm-num">' + st + '</div><div class="gm-lab">Sequência de dias</div><div class="gm-bar"><i style="width:' + sp + '%"></i></div><div class="gm-sub">' + (nm ? st + '/' + nm + ' dias' : 'Meta máxima!') + '</div></div>' +
-        '<div class="gm-stat"><div class="gm-num">' + tot + '</div><div class="gm-lab">Concluído</div><div class="gm-bar"><i style="width:' + pct + '%;background:#2c9aa0"></i></div><div class="gm-sub">' + (next ? tot + '/' + next.t + ' · próximo: ' + next.n : 'Todos os orbes!') + '</div></div>' +
-        '</div><div class="gm-row">' + row + '</div></div>';
-    }
-    function refreshUI() {
-      mountChips();
-      var c = document.getElementById('gm-card'); if (c) c.outerHTML = cardHtml();
-    }
-    function injectCard() {
-      if (typeof currentScreen === 'undefined' || currentScreen !== 'hoje') return;
-      var box = document.getElementById('main-screen-container'); if (!box || document.getElementById('gm-card')) return;
-      var h = box.querySelector('header'); if (h) h.insertAdjacentHTML('afterend', cardHtml());
-    }
-
-    // ---------- Eventos ----------
-    function bump() { document.querySelectorAll('.gm-chip[data-k]').forEach(function (e) { e.classList.remove('gm-bump'); void e.offsetWidth; e.classList.add('gm-bump'); }); }
-    function onDone() {
-      var d = today(); G.days[d] = (G.days[d] || 0) + 1;
-      var tot = total(), r = reached(tot), st = streak(), unlocked = r > (G.orbs || 0), mark = 0;
-      for (var i = 0; i < STREAK_MARKS.length; i++) if (st >= STREAK_MARKS[i] && STREAK_MARKS[i] > (G.mark || 0)) mark = STREAK_MARKS[i];
-      burst(last.x || innerWidth / 2, last.y || innerHeight / 2, unlocked || !!mark);
-      if (unlocked) {
-        G.orbs = r; var o = ORBS[r - 1];
-        sfx('trophy'); showToast('Troféu desbloqueado!', 'Você concluiu ' + tot + (tot === 1 ? ' tarefa' : ' tarefas'), o, 100);
-      } else if (mark) {
-        G.mark = mark; sfx('trophy');
-        showToast('Sequência de ' + mark + ' dias!', 'Você não parou. Continue assim.', ORBS[Math.max(0, r - 1)], 100);
-      } else sfx('done');
-      save(); refreshUI(); bump();
-    }
-    function onUndo() {
-      var d = today(); if (G.days[d] > 0) G.days[d]--; if (!G.days[d]) delete G.days[d];
-      sfx('undo'); save(); refreshUI();
-    }
-
-    var _tt = window.toggleTask, _ro = window.reopenTask, _th = window.toggleHabit, _rs = window.renderScreen;
-    window.toggleTask = function (id) {
-      var t = tasks.find(function (x) { return x.id === id; }), b = t ? { done: !!t.done, due: t.due } : null;
-      _tt.apply(this, arguments); if (!b) return;
-      var a = tasks.find(function (x) { return x.id === id; }); if (!a) return;
-      if ((!b.done && a.done) || (!b.done && a.recur && a.due !== b.due)) onDone(); else if (b.done && !a.done) onUndo();
-    };
-    window.reopenTask = function (id) {
-      var t = tasks.find(function (x) { return x.id === id; }), was = t && t.done;
-      _ro.apply(this, arguments); if (was) onUndo();
-    };
-    window.toggleHabit = function (id) {
-      var before = (habitLog[today()] || []).indexOf(id) >= 0;
-      _th.apply(this, arguments);
-      var after = (habitLog[today()] || []).indexOf(id) >= 0;
-      if (!before && after) onDone(); else if (before && !after) onUndo();
-    };
-    window.renderScreen = function () { var r = _rs.apply(this, arguments); injectCard(); mountChips(); return r; };
-    window.gamiSound = function () { G.sound = !G.sound; save(); refreshUI(); sfx('done'); };
-    window.gamiGoHoje = function () { try { if (typeof navigate === 'function') navigate('hoje'); } catch (e) {} };
-
-    mountChips(); injectCard();
-  })();
-  </script>
-  <!-- ===== STE · Cabelo: guia completo por etapa e por área ===== -->
-  <script>
-  (function () {
-    var S = function (x) { return x.split('|'); };
-    var ET = {
-      'Hidratação': { c: '#3b9ae1', r: 'Repõe água nos fios para deixá-los macios, flexíveis e menos ressecados.', t: '10 a 30 min', f: '1x por semana, ou a cada 10 dias se o cabelo estiver bem seco', i: 'Ressecamento, opacidade, frizz, cabelo áspero ou embaraçado', q: 'Quando o fio estiver áspero, opaco, embaraçando fácil ou com sensação de palha.',
-        n: S('Shampoo|Máscara hidratante|Condicionador|Pente ou escova|Toalha|Touca (opcional)'), s: ['Lave os fios com shampoo, massageando o couro cabeludo. Enxágue bem.', 'Retire o excesso de água com a toalha, só apertando. Não enxugue torcendo.', 'Aplique a máscara em mechas, do comprimento às pontas. Evite a raiz se ela for oleosa.', 'Deixe agir o tempo da embalagem (em geral 10 a 30 min). Com touca ou calor morno rende mais.', 'Enxágue bem com água morna ou fria.', 'Finalize com condicionador, se precisar, e o seu método de secagem.'],
-        d: S('Ingredientes bons: pantenol, glicerina, aloe vera, ureia, ácido hialurônico, babosa.|Não use produto demais: pesa e desfaz o efeito.|Água morna ou fria no final fecha a cutícula e dá brilho.|Tire uma foto antes e depois para ver a evolução.'), e: S('Passar na raiz se o couro cabeludo for oleoso.|Deixar mais tempo que o indicado achando que potencializa.|Hidratar toda semana sem nutrir: o cabelo pode ficar pesado e sem força.'), ok: 'Fio macio, com brilho e mais fácil de pentear.' },
-      'Nutrição': { c: '#2fa56a', r: 'Devolve lipídios (óleos) para selar a cutícula, dar brilho e reduzir o frizz.', t: '15 a 30 min', f: 'A cada 10 a 15 dias (ou 1x por semana em cabelo muito poroso)', i: 'Frizz, falta de brilho, fios elétricos, pontas ásperas, cabelo com química', q: 'Quando o cabelo estiver fosco, com frizz que volta rápido ou com cara de "sem vida" mesmo depois de hidratar.',
-        n: S('Shampoo|Máscara de nutrição|Óleo ou manteiga vegetal|Pente de dentes largos|Toalha|Touca'), s: ['Lave com shampoo e enxágue bem.', 'Tire o excesso de água.', 'Aplique a máscara de nutrição do comprimento às pontas, dividindo em mechas.', 'Penteie com pente de dentes largos para distribuir.', 'Deixe agir o tempo indicado (15 a 30 min).', 'Enxágue completamente e finalize.'],
-        d: S('Ingredientes bons: óleo de coco, argan, abacate, karité, manteiga de cacau, macadâmia.|Cabelo oleoso: use só da metade para as pontas.|Cabelo com baixa porosidade pede produtos mais leves.|Alterne com hidratação, não faça sempre a mesma etapa.'), e: S('Excesso de óleo: deixa o cabelo pesado, com cara de sujo.|Aplicar no couro cabeludo se ele já for oleoso.|Nutrir sem lavar bem antes: o produto não penetra.'), ok: 'Brilho, maciez, fios soltos e menos frizz.' },
-      'Reconstrução': { c: '#d6457a', r: 'Repõe proteínas (queratina, aminoácidos) onde o fio perdeu massa por química, calor ou quebra.', t: '10 a 20 min (respeite o tempo, não passe)', f: 'A cada 15 a 30 dias. Em cabelo muito danificado, no máximo 1x por semana por um período curto', i: 'Quebra, elasticidade ruim (estica e não volta), fios fracos, química ou muito calor', q: 'Fio elástico demais (estica e arrebenta), quebra no pente, ponta afinando ou cabelo com descoloração.',
-        n: S('Shampoo|Máscara de reconstrução|Condicionador ou hidratação depois|Pente ou escova|Toalha|Touca (opcional)'), s: ['Lave com shampoo e enxágue.', 'Retire o excesso de água.', 'Aplique a máscara de reconstrução em mechas, do comprimento às pontas.', 'Deixe agir exatamente o tempo da embalagem (geralmente 10 a 20 min).', 'Enxágue bem.', 'Faça uma hidratação em seguida para equilibrar, se o cabelo ficar rígido.'],
-        d: S('Ingredientes bons: queratina hidrolisada, aminoácidos, proteína do trigo, arginina, colágeno.|Teste de elasticidade: molhe um fio e estique. Se arrebenta, precisa de proteína; se estica e não volta, precisa de hidratação.|Depois da reconstrução, alterne com hidratação e nutrição.|Reconstrução é tratamento, não rotina semanal fixa.'), e: S('Reconstruir toda semana: deixa o fio rígido e quebradiço (excesso de proteína).|Passar do tempo de pausa.|Aplicar na raiz.'), ok: 'Fio mais firme, com corpo, sem quebrar tanto ao pentear.' }
-    };
-    var AR = [
-      ['Couro cabeludo e raiz', 'É a base: um couro saudável faz o fio nascer melhor.', S('Lave com frequência adequada ao seu tipo: oleoso 2 a 3x por semana, normal 2x, seco 1 a 2x.|Massageie com a ponta dos dedos (nunca com as unhas) por 2 a 3 min.|Faça esfoliação do couro cabeludo 1x a cada 15 dias para tirar resíduos.|Enxágue por completo: resíduo causa coceira e caspa.'), 'Oleosidade, caspa, coceira, descamação, queda acima do normal (mais de 100 fios por dia por muito tempo: procure dermatologista).'],
-      ['Comprimento (meio dos fios)', 'A parte mais exposta a atrito, calor e química.', S('Hidrate e nutrie de forma alternada, conforme a necessidade.|Desembarace sempre de baixo para cima, com condicionador.|Use leave-in ou creme de pentear.|Proteja do sol, cloro e sal com protetor ou touca.'), 'Frizz, opacidade, nós, quebra no meio, ressecamento.'],
-      ['Pontas', 'A parte mais antiga e frágil do fio.', S('Corte as pontas a cada 2 a 3 meses (1 a 2 cm já ajuda).|Aplique finalizador ou óleo nas pontas.|Evite elásticos apertados e secador quente nelas.|Reconstrução se estiverem afinando.'), 'Pontas duplas, ressecadas, ásperas e com nós.']
-    ];
-    var PB = [
-      ['Frizz', 'Nutrição + selar com leave-in; reduza calor; durma com touca de cetim; use pente de dentes largos.'],
-      ['Ressecamento', 'Hidratação semanal; menos shampoo forte; água morna, não quente; proteja do sol.'],
-      ['Queda', 'Veja se é só por escovação (normal até ~100 fios/dia); cuide do couro; se a queda persistir ou for em falhas, consulte dermatologista (estresse, ferro e tireoide influenciam).'],
-      ['Oleosidade', 'Shampoo para raiz oleosa, condicionador só do meio às pontas, não use água muito quente.'],
-      ['Caspa e coceira', 'Esfoliação do couro, shampoo específico, enxágue completo; persistindo, procure dermatologista.'],
-      ['Quebra', 'Reconstrução moderada, evite chapinha/secador no máximo, trocar elástico por modelo sem metal.'],
-      ['Sem brilho', 'Nutrição, enxágue frio no final e finalizador leve; diminua acúmulo de produto com shampoo de limpeza profunda 1x por mês.']
-    ];
-    var TESTES = [
-      ['Porosidade', 'Coloque um fio limpo num copo d’água. Boia: baixa porosidade (use produtos leves). Afunda devagar: média. Afunda rápido: alta (precisa de selar com nutrição e creme).'],
-      ['Elasticidade', 'Molhe um fio e estique. Estica e volta: saudável. Estica e não volta: falta hidratação. Arrebenta logo: falta proteína (reconstrução).'],
-      ['Frequência de lavagem', 'Oleoso: dia sim, dia não ou 2 a 3x por semana. Normal: 2x. Seco ou cacheado: 1 a 2x. Lavar menos não é regra: se o couro estiver sujo, lave.']
-    ];
-    var GL = [['Pantenol', 'Retém água no fio (hidratação).'], ['Glicerina', 'Umectante: puxa água.'], ['Queratina', 'Proteína que reconstrói falhas.'], ['Aminoácidos', 'Blocos de proteína, reforçam o fio.'], ['Óleos e manteigas', 'Selam a cutícula (nutrição).'], ['Silicones', 'Dão brilho e deslize, mas podem acumular; remova com shampoo de limpeza.'], ['Sulfatos', 'Limpam bastante; em couro seco podem ressecar.']];
-
-    function e(x) { return typeof esc === 'function' ? esc(x) : String(x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-    function li(a, cls) { return a.map(function (x) { return '<li class="' + (cls || '') + '">' + e(x) + '</li>'; }).join(''); }
-    function ol(a) { return a.map(function (x, i) { return '<li class="flex gap-2 mb-1.5"><span class="flex-none w-5 h-5 rounded-full bg-[#A56ABD] text-white text-[10px] font-bold flex items-center justify-center">' + (i + 1) + '</span><span>' + e(x) + '</span></li>'; }).join(''); }
-    function sec(title, sub, body, open) {
-      return '<details class="custom-card rounded-2xl mb-3" ' + (open ? 'open' : '') + '><summary class="cursor-pointer p-4 list-none"><p class="font-bold text-sm">' + e(title) + '</p>' + (sub ? '<p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-0.5">' + e(sub) + '</p>' : '') + '</summary><div class="px-4 pb-4 text-xs leading-relaxed">' + body + '</div></details>';
-    }
-    function prods() { return Array.isArray(healthData.hairProducts) ? healthData.hairProducts : []; }
-    function etapaHtml(nome) {
-      var d = ET[nome], log = hairLogList().filter(function (x) { return x.stage === nome; }), ult = log.length ? log[log.length - 1].date : null;
-      var mine = prods().filter(function (p) { return p.stage === nome; });
-      var info = [['Tempo', d.t], ['Frequência', d.f], ['Ideal para', d.i]].map(function (x) { return '<div class="p-2.5 rounded-xl bg-[#FAF5FC] dark:bg-[#2C153A]"><p class="text-[10px] uppercase font-bold" style="color:' + d.c + '">' + x[0] + '</p><p>' + e(x[1]) + '</p></div>'; }).join('');
-      return '<p class="mb-3">' + e(d.r) + '</p><div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">' + info + '</div>' +
-        '<p class="mb-3"><b>Quando fazer:</b> ' + e(d.q) + '</p><p class="font-bold mb-1">Você vai precisar</p><ul class="flex flex-wrap gap-1.5 mb-3">' + li(d.n, 'px-2.5 py-1 rounded-full border border-[#EFE1F5] dark:border-[#3D224D]') + '</ul>' +
-        '<p class="font-bold mb-1">Passo a passo</p><ol class="mb-3">' + ol(d.s) + '</ol><p class="font-bold mb-1">Dicas importantes</p><ul class="list-disc pl-4 mb-3">' + li(d.d) + '</ul>' +
-        '<p class="font-bold mb-1 text-red-600 dark:text-red-400">Evite</p><ul class="list-disc pl-4 mb-3">' + li(d.e) + '</ul><p class="mb-3"><b>Resultado esperado:</b> ' + e(d.ok) + '</p>' +
-        '<p class="text-[11px] text-[#8B7D95] mb-2">' + (ult ? 'Última vez: ' + fmtDM(ult) + ', ' + fmtAgo(daysBetween(ult, isoDay(new Date()))) + '.' : 'Ainda sem registro dessa etapa.') + '</p>' +
-        '<p class="font-bold mb-1">Seus produtos de ' + e(nome.toLowerCase()) + '</p>' + (mine.length ? mine.map(function (p) { return '<div class="flex items-center justify-between py-1.5 border-b border-[#EFE1F5] dark:border-[#3D224D]"><span>' + e(p.name) + '</span><button onclick="hcDel(' + p.id + ')" aria-label="Remover produto" class="text-[#8B7D95] px-2">×</button></div>'; }).join('') : '<p class="text-[11px] text-[#8B7D95]">Nenhum produto ainda.</p>');
-    }
-    function html() {
-      var etapas = Object.keys(ET).map(function (n) { return sec(n, ET[n].r, etapaHtml(n)); }).join('');
-      var areas = AR.map(function (a) { return sec(a[0], a[1], '<p class="font-bold mb-1">Como cuidar</p><ul class="list-disc pl-4 mb-3">' + li(a[2]) + '</ul><p><b>Problemas comuns:</b> ' + e(a[3]) + '</p>'); }).join('');
-      var testes = TESTES.map(function (t) { return '<p class="mb-2"><b>' + e(t[0]) + ':</b> ' + e(t[1]) + '</p>'; }).join('');
-      var probs = PB.map(function (t) { return '<p class="mb-2"><b>' + e(t[0]) + ':</b> ' + e(t[1]) + '</p>'; }).join('');
-      var gl = GL.map(function (t) { return '<p class="mb-1.5"><b>' + e(t[0]) + ':</b> ' + e(t[1]) + '</p>'; }).join('');
-      var opts = Object.keys(ET).map(function (n) { return '<option>' + n + '</option>'; }).join('');
-      var add = '<div class="flex gap-2 mt-1"><input id="hc-name" maxlength="60" placeholder="Nome do produto" class="flex-1 min-w-0 px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs"><select id="hc-stage" class="px-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs">' + opts + '</select><button onclick="hcAdd()" class="px-3 rounded-xl bg-[#A56ABD] text-white text-xs font-bold">Salvar</button></div>';
-      return '<header class="mb-6"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Bem-estar</p><h1 class="font-serif-display text-3xl font-bold">Áreas do cabelo</h1><p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB] mt-1">Rotina, guia de cada etapa e cuidados por área, tudo num lugar só.</p></header>' +
-        '<div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">' + hairCardHtml() + '</div>' +
-        '<h2 class="font-serif-display text-xl font-bold mb-2">Etapas: como fazer</h2>' + etapas +
-        '<h2 class="font-serif-display text-xl font-bold mt-6 mb-2">Por área do cabelo</h2>' + areas +
-        '<h2 class="font-serif-display text-xl font-bold mt-6 mb-2">Descubra o que seu cabelo precisa</h2>' + sec('Testes em casa', 'Porosidade, elasticidade e frequência de lavagem', testes) +
-        sec('Problemas e soluções', 'Frizz, queda, oleosidade, caspa e mais', probs) + sec('Glossário de ingredientes', 'O que cada ativo faz', gl) +
-        sec('Meus produtos', 'Salve o que você usa em cada etapa', add, false) +
-        '<p class="text-[10px] text-[#8B7D95] mt-4">Informações gerais de cuidado capilar. Queda intensa, falhas ou coceira que não passa pedem avaliação de um dermatologista.</p>';
-    }
-    window.hcAdd = function () { var n = document.getElementById('hc-name'), s = document.getElementById('hc-stage'); if (!n || !n.value.trim()) return; var l = prods(); l.push({ id: Date.now(), name: n.value.trim().slice(0, 60), stage: s.value }); healthData.hairProducts = l; setStore('health', healthData); renderScreen(); };
-    window.hcDel = function (id) { healthData.hairProducts = prods().filter(function (p) { return p.id !== id; }); setStore('health', healthData); renderScreen(); };
-    var _rs2 = window.renderScreen;
-    window.renderScreen = function () {
-      var r = _rs2.apply(this, arguments);
-      if (currentScreen === 'cabelo') { var c = document.getElementById('main-screen-container'); if (c) { var open = Array.prototype.map.call(c.querySelectorAll('details'), function (d) { return d.open; }); c.innerHTML = html(); Array.prototype.forEach.call(c.querySelectorAll('details'), function (d, i) { if (open[i]) d.open = true; }); } }
-      return r;
-    };
-    if (!NAV_ITEMS.some(function (x) { return x.id === 'cabelo'; })) NAV_ITEMS.splice(NAV_ITEMS.findIndex(function (x) { return x.id === 'saude'; }) + 1, 0, { id: 'cabelo', label: 'Áreas do cabelo', icon: 'sparkles', group: 'Bem-estar' });
-    try { renderNav(); } catch (x) {}
-  })();
-  </script>
-  <!-- ===== STE · Meu Estúdio (planejamento de conteúdo) ===== -->
-  <script>
-  (function () {
-    var STS = ['Ideia', 'Planejamento', 'Roteiro pronto', 'Gravação', 'Edição', 'Agendado', 'Publicado', 'Analisado'];
-    var STYLES = ['Espontâneo', 'Divertido', 'Educativo', 'Storytelling', 'Resenha', 'Conteúdo comercial'];
-    var ST = getStore('studio', null) || { projects: [], ideas: [], imp: 0 };
-    var V = { view: 'home', pid: null, wk: 0, busy: '', err: '', theme: '', fq: '', fs: '' };
-    var $e = function (x) { return esc(x == null ? '' : String(x)); };
-    var save = function () { setStore('studio', ST); };
-    var P = function (id) { return ST.projects.find(function (p) { return p.id === id; }); };
-    var KEY = function () { try { return localStorage.getItem('ste_ai_key') || ''; } catch (x) { return ''; } };
-    function mk(o) {
-      var now = new Date().toISOString();
-      return Object.assign({ id: Date.now() + Math.floor(Math.random() * 999), title: '', desc: '', pilar: '', objetivo: '', publico: '', formato: '', duracao: '', refs: '', materiais: '', gancho: '', roteiro: '', cenas: '', legenda: '', capa: '', obs: '', prio: 'Média', planDate: '', pubDate: '', status: 'Ideia', arch: false, check: [], hist: [{ s: 'Ideia', at: now }], m: {}, learn: '', fav: false }, o);
-    }
-    if (!ST.imp) { (eduData.ideas || []).forEach(function (i) { ST.projects.push(mk({ id: 100000 + i.id, title: i.text, status: i.used ? 'Publicado' : 'Ideia' })); }); ST.imp = 1; save(); }
-
-    // ---------- IA real (sem simulação) ----------
-    async function ai(prompt) {
-      var k = KEY(); if (!k) throw new Error('A IA não está configurada. Informe sua chave da API em "Configurar IA" para gerar sugestões e roteiros.');
-      var r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': k, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2500, system: 'Você ajuda uma criadora brasileira de conteúdo para TikTok. Responda SOMENTE com JSON válido, em português do Brasil, com falas naturais e sem tom publicitário genérico. Nunca prometa viralização nem invente métricas.', messages: [{ role: 'user', content: prompt }] }) });
-      if (!r.ok) throw new Error(r.status === 401 ? 'Chave da API recusada. Confira a chave em "Configurar IA".' : 'A IA não respondeu (erro ' + r.status + '). Tente de novo.');
-      var d = await r.json(), t = (d.content || []).map(function (c) { return c.text || ''; }).join('').replace(/```json|```/g, '').trim();
-      try { return JSON.parse(t); } catch (x) { throw new Error('A resposta da IA veio em formato inesperado. Tente de novo.'); }
-    }
-    function run(tag, fn) { V.busy = tag; V.err = ''; draw(); return fn().catch(function (x) { V.err = x.message || 'Erro inesperado.'; }).then(function () { V.busy = ''; draw(); }); }
-    window.stIdeas = function (more) {
-      var th = (document.getElementById('st-theme') || {}).value || V.theme; th = (th || '').trim(); if (!th) { V.err = 'Escreva um tema primeiro.'; return draw(); } V.theme = th;
-      var ja = ST.ideas.map(function (i) { return i.titulo; }).concat(ST.projects.map(function (p) { return p.title; })).slice(-25).join('; ');
-      run('ideas', async function () {
-        var r = await ai('Tema livre: "' + th + '". Gere ' + (more ? '5 NOVAS ideias, diferentes das já existentes: ' + ja : 'pelo menos 5 ideias distintas') + '. Devolva um array JSON de objetos com as chaves: titulo, resumo, formato, objetivo, publico, gancho, diferencial, potencial (conexão, compartilhamento e descoberta, em uma frase), justificativa, passo (próximo passo recomendado).');
-        if (!Array.isArray(r)) throw new Error('A resposta da IA veio em formato inesperado. Tente de novo.');
-        r.forEach(function (o) { if (o && o.titulo) ST.ideas.unshift(Object.assign({ id: Date.now() + Math.floor(Math.random() * 99999), tema: th, fav: false }, o)); }); save();
-      });
-    };
-    window.stScript = function (id) {
-      var p = P(id), sty = document.getElementById('st-sty').value;
-      run('script', async function () {
-        var r = await ai('Crie um roteiro de vídeo curto no estilo "' + sty + '". Ideia: ' + p.title + '. Descrição: ' + p.desc + '. Objetivo: ' + p.objetivo + '. Público: ' + p.publico + '. Formato: ' + p.formato + '. Chaves JSON: gancho, desenvolvimento, demonstracao, encerramento, cta, cenas (array de objetos: filmar, enquadramento, texto, edicao).');
-        p.gancho = r.gancho || p.gancho;
-        p.roteiro = ['GANCHO: ' + r.gancho, 'DESENVOLVIMENTO: ' + r.desenvolvimento, 'DEMONSTRAÇÃO/NARRATIVA: ' + r.demonstracao, 'ENCERRAMENTO: ' + r.encerramento, 'CHAMADA PARA AÇÃO: ' + r.cta].join('\n\n');
-        p.cenas = (r.cenas || []).map(function (c, i) { return (i + 1) + '. Filmar: ' + c.filmar + ' | Enquadramento: ' + c.enquadramento + ' | Texto na tela: ' + c.texto + ' | Edição: ' + c.edicao; }).join('\n');
-        save();
-      });
-    };
-    window.stInsights = function (id) {
-      var p = P(id);
-      run('ins', async function () {
-        var r = await ai('Com base APENAS nestes dados reais, sugira melhorias para os próximos vídeos, sem prometer viralização. Tipo: ' + p.pilar + ' / ' + p.formato + '. Métricas: ' + JSON.stringify(p.m) + '. Gancho usado: ' + p.gancho + '. Devolva JSON {aprendizados: string}.');
-        p.learn = String(r.aprendizados || ''); save();
-      });
-    };
-    window.stCfg = function () { var k = prompt('Cole sua chave da API da Anthropic. Ela fica salva só neste aparelho (localStorage). Deixe vazio para remover.', KEY()); if (k === null) return; try { k.trim() ? localStorage.setItem('ste_ai_key', k.trim()) : localStorage.removeItem('ste_ai_key'); } catch (x) {} draw(); };
-
-    // ---------- Ações ----------
-    window.stGo = function (v, id) { V.view = v; if (id != null) V.pid = id; V.err = ''; draw(); };
-    window.stNew = function (title) { var t = (title || prompt('Nome da ideia')) || ''; t = t.trim(); if (!t) return; var p = mk({ title: t.slice(0, 140) }); ST.projects.unshift(p); save(); stGo('proj', p.id); };
-    window.stFromIdea = function (id) { var i = ST.ideas.find(function (x) { return x.id === id; }); if (!i) return; var p = mk({ title: i.titulo, desc: i.resumo, formato: i.formato, objetivo: i.objetivo, publico: i.publico, gancho: i.gancho, obs: [i.diferencial, i.potencial, i.passo].filter(Boolean).join('\n'), status: 'Planejamento' }); p.hist.push({ s: 'Planejamento', at: new Date().toISOString() }); ST.projects.unshift(p); ST.ideas = ST.ideas.filter(function (x) { return x.id !== id; }); save(); stGo('proj', p.id); };
-    window.stIdeaFav = function (id) { var i = ST.ideas.find(function (x) { return x.id === id; }); i.fav = !i.fav; save(); draw(); };
-    window.stIdeaDel = function (id) { ST.ideas = ST.ideas.filter(function (x) { return x.id !== id; }); save(); draw(); };
-    window.stF = function (k, v) { var p = P(V.pid); p[k] = v; save(); };
-    window.stM = function (k, v) { var p = P(V.pid); p.m[k] = v === '' ? '' : Math.max(0, parseInt(v, 10) || 0); save(); };
-    window.stStatus = function (id, s) { var p = P(id); if (!p || p.status === s) return; p.status = s; p.hist.push({ s: s, at: new Date().toISOString() }); if (s === 'Publicado' && !p.pubDate) p.pubDate = isoDay(new Date()); save(); draw(); };
-    window.stDup = function (id) { var p = P(id), c = JSON.parse(JSON.stringify(p)); c.id = Date.now(); c.title += ' (cópia)'; c.status = 'Ideia'; c.hist = [{ s: 'Ideia', at: new Date().toISOString() }]; c.m = {}; c.pubDate = ''; ST.projects.unshift(c); save(); stGo('proj', c.id); };
-    window.stArch = function (id) { var p = P(id); p.arch = !p.arch; save(); stGo('lib'); };
-    window.stDel = function (id) { if (!confirm('Excluir este projeto para sempre?')) return; ST.projects = ST.projects.filter(function (p) { return p.id !== id; }); save(); stGo('home'); };
-    window.stChk = function (i) { var p = P(V.pid); p.check[i].d = !p.check[i].d; save(); draw(); };
-    window.stChkAdd = function () { var el = document.getElementById('st-chk'), t = el.value.trim(); if (!t) return; P(V.pid).check.push({ t: t.slice(0, 120), d: false }); save(); draw(); };
-    window.stChkDef = function () { var p = P(V.pid); ['Preparar materiais e luz', 'Gravar o gancho', 'Gravar as cenas', 'Editar e legendar', 'Escolher capa', 'Revisar legenda e CTA'].forEach(function (t) { p.check.push({ t: t, d: false }); }); save(); draw(); };
-    window.stPlan = function () {
-      var days = [].slice.call(document.querySelectorAll('.st-day:checked')).map(function (c) { return +c.value; }), per = Math.max(1, +document.getElementById('st-per').value || 1);
-      if (!days.length) { V.err = 'Marque ao menos um dia disponível.'; return draw(); }
-      var pr = { Alta: 0, Média: 1, Baixa: 2 }, list = ST.projects.filter(function (p) { return !p.arch && ['Ideia', 'Planejamento', 'Roteiro pronto'].indexOf(p.status) >= 0 && !p.planDate; }).sort(function (a, b) { return pr[a.prio] - pr[b.prio]; });
-      var d = new Date(), n = 0, cnt = {}; for (var g = 0; g < 14 && list.length; g++) { d.setDate(d.getDate() + (g ? 1 : 0)); if (days.indexOf(d.getDay()) < 0) continue; var k = isoDay(d); while ((cnt[k] || 0) < per && list.length) { var p = list.shift(); p.planDate = k; cnt[k] = (cnt[k] || 0) + 1; if (p.status === 'Ideia') stStatusQuiet(p, 'Planejamento'); n++; } }
-      save(); V.err = n ? '' : 'Nenhum projeto disponível para planejar. Crie ou desbloqueie ideias.'; V.view = 'cal'; V.wk = 0; draw();
-    };
-    function stStatusQuiet(p, s) { p.status = s; p.hist.push({ s: s, at: new Date().toISOString() }); }
-
-    // ---------- Telas ----------
-    var CARD = 'custom-card rounded-2xl p-4 mb-3', BTN = 'px-3 py-2 rounded-xl text-xs font-bold ', PRI = BTN + 'bg-[#A56ABD] text-white', SEC = BTN + 'border border-[#A56ABD] text-[#A56ABD]', INP = 'w-full px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs';
-    function nav() { var t = [['home', 'Estúdio'], ['ideas', 'Ideias'], ['board', 'Quadro'], ['cal', 'Semana'], ['lib', 'Biblioteca']]; return '<div class="flex gap-1.5 overflow-x-auto mb-4">' + t.map(function (x) { return '<button onclick="stGo(\'' + x[0] + '\')" class="' + BTN + (V.view === x[0] ? 'bg-[#A56ABD] text-white' : 'border border-[#EFE1F5] dark:border-[#3D224D]') + '">' + x[1] + '</button>'; }).join('') + '</div>'; }
-    function msg() { return V.err ? '<p role="alert" class="text-xs font-semibold text-red-600 dark:text-red-400 mb-3">' + $e(V.err) + '</p>' : ''; }
-    function pc(p) { return '<button onclick="stGo(\'proj\',' + p.id + ')" class="w-full text-left ' + CARD + '"><p class="font-bold text-sm">' + (p.fav ? '★ ' : '') + $e(p.title || 'Sem título') + '</p><p class="text-[11px] text-[#8B7D95]">' + $e(p.status) + (p.planDate ? ' · ' + $e(p.planDate.split('-').reverse().slice(0, 2).join('/')) : '') + ' · prioridade ' + $e(p.prio) + '</p></button>'; }
-    function home() {
-      var a = ST.projects.filter(function (p) { return !p.arch; }), c = function (f) { return a.filter(f).length; }, t = isoDay(new Date());
-      var kp = [['Ideias salvas', ST.ideas.length + c(function (p) { return p.status === 'Ideia'; })], ['Em planejamento', c(function (p) { return p.status === 'Planejamento'; })], ['Roteiros em andamento', c(function (p) { return p.roteiro && ['Planejamento', 'Roteiro pronto'].indexOf(p.status) >= 0 && p.status !== 'Roteiro pronto'; })], ['Prontos para gravar', c(function (p) { return p.status === 'Roteiro pronto'; })], ['Agendados', c(function (p) { return p.status === 'Agendado'; })], ['Publicados', c(function (p) { return p.status === 'Publicado' || p.status === 'Analisado'; })]];
-      var fol = a.reduce(function (s, p) { return s + (+p.m.follows || 0); }, 0), prox = a.filter(function (p) { return p.planDate && p.planDate >= t && p.status !== 'Publicado' && p.status !== 'Analisado'; }).sort(function (x, y) { return x.planDate < y.planDate ? -1 : 1; }).slice(0, 4);
-      return '<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">' + kp.map(function (k) { return '<div class="custom-card rounded-2xl p-4"><p class="font-serif-display text-3xl font-bold">' + k[1] + '</p><p class="text-[11px] text-[#8B7D95]">' + k[0] + '</p></div>'; }).join('') + '</div>' +
-        '<div class="flex flex-wrap gap-2 mb-4"><button onclick="stNew()" class="' + PRI + '">Nova ideia</button><button onclick="stGo(\'ideas\')" class="' + SEC + '">Gerar sugestões</button><button onclick="stGo(\'cal\')" class="' + SEC + '">Planejar minha semana</button></div>' +
-        '<div class="' + CARD + '"><p class="font-bold text-sm mb-1">Crescimento do perfil</p><p class="text-xs text-[#8B7D95]">Novos seguidores registrados nos vídeos: <b>' + fol + '</b>. Registre as métricas de cada vídeo publicado para acompanhar.</p></div>' +
-        '<p class="font-bold text-sm mb-2">Próximas gravações e tarefas</p>' + (prox.map(pc).join('') || '<p class="text-xs text-[#8B7D95]">Nada agendado. Use "Planejar minha semana".</p>');
-    }
-    function ideas() {
-      var cfg = KEY() ? '' : '<p class="text-xs mb-2 text-[#8B7D95]">A IA ainda não está configurada, então não vou gerar sugestões. Toque em Configurar IA.</p>';
-      var list = ST.ideas.map(function (i) { return '<div class="' + CARD + '"><p class="font-bold text-sm">' + $e(i.titulo) + '</p><p class="text-xs mt-1">' + $e(i.resumo) + '</p><div class="text-[11px] text-[#8B7D95] mt-2 space-y-0.5"><p><b>Formato:</b> ' + $e(i.formato) + ' · <b>Objetivo:</b> ' + $e(i.objetivo) + '</p><p><b>Público:</b> ' + $e(i.publico) + '</p><p><b>Gancho:</b> ' + $e(i.gancho) + '</p><p><b>Diferencial:</b> ' + $e(i.diferencial) + '</p><p><b>Potencial:</b> ' + $e(i.potencial) + '</p><p><b>Por quê:</b> ' + $e(i.justificativa) + '</p><p><b>Próximo passo:</b> ' + $e(i.passo) + '</p></div><div class="flex gap-2 mt-3 flex-wrap"><button onclick="stFromIdea(' + i.id + ')" class="' + PRI + '">Virar projeto</button><button onclick="stIdeaFav(' + i.id + ')" class="' + SEC + '">' + (i.fav ? '★ Favorita' : '☆ Favoritar') + '</button><button onclick="stIdeaDel(' + i.id + ')" class="' + SEC + '">Descartar</button></div></div>'; }).join('');
-      return '<div class="' + CARD + '"><p class="font-bold text-sm mb-2">Sobre o que você quer falar?</p><input id="st-theme" class="' + INP + '" maxlength="120" value="' + $e(V.theme) + '" placeholder="Ex.: maquiagem, perfumes, rotina, bastidores do trabalho"><div class="flex gap-2 mt-2 flex-wrap"><button onclick="stIdeas(false)" class="' + PRI + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'ideas' ? 'Pensando…' : 'Me ajude a desenvolver essa ideia') + '</button><button onclick="stCfg()" class="' + SEC + '">Configurar IA</button></div></div>' + cfg + msg() + list + (ST.ideas.length ? '<button onclick="stIdeas(true)" class="' + SEC + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'ideas' ? 'Pensando…' : 'Gerar mais sugestões') + '</button>' : '<p class="text-xs text-[#8B7D95]">Nenhuma sugestão ainda.</p>');
-    }
-    function board() { var a = ST.projects.filter(function (p) { return !p.arch; }); return '<div class="flex gap-3 overflow-x-auto pb-2">' + STS.map(function (s) { var l = a.filter(function (p) { return p.status === s; }); return '<div class="min-w-[220px] w-[220px]"><p class="text-[10px] uppercase font-bold text-[#A56ABD] mb-2">' + s + ' (' + l.length + ')</p>' + (l.map(pc).join('') || '<p class="text-[11px] text-[#8B7D95]">Vazio</p>') + '</div>'; }).join('') + '</div>'; }
-    function cal() {
-      var d0 = new Date(); d0.setDate(d0.getDate() + V.wk * 7); var rows = '';
-      for (var i = 0; i < 7; i++) { var d = new Date(d0); d.setDate(d0.getDate() + i); var k = isoDay(d), l = ST.projects.filter(function (p) { return !p.arch && (p.planDate === k || p.pubDate === k); }); rows += '<div class="' + CARD + '"><p class="text-xs font-bold">' + ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][d.getDay()] + ' ' + k.split('-').reverse().slice(0, 2).join('/') + '</p>' + (l.map(function (p) { return '<button onclick="stGo(\'proj\',' + p.id + ')" class="block w-full text-left text-xs mt-1">• ' + $e(p.title) + ' <span class="text-[#8B7D95]">(' + $e(p.status) + ')</span></button>'; }).join('') || '<p class="text-[11px] text-[#8B7D95] mt-1">Livre</p>') + '</div>'; }
-      var dn = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(function (n, i) { return '<label class="text-xs mr-3"><input type="checkbox" class="st-day" value="' + i + '"> ' + n + '</label>'; }).join('');
-      return '<div class="' + CARD + '"><p class="font-bold text-sm mb-2">Planejar minha semana</p><p class="text-[11px] text-[#8B7D95] mb-2">Marque os dias em que você pode gravar. Distribuo suas ideias por prioridade nos próximos dias.</p>' + dn + '<div class="mt-2 flex items-center gap-2"><span class="text-xs">Vídeos por dia:</span><input id="st-per" type="number" min="1" max="5" value="1" class="' + INP + '" style="width:70px"><button onclick="stPlan()" class="' + PRI + '">Planejar</button></div></div>' + msg() +
-        '<div class="flex justify-between mb-2"><button onclick="V_wk(-1)" class="' + SEC + '">‹ Anterior</button><button onclick="V_wk(0)" class="' + SEC + '">Hoje</button><button onclick="V_wk(1)" class="' + SEC + '">Próxima ›</button></div>' + rows;
-    }
-    window.V_wk = function (n) { V.wk = n === 0 ? 0 : V.wk + n; draw(); };
-    window.stFq = function (k, v) { V[k] = v; draw(); };
-    function lib() {
-      var q = V.fq.toLowerCase(), l = ST.projects.filter(function (p) { return (!V.fs || (V.fs === 'Arquivados' ? p.arch : (!p.arch && p.status === V.fs))) && (V.fs === 'Arquivados' || V.fs || !p.arch) && (!q || [p.title, p.desc, p.pilar, p.formato, p.objetivo, p.refs, p.obs].join(' ').toLowerCase().indexOf(q) >= 0); });
-      return '<div class="flex gap-2 mb-3"><input class="' + INP + '" placeholder="Buscar por tema, pilar, formato, objetivo…" value="' + $e(V.fq) + '" onchange="stFq(\'fq\',this.value)"><select class="' + INP + '" style="width:150px" onchange="stFq(\'fs\',this.value)"><option value="">Todos</option>' + STS.concat(['Arquivados']).map(function (s) { return '<option ' + (V.fs === s ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></div>' + (l.map(pc).join('') || '<p class="text-xs text-[#8B7D95]">Nenhum projeto encontrado.</p>');
-    }
-    function f(p, k, lab, type) { var v = $e(p[k]); return '<label class="block mb-3"><span class="text-[11px] font-bold text-[#8B7D95]">' + lab + '</span>' + (type === 'ta' ? '<textarea rows="5" class="' + INP + '" onchange="stF(\'' + k + '\',this.value)">' + v + '</textarea>' : '<input ' + (type === 'date' ? 'type="date"' : '') + ' class="' + INP + '" value="' + v + '" onchange="stF(\'' + k + '\',this.value)">') + '</label>'; }
-    function det(t, b, o) { return '<details class="custom-card rounded-2xl mb-3" ' + (o ? 'open' : '') + '><summary class="cursor-pointer p-4 font-bold text-sm">' + t + '</summary><div class="px-4 pb-4">' + b + '</div></details>'; }
-    function proj() {
-      var p = P(V.pid); if (!p) return '<p class="text-xs">Projeto não encontrado.</p>';
-      var mt = [['views', 'Visualizações'], ['likes', 'Curtidas'], ['comments', 'Comentários'], ['shares', 'Compartilhamentos'], ['saves', 'Salvamentos'], ['follows', 'Novos seguidores']];
-      var ck = p.check.map(function (c, i) { return '<label class="flex gap-2 text-xs mb-1.5"><input type="checkbox" ' + (c.d ? 'checked' : '') + ' onchange="stChk(' + i + ')"><span class="' + (c.d ? 'line-through text-[#8B7D95]' : '') + '">' + $e(c.t) + '</span></label>'; }).join('');
-      var h = p.hist.map(function (x) { return '<p class="text-[11px] text-[#8B7D95]">' + $e(x.s) + ' · ' + new Date(x.at).toLocaleDateString('pt-BR') + '</p>'; }).join('');
-      return '<button onclick="stGo(\'lib\')" class="' + SEC + ' mb-3">‹ Voltar</button><div class="' + CARD + '">' + f(p, 'title', 'Título') + '<label class="block mb-2"><span class="text-[11px] font-bold text-[#8B7D95]">Status</span><select class="' + INP + '" onchange="stStatus(' + p.id + ',this.value)">' + STS.map(function (s) { return '<option ' + (p.status === s ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></label><label class="block"><span class="text-[11px] font-bold text-[#8B7D95]">Prioridade</span><select class="' + INP + '" onchange="stF(\'prio\',this.value)">' + ['Alta', 'Média', 'Baixa'].map(function (s) { return '<option ' + (p.prio === s ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select></label><div class="flex gap-2 mt-3 flex-wrap"><button onclick="stDup(' + p.id + ')" class="' + SEC + '">Duplicar</button><button onclick="stArch(' + p.id + ')" class="' + SEC + '">' + (p.arch ? 'Desarquivar' : 'Arquivar') + '</button><button onclick="stDel(' + p.id + ')" class="' + SEC + '">Excluir</button></div></div>' +
-        det('Visão geral', f(p, 'desc', 'Descrição', 'ta') + f(p, 'pilar', 'Pilar de conteúdo') + f(p, 'objetivo', 'Objetivo') + f(p, 'publico', 'Público pretendido') + f(p, 'formato', 'Formato') + f(p, 'duracao', 'Duração estimada'), true) +
-        det('Roteiro e cenas', msg() + '<div class="flex gap-2 mb-3"><select id="st-sty" class="' + INP + '">' + STYLES.map(function (s) { return '<option>' + s + '</option>'; }).join('') + '</select><button onclick="stScript(' + p.id + ')" class="' + PRI + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'script' ? 'Criando…' : 'Gerar roteiro') + '</button></div>' + f(p, 'gancho', 'Gancho inicial') + f(p, 'roteiro', 'Roteiro', 'ta') + f(p, 'cenas', 'Lista de cenas (o que filmar, enquadramento, texto na tela, edição)', 'ta'), false) +
-        det('Publicação', f(p, 'legenda', 'Legenda e chamada para ação', 'ta') + f(p, 'capa', 'Sugestão de capa') + f(p, 'planDate', 'Data planejada', 'date') + f(p, 'pubDate', 'Data de publicação', 'date') + f(p, 'refs', 'Referências e links', 'ta') + f(p, 'materiais', 'Materiais necessários', 'ta'), false) +
-        det('Checklist de gravação e edição', ck + '<div class="flex gap-2 mt-2"><input id="st-chk" class="' + INP + '" placeholder="Nova tarefa"><button onclick="stChkAdd()" class="' + PRI + '">+</button></div><button onclick="stChkDef()" class="' + SEC + ' mt-2">Usar checklist padrão</button>', false) +
-        det('Resultados', mt.map(function (m) { return '<label class="block mb-2"><span class="text-[11px] font-bold text-[#8B7D95]">' + m[1] + '</span><input type="number" min="0" class="' + INP + '" value="' + $e(p.m[m[0]]) + '" onchange="stM(\'' + m[0] + '\',this.value)"></label>'; }).join('') + '<button onclick="stInsights(' + p.id + ')" class="' + SEC + '" ' + (V.busy ? 'disabled' : '') + '>' + (V.busy === 'ins' ? 'Analisando…' : 'Sugerir melhorias com a IA') + '</button>' + f(p, 'learn', 'Aprendizados', 'ta'), false) +
-        det('Observações e histórico', f(p, 'obs', 'Observações pessoais', 'ta') + '<p class="text-[11px] font-bold mb-1">Histórico de etapas</p>' + h, false);
-    }
-    function html() {
-      var b = { home: home, ideas: ideas, board: board, cal: cal, lib: lib, proj: proj }[V.view]();
-      return '<header class="mb-4"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">TikTok</p><h1 class="font-serif-display text-3xl font-bold">Meu Estúdio</h1><p class="text-xs text-[#8B7D95] mt-1">Da primeira ideia à publicação e à análise, num só lugar.</p></header>' + nav() + b;
-    }
-    function draw() { var c = document.getElementById('main-screen-container'); if (c && currentScreen === 'estudio') { var y = scrollY; c.innerHTML = html(); scrollTo(0, y); } }
-    var _rs3 = window.renderScreen;
-    window.renderScreen = function () { var r = _rs3.apply(this, arguments); draw(); return r; };
-    if (!NAV_ITEMS.some(function (x) { return x.id === 'estudio'; })) NAV_ITEMS.splice(NAV_ITEMS.findIndex(function (x) { return x.id === 'cabelo'; }) + 1, 0, { id: 'estudio', label: 'Meu Estúdio', icon: 'sparkles', group: 'Bem-estar' });
-    try { renderNav(); } catch (x) {}
-  })();
   </script>
 </body>
 </html>
