@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>STE — Seu Espaço Pessoal</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#49225B">
+  <meta name="theme-color" content="#2A2360">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="STE">
@@ -31,8 +31,8 @@
           colors: {
             brand: {
               50: '#FAF5FC', 100: '#F5EBFA', 200: '#E7DBEF', 300: '#D5BCDF',
-              400: '#C08BD8', 500: '#A56ABD', 600: '#8E4EA7', 700: '#73378A',
-              800: '#5A266E', 900: '#49225B', 950: '#24092F',
+              400: '#C08BD8', 500: '#8266C4', 600: '#6A50AB', 700: '#73378A',
+              800: '#5A266E', 900: '#2A2360', 950: '#161235',
             },
             gold: { DEFAULT: '#C6A467', light: '#E8D2A7', dark: '#9E7E45' }
           },
@@ -51,7 +51,7 @@
       --text-main: #2A1730;
       --text-muted: #8B7D95;
       --border-color: #EFE1F5;
-      --primary: #A56ABD;
+      --primary: #8266C4;
       --gold: #C6A467;
     }
     .dark {
@@ -110,9 +110,9 @@
     .cy-btn.alt { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
     .cy-in { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border-color); background: transparent; color: inherit; font: 500 13px 'Manrope', sans-serif; width: 72px; }
     /* ---- Sonhos & Fé: Vision Board ---- */
-    .vb-banner { position: relative; border-radius: 22px; overflow: hidden; min-height: 190px; display: flex; align-items: flex-end; border: 1px solid var(--gold); background: linear-gradient(135deg, #6E3482, #49225B); color: #fff; }
+    .vb-banner { position: relative; border-radius: 22px; overflow: hidden; min-height: 190px; display: flex; align-items: flex-end; border: 1px solid var(--gold); background: linear-gradient(135deg, #5B47A0, #2A2360); color: #fff; }
     .vb-banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .vb-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(36, 9, 47, .78), rgba(36, 9, 47, .1) 70%); }
+    .vb-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(24,20,58, .78), rgba(24,20,58, .1) 70%); }
     .vb-banner > div { position: relative; z-index: 1; padding: 18px; width: 100%; }
     .vb-g5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
     .vb-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
@@ -122,22 +122,22 @@
     .vb-short { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px; border-radius: 16px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); font: 700 10.5px 'Manrope', sans-serif; text-align: center; line-height: 1.2; cursor: pointer; }
     .vb-short svg { color: var(--primary); }
     .vb-short.on { border-color: var(--gold); }
-    .vb-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4 / 5; border: 1px solid var(--border-color); background: linear-gradient(160deg, #6E3482, #3D1A4D); color: #fff; text-align: left; cursor: pointer; padding: 0; display: block; width: 100%; }
+    .vb-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4 / 5; border: 1px solid var(--border-color); background: linear-gradient(160deg, #5B47A0, #2A2360); color: #fff; text-align: left; cursor: pointer; padding: 0; display: block; width: 100%; }
     .vb-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .vb-card .vb-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, .35); }
-    .vb-card .vb-lab { position: absolute; left: 8px; right: 8px; bottom: 8px; padding: 9px 10px; border-radius: 14px; background: rgba(36, 9, 47, .78); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+    .vb-card .vb-lab { position: absolute; left: 8px; right: 8px; bottom: 8px; padding: 9px 10px; border-radius: 14px; background: rgba(24,20,58, .78); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
     .vb-card .vb-lab small { display: block; font: 700 9.5px 'Manrope', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); }
     .vb-card .vb-lab b { display: block; font: 700 13px 'Manrope', sans-serif; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
     .vb-card .vb-lab i { display: block; height: 4px; border-radius: 99px; background: rgba(255, 255, 255, .22); margin-top: 7px; overflow: hidden; }
     .vb-card .vb-lab i u { display: block; height: 100%; background: var(--gold); }
     .vb-add { border: 2px dashed var(--border-color); background: transparent; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font: 700 12px 'Manrope', sans-serif; }
-    .vb-ov { position: fixed; inset: 0; z-index: 8200; background: rgba(36, 9, 47, .62); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; }
+    .vb-ov { position: fixed; inset: 0; z-index: 8200; background: rgba(24,20,58, .62); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; }
     @media (min-width: 768px) { .vb-ov { align-items: center; padding: 18px; } }
     .vb-sheet { width: 100%; max-width: 600px; max-height: 92vh; max-height: 92dvh; overflow-y: auto; background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 24px 24px 0 0; padding: 0 0 calc(18px + env(safe-area-inset-bottom, 0px)); }
     @media (min-width: 768px) { .vb-sheet { border-radius: 24px; } }
-    .vb-cover { position: relative; height: 190px; background: linear-gradient(160deg, #6E3482, #3D1A4D); border-radius: 24px 24px 0 0; overflow: hidden; }
+    .vb-cover { position: relative; height: 190px; background: linear-gradient(160deg, #5B47A0, #2A2360); border-radius: 24px 24px 0 0; overflow: hidden; }
     .vb-cover img { width: 100%; height: 100%; object-fit: cover; }
-    .vb-cover .vb-x { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(36, 9, 47, .7); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .vb-cover .vb-x { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(24,20,58, .7); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .vb-in { width: 100%; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--border-color); background: transparent; color: inherit; font: 500 13px 'Manrope', sans-serif; min-width: 0; }
     .vb-btn { padding: 9px 14px; border-radius: 12px; border: 0; background: var(--primary); color: #fff; font: 700 12px 'Manrope', sans-serif; cursor: pointer; }
     .vb-btn.alt { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
@@ -158,7 +158,7 @@
     .qc-fab { position: fixed; right: 16px; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); z-index: 8000; width: 54px; height: 54px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; background: var(--primary); color: #fff; box-shadow: 0 8px 22px rgba(94, 40, 112, .4), 0 0 0 2px var(--gold); cursor: pointer; }
     .qc-fab:active { transform: scale(.94); }
     @media (min-width: 768px) { .qc-fab { right: 28px; bottom: 28px; } }
-    .qc-ov { position: fixed; inset: 0; z-index: 9400; background: rgba(36, 9, 47, .55); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; padding: 0; animation: steFadeIn .2s ease both; }
+    .qc-ov { position: fixed; inset: 0; z-index: 9400; background: rgba(24,20,58, .55); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; padding: 0; animation: steFadeIn .2s ease both; }
     @media (min-width: 768px) { .qc-ov { align-items: center; padding: 16px; } }
     .qc-box { width: 100%; max-width: 520px; max-height: 92vh; max-height: 92dvh; overflow-y: auto; background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 22px 22px 0 0; padding: 20px 18px calc(18px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -10px 40px rgba(0, 0, 0, .3); }
     @media (min-width: 768px) { .qc-box { border-radius: 22px; } }
@@ -168,7 +168,7 @@
     .qc-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(90px + env(safe-area-inset-bottom, 0px)); z-index: 9600; background: var(--primary); color: #fff; padding: 10px 16px; border-radius: 14px; font: 700 13px 'Manrope', sans-serif; box-shadow: 0 8px 24px rgba(0, 0, 0, .3); max-width: 90vw; }
     @media (prefers-reduced-motion: reduce) { .qc-ov { animation: none; } .qc-fab:active { transform: none; } }
     /* ---- Busca global ---- */
-    .pg-ov { position: fixed; inset: 0; z-index: 9500; background: rgba(36, 9, 47, .55); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-start; padding: 10vh 14px 14px; animation: steFadeIn .2s ease both; }
+    .pg-ov { position: fixed; inset: 0; z-index: 9500; background: rgba(24,20,58, .55); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-start; padding: 10vh 14px 14px; animation: steFadeIn .2s ease both; }
     .pg-box { width: 100%; max-width: 560px; max-height: 80vh; max-height: 80dvh; display: flex; flex-direction: column; background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, .35); overflow: hidden; }
     .pg-in { width: 100%; border: 0; border-bottom: 1px solid var(--border-color); background: transparent; color: inherit; padding: 16px 18px; font: 500 16px 'Manrope', sans-serif; outline: none; }
     .pg-res { overflow-y: auto; padding: 6px 8px 12px; }
@@ -191,7 +191,7 @@
     @keyframes steFloat { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-4px) rotate(-4deg); } }
     @keyframes steSweep { from { background-position: 100% 0; } to { background-position: 0% 0; } }
     @keyframes steNumPop { 0% { opacity: 0; transform: scale(.7); } 60% { opacity: 1; transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
-    .ste-pop-ov { position: fixed; inset: 0; z-index: 9000; background: rgba(36, 9, 47, .6); display: flex; align-items: center; justify-content: center; padding: 18px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: steFadeIn .28s ease both; }
+    .ste-pop-ov { position: fixed; inset: 0; z-index: 9000; background: rgba(24,20,58, .6); display: flex; align-items: center; justify-content: center; padding: 18px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: steFadeIn .28s ease both; }
     .ste-pop-ov.closing { animation: steFadeOut .26s ease both; }
     .ste-pop-card { background: var(--card-bg); color: var(--text-main); border-radius: 22px; padding: 22px 20px; width: 100%; max-width: 380px; max-height: 88vh; max-height: 88dvh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0, 0, 0, .35); font-family: 'Manrope', sans-serif; animation: steCardIn .6s cubic-bezier(.2, .9, .3, 1) both; }
     .ste-pop-ov.closing .ste-pop-card { animation: steCardOut .26s ease-in both; }
@@ -220,10 +220,10 @@
     .ste-psalm-num { display: inline-block; background: linear-gradient(100deg, var(--text-main) 34%, var(--gold) 50%, var(--text-main) 66%); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: steNumPop .6s cubic-bezier(.2, .9, .3, 1.2) .24s both, steSweep 1.6s ease-in-out .8s both; }
     .ste-psalm-card { cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
     .ste-psalm-card:active { transform: scale(.985); }
-    .ste-rest-pill { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 8500; display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 999px; background: #49225B; color: #fff; box-shadow: 0 10px 28px rgba(0,0,0,.3); font-weight: 700; font-size: 14px; white-space: nowrap; animation: steFadeIn .2s ease both; }
+    .ste-rest-pill { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 8500; display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 999px; background: #2A2360; color: #fff; box-shadow: 0 10px 28px rgba(0,0,0,.3); font-weight: 700; font-size: 14px; white-space: nowrap; animation: steFadeIn .2s ease both; }
     .ste-rest-pill.fim { background: #B8934F; }
     .ste-rest-pill button { background: rgba(255,255,255,.2); border: none; color: #fff; border-radius: 999px; padding: 4px 12px; font-size: 12px; font-weight: 700; }
-    .ste-modal-ov { position: fixed; inset: 0; z-index: 9000; background: rgba(36, 9, 47, .6); display: flex; align-items: center; justify-content: center; padding: 14px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: steFadeIn .2s ease both; }
+    .ste-modal-ov { position: fixed; inset: 0; z-index: 9000; background: rgba(24,20,58, .6); display: flex; align-items: center; justify-content: center; padding: 14px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: steFadeIn .2s ease both; }
     .ste-modal-card { background: var(--card-bg); color: var(--text-main); border-radius: 22px; padding: 22px 20px; width: 100%; max-width: 460px; max-height: 90vh; max-height: 90dvh; overflow-y: auto; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
 
     /* ---- Carta para Deus ---- */
@@ -267,7 +267,7 @@
     @keyframes steRemIn { 0% { opacity: 0; transform: translateY(-34px) scale(.94); } 100% { opacity: 1; transform: none; } }
     @keyframes steRemOut { to { opacity: 0; transform: translateY(-22px) scale(.95); } }
     @keyframes steBell { 0%, 100% { transform: rotate(0); } 12% { transform: rotate(18deg); } 26% { transform: rotate(-16deg); } 40% { transform: rotate(12deg); } 54% { transform: rotate(-9deg); } 68% { transform: rotate(5deg); } 82% { transform: rotate(-2deg); } }
-    @keyframes steRing { 0% { box-shadow: 0 0 0 0 rgba(165, 106, 189, .45); } 100% { box-shadow: 0 0 0 16px rgba(165, 106, 189, 0); } }
+    @keyframes steRing { 0% { box-shadow: 0 0 0 0 rgba(130,102,196, .45); } 100% { box-shadow: 0 0 0 16px rgba(130,102,196, 0); } }
     @keyframes steTick { 0% { transform: scale(0) rotate(-30deg); opacity: 0; } 60% { transform: scale(1.25) rotate(4deg); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
     @keyframes steBarShine { 0% { background-position: 0% 0; } 100% { background-position: 0% 200%; } }
     .ste-rem-stack { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 0; right: 0; z-index: 9500; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 0 14px; pointer-events: none; }
@@ -313,7 +313,7 @@
     .pt-card { padding: 20px; border-radius: 22px; margin-bottom: 16px; }
     .pt-clock { font-family: 'Fraunces', serif; font-size: 52px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; text-align: center; }
     .pt-date { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 8px; }
-    .pt-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 20px; padding: 20px 16px; border: none; border-radius: 20px; color: #fff; font: 700 18px 'Manrope', sans-serif; cursor: pointer; background: linear-gradient(135deg, #A56ABD, #73378A); box-shadow: 0 10px 24px -10px rgba(115, 55, 138, .7); transition: transform .12s ease; -webkit-tap-highlight-color: transparent; }
+    .pt-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 20px; padding: 20px 16px; border: none; border-radius: 20px; color: #fff; font: 700 18px 'Manrope', sans-serif; cursor: pointer; background: linear-gradient(135deg, #8266C4, #73378A); box-shadow: 0 10px 24px -10px rgba(115, 55, 138, .7); transition: transform .12s ease; -webkit-tap-highlight-color: transparent; }
     .pt-btn.out { background: linear-gradient(135deg, #C6A467, #9E7E45); box-shadow: 0 10px 24px -10px rgba(158, 126, 69, .7); }
     .pt-btn:active { transform: scale(.97); }
     .pt-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 14px; }
@@ -335,7 +335,7 @@
     .pt-tile small { display: block; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); }
     .pt-tile strong { display: block; font-size: 20px; margin-top: 4px; font-family: 'Fraunces', serif; }
     .pt-bar { height: 8px; border-radius: 99px; background: var(--ste-soft); overflow: hidden; margin-top: 14px; }
-    .pt-bar > i { display: block; height: 100%; background: linear-gradient(90deg, #A56ABD, #C6A467); border-radius: 99px; }
+    .pt-bar > i { display: block; height: 100%; background: linear-gradient(90deg, #8266C4, #C6A467); border-radius: 99px; }
     .pt-note { font-size: 11px; color: var(--text-muted); margin-top: 10px; line-height: 1.45; }
     .pt-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
     .pt-row { border-top: 1px solid var(--border-color); padding: 10px 0; }
@@ -355,86 +355,292 @@
     .pt-days { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .pt-day { padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--ste-soft2); color: var(--text-main); font-weight: 700; font-size: 12px; cursor: pointer; font-family: inherit; }
     .pt-day.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* ================= STE · Redesign v2 (lavanda, marinho e dourado) ================= */
+    :root {
+      --bg: #F1EBFA; --card-bg: #FFFFFF; --text-main: #231E45; --text-muted: #756E96; --border-color: #E7E0F4;
+      --primary: #8266C4; --primary-deep: #5D47A2; --primary-soft: #EEE8FA; --gold: #C6A467;
+      --ste-soft: #E9E2F7; --ste-soft2: #F6F3FC;
+      --shadow-card: 0 14px 34px -18px rgba(62, 44, 130, .38), 0 2px 8px -3px rgba(62, 44, 130, .08);
+      --r-card: 24px;
+    }
+    .dark {
+      --bg: #15122E; --card-bg: #201B45; --text-main: #F3EFFC; --text-muted: #AEA7CF; --border-color: #352E68;
+      --primary: #A68BE6; --primary-deep: #C9B8F5; --primary-soft: #2D2660; --gold: #DAB97C;
+      --ste-soft: #352E68; --ste-soft2: #2A2456;
+      --shadow-card: 0 14px 34px -18px rgba(0, 0, 0, .7);
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh;
+      background: radial-gradient(900px 420px at 88% -6%, rgba(130, 102, 196, .24), transparent 62%), radial-gradient(700px 380px at -8% 30%, rgba(198, 164, 103, .09), transparent 60%), var(--bg);
+    }
+    .dark body { background: radial-gradient(900px 420px at 88% -6%, rgba(130, 102, 196, .22), transparent 62%), var(--bg); }
+    @media (min-width: 768px) { body { flex-direction: row; } }
+
+    /* Cores antigas (classes Tailwind existentes) ligadas ao novo tema */
+    [class~="text-[#8B7D95]"] { color: var(--text-muted) !important; }
+    [class~="border-[#EFE1F5]"] { border-color: var(--border-color) !important; }
+    [class~="bg-[#FAF5FC]"] { background-color: var(--ste-soft2) !important; }
+    [class~="bg-[#E7DBEF]"], [class~="bg-[#F5EBFA]"] { background-color: var(--ste-soft) !important; }
+    [class~="text-[#A56ABD]"], [class~="hover:text-[#A56ABD]"]:hover { color: var(--primary) !important; }
+    [class~="bg-[#A56ABD]"] { background-color: var(--primary) !important; }
+    [class~="hover:bg-[#8E4EA7]"]:hover { background-color: var(--primary-deep) !important; }
+    [class~="border-[#A56ABD]"] { border-color: var(--primary) !important; }
+    [class~="text-[#49225B]"] { color: var(--primary-deep) !important; }
+    [class~="text-[#2A1730]"] { color: var(--text-main) !important; }
+    [class~="from-[#A56ABD]"] { background-image: linear-gradient(135deg, var(--primary), var(--primary-deep)) !important; }
+    .dark [class~="dark:border-[#3D224D]"] { border-color: var(--border-color) !important; }
+    .dark [class~="dark:bg-[#2C153A]"] { background-color: var(--ste-soft2) !important; }
+    .dark [class~="dark:bg-[#200B2B]"] { background-color: var(--card-bg) !important; }
+    .dark [class~="dark:bg-[#3D224D]"], .dark [class~="dark:bg-[#3F234F]"] { background-color: var(--ste-soft) !important; }
+    .dark [class~="dark:text-[#C1B1CB]"] { color: var(--text-muted) !important; }
+    .dark [class~="dark:text-[#F7EDFB]"], .dark [class~="dark:text-[#E7DBEF]"] { color: var(--text-main) !important; }
+    .dark [class~="dark:hover:bg-[#2C153A]"]:hover { background-color: var(--ste-soft) !important; }
+    [class~="bg-gradient-to-r"][class~="from-white"] { background-image: none !important; background-color: var(--card-bg) !important; }
+
+    .custom-card { border-radius: var(--r-card) !important; box-shadow: var(--shadow-card) !important; scroll-margin-top: 76px; }
+    .dx-main > header h1.font-serif-display { font-size: clamp(28px, 5vw, 40px) !important; line-height: 1.1; font-weight: 600 !important; }
+    .dx-main input:focus-visible, .dx-main select:focus-visible, .dx-main textarea:focus-visible, .dx-main button:focus-visible, .dx-side button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .dx-main input[type=text], .dx-main input[type=number], .dx-main input[type=date], .dx-main input[type=time], .dx-main input[type=datetime-local], .dx-main input[type=search], .dx-main select, .dx-main textarea { border-radius: 14px !important; }
+
+    /* Menu lateral (tablet e computador) */
+    .dx-side { display: none; width: 264px; flex: 0 0 264px; position: sticky; top: 0; height: 100vh; height: 100dvh; flex-direction: column; padding: 26px 16px 16px; color: #fff; z-index: 20; overflow: hidden;
+      background: radial-gradient(420px 280px at 0% 100%, rgba(155, 131, 214, .30), transparent 70%), linear-gradient(185deg, #2D2766 0%, #201B52 48%, #16123A 100%); }
+    @media (min-width: 768px) { .dx-side { display: flex; } }
+    .dx-brand { padding: 2px 10px 16px; }
+    .dx-brand h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 40px; letter-spacing: .02em; line-height: 1; display: flex; align-items: center; gap: 8px; }
+    .dx-brand h1 svg { color: var(--gold); }
+    .dx-brand p { font-size: 15px; opacity: .85; margin-top: 6px; }
+    .dx-sidesearch { position: relative; margin: 2px 4px 12px; }
+    .dx-sidesearch input { width: 100%; padding: 10px 12px 10px 34px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, .14); background: rgba(255, 255, 255, .08); color: #fff; font-size: 13px; }
+    .dx-sidesearch input::placeholder { color: rgba(255, 255, 255, .55); }
+    .dx-sidesearch span { position: absolute; left: 11px; top: 10px; color: rgba(255, 255, 255, .65); display: flex; }
+    .dx-nav { flex: 1; overflow-y: auto; padding: 0 2px; scrollbar-width: none; }
+    .dx-nav::-webkit-scrollbar { display: none; }
+    .dx-nav h6 { font: 700 10px 'Manrope', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: rgba(255, 255, 255, .42); padding: 14px 12px 6px; }
+    .dx-nav button { width: 100%; display: flex; align-items: center; gap: 13px; padding: 9px 12px; border-radius: 15px; border: 0; background: transparent; color: rgba(255, 255, 255, .92); font: 600 13.5px 'Manrope', sans-serif; text-align: left; cursor: pointer; transition: background .15s; }
+    .dx-nav button:hover { background: rgba(255, 255, 255, .07); }
+    .dx-nav button.on { background: linear-gradient(135deg, #9B83D6, #7F65C0); color: #fff; box-shadow: 0 8px 20px -10px rgba(0, 0, 0, .6); }
+    .dx-nav button svg { flex: none; }
+    .dx-sidefoot { padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, .1); margin-top: 8px; }
+    .dx-script { font-family: 'Fraunces', serif; font-style: italic; font-size: 20px; color: #E8D2A7; padding: 4px 8px 8px; }
+    .dx-bk { display: block; width: 100%; text-align: left; border: 1px solid rgba(198, 164, 103, .5); background: rgba(255, 255, 255, .05); color: #fff; border-radius: 16px; padding: 10px 12px; cursor: pointer; font-family: 'Manrope', sans-serif; }
+    .dx-bk b { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #E8D2A7; }
+    .dx-bk small { display: block; font-size: 11px; opacity: .75; margin-top: 3px; }
+    .dx-userrow { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+    .dx-userrow > div { display: flex; align-items: center; gap: 8px; font: 700 13px 'Manrope', sans-serif; }
+    .dx-avatar { width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, .16); display: flex; align-items: center; justify-content: center; }
+    .dx-userrow button { width: 36px; height: 36px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .08); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* Cabeçalho e barra inferior (celular) */
+    .dx-top { display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 30; padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px; background: rgba(241, 235, 250, .84); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+    .dark .dx-top { background: rgba(21, 18, 46, .84); }
+    @media (min-width: 768px) { .dx-top { display: none; } }
+    .dx-logo { font-family: 'Fraunces', serif; font-size: 27px; font-weight: 600; color: var(--text-main); display: flex; gap: 6px; align-items: center; }
+    .dx-logo svg { color: var(--gold); }
+    .dx-tools { display: flex; gap: 8px; }
+    .dx-iconbtn { width: 40px; height: 40px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--primary-deep); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .dx-tabbar { position: fixed; left: 12px; right: 84px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; justify-content: space-around; padding: 6px 4px 4px; border-radius: 26px; background: rgba(255, 255, 255, .93); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--border-color); box-shadow: 0 18px 40px -16px rgba(50, 35, 110, .5); }
+    .dark .dx-tabbar { background: rgba(32, 27, 69, .94); }
+    @media (min-width: 768px) { .dx-tabbar { display: none; } }
+    .dx-tab { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0 9px; border: 0; background: none; color: var(--text-muted); font: 600 10.5px 'Manrope', sans-serif; position: relative; cursor: pointer; }
+    .dx-tab.on { color: var(--primary); }
+    .dx-tab.on::after { content: ''; position: absolute; bottom: 2px; left: 28%; right: 28%; height: 3px; border-radius: 3px; background: var(--primary); }
+    .qc-fab { background: linear-gradient(145deg, #9A7FE0, #5B43A8) !important; color: #fff !important; width: 58px !important; height: 58px !important; right: 14px !important; bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important; box-shadow: 0 14px 30px -10px rgba(70, 45, 150, .75), inset 0 1px 0 rgba(255, 255, 255, .35) !important; }
+    @media (min-width: 768px) { .qc-fab { right: 30px !important; bottom: 30px !important; } }
+    .qc-toast { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+
+    .dx-main { flex: 1; min-width: 0; width: 100%; max-width: 1160px; margin: 0 auto; padding: 14px 16px calc(116px + env(safe-area-inset-bottom, 0px)); }
+    @media (min-width: 768px) { .dx-main { padding: 34px 34px 80px; } }
+    .dx-sub { display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px 18px; padding: 2px 16px 4px; scrollbar-width: none; }
+    .dx-sub::-webkit-scrollbar { display: none; }
+    @media (min-width: 768px) { .dx-sub { margin: 0 0 20px; padding: 2px 0 4px; flex-wrap: wrap; overflow: visible; } }
+    .dx-sub button { flex: none; padding: 9px 15px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-muted); font: 700 12.5px 'Manrope', sans-serif; cursor: pointer; }
+    .dx-sub button.on { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 8px 18px -10px var(--primary); }
+
+    /* Tela inicial */
+    .dx-hero { position: relative; overflow: hidden; border-radius: 30px; padding: 24px 20px 22px; margin-bottom: 16px; background: linear-gradient(135deg, #E4DAF8 0%, #EEE7FB 48%, #F7F2FD 100%); border: 1px solid rgba(255, 255, 255, .7); box-shadow: var(--shadow-card); }
+    .dark .dx-hero { background: linear-gradient(135deg, #2C2563, #241E53 60%, #1E1A45); border-color: rgba(255, 255, 255, .06); }
+    .dx-hero > div.dx-herotxt { position: relative; z-index: 1; max-width: 62%; }
+    .dx-date { font: 700 11px 'Manrope', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--primary-deep); margin-bottom: 8px; }
+    .dx-hero h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(28px, 6vw, 46px); line-height: 1.05; color: var(--text-main); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .dx-hero h1 svg { color: var(--primary); }
+    .dx-ask { font-family: 'Fraunces', serif; font-size: clamp(16px, 3vw, 22px); margin-top: 8px; color: var(--text-main); }
+    .dx-hero blockquote { margin-top: 14px; font-family: 'Fraunces', serif; font-style: italic; font-size: 15.5px; line-height: 1.45; color: var(--text-main); border-left: 2px solid var(--gold); padding-left: 12px; }
+    .dx-hero .cg-chips { margin: 14px 0 0; }
+    .dx-art { position: absolute; right: -4px; bottom: -6px; width: min(44%, 290px); height: auto; pointer-events: none; }
+    @media (max-width: 560px) { .dx-hero > div.dx-herotxt { max-width: 100%; } .dx-art { width: 128px; top: 8px; bottom: auto; opacity: .9; } .dx-hero h1 { max-width: 62%; } .dx-ask { max-width: 62%; } }
+    .dx-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    @media (min-width: 980px) { .dx-grid { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); } .dx-span2 { grid-column: 1 / -1; } }
+    .dx-grid .custom-card { margin-bottom: 0 !important; }
+    .dx-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--r-card); box-shadow: var(--shadow-card); padding: 18px 18px 16px; min-width: 0; color: var(--text-main); scroll-margin-top: 76px; }
+    .dx-card h2 { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; line-height: 1.2; }
+    .dx-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .dx-link { font: 700 12.5px 'Manrope', sans-serif; color: var(--primary); background: none; border: 0; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; white-space: nowrap; padding: 4px 0; }
+    .dx-muted { color: var(--text-muted); font-size: 12px; }
+    .dx-quick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 8px; }
+    @media (min-width: 560px) { .dx-quick { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+    .dx-q { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 4px 2px; background: none; border: 0; color: var(--text-main); font: 600 12px/1.25 'Manrope', sans-serif; text-align: center; cursor: pointer; }
+    .dx-q i { font-style: normal; width: 100%; max-width: 86px; aspect-ratio: 1.12; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #F1EBFB, #E5DCF7); color: var(--primary-deep); transition: transform .15s; }
+    .dark .dx-q i { background: linear-gradient(160deg, #332C6C, #2A2459); }
+    .dx-q:active i { transform: scale(.94); }
+    .dx-health { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 16px; align-items: center; }
+    @media (max-width: 400px) { .dx-health { grid-template-columns: 1fr; justify-items: center; } .dx-health > div:last-child { width: 100%; } }
+    .dx-ring { position: relative; width: 128px; height: 128px; }
+    .dx-ring svg { width: 128px; height: 128px; transform: rotate(-90deg); }
+    .dx-ring .pct { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 32px; font-weight: 600; }
+    .dx-ringcap { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.35; max-width: 140px; }
+    .dx-pill { display: inline-flex; align-items: center; gap: 6px; font: 700 12px 'Manrope', sans-serif; color: #3F7C55; }
+    .dx-pill::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .dx-pill.mid { color: #9E7E45; } .dx-pill.low { color: var(--primary); }
+    .dark .dx-pill { color: #6FBE8C; } .dark .dx-pill.mid { color: #DAB97C; }
+    .dx-metric { margin-bottom: 11px; }
+    .dx-metric > div:first-child { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12px; color: var(--text-muted); }
+    .dx-metric > div:first-child span { display: inline-flex; align-items: center; gap: 6px; }
+    .dx-metric strong { display: block; font: 700 15px 'Manrope', sans-serif; color: var(--text-main); margin: 1px 0 5px; }
+    .dx-metric strong small { font-weight: 600; font-size: 12px; color: var(--text-muted); }
+    .dx-bar { height: 7px; border-radius: 7px; background: var(--ste-soft); overflow: hidden; }
+    .dx-bar > b { display: block; height: 100%; border-radius: 7px; background: linear-gradient(90deg, #8266C4, #AB92E4); }
+    .dx-bar.gold > b { background: linear-gradient(90deg, #C6A467, #E4CB93); }
+    .dx-mini { display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 9px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--ste-soft2); color: var(--primary); font: 700 11px 'Manrope', sans-serif; cursor: pointer; }
+    .dx-btnwide { width: 100%; margin-top: 12px; padding: 12px; border-radius: 16px; border: 0; background: var(--primary-soft); color: var(--primary-deep); font: 700 13.5px 'Manrope', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .dx-goal { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 0; border-top: 1px solid var(--border-color); }
+    .dx-goal:first-of-type { border-top: 0; padding-top: 2px; }
+    .dx-gico { width: 46px; height: 46px; border-radius: 15px; background: var(--ste-soft); color: var(--primary-deep); display: flex; align-items: center; justify-content: center; }
+    .dx-goal b { display: block; font: 700 13.5px 'Manrope', sans-serif; line-height: 1.25; }
+    .dx-goal small { display: block; font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+    .dx-gright { text-align: right; font: 700 13px 'Manrope', sans-serif; white-space: nowrap; }
+    .dx-ok { width: 24px; height: 24px; border-radius: 50%; background: #5BA07B; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+    .dx-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; margin-bottom: 8px; }
+    .dx-wd { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: 0; font: 600 12px 'Manrope', sans-serif; color: var(--text-muted); cursor: pointer; padding: 2px 0; }
+    .dx-wd b { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 700 14px 'Manrope', sans-serif; color: var(--text-main); }
+    .dx-wd.today b { background: var(--primary); color: #fff; }
+    .dx-wd::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: transparent; }
+    .dx-wd.has::after { background: var(--gold); }
+    .dx-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-color); width: 100%; background: none; border-left: 0; border-right: 0; border-bottom: 0; color: inherit; text-align: left; font-family: 'Manrope', sans-serif; cursor: pointer; }
+    .dx-row .ic { width: 36px; height: 36px; border-radius: 12px; background: var(--ste-soft); color: var(--primary-deep); display: flex; align-items: center; justify-content: center; flex: none; }
+    .dx-row .tx { flex: 1; min-width: 0; }
+    .dx-row .tx b { display: block; font-size: 13.5px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dx-row .tx small { display: block; font-size: 11.5px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dx-row .rt { font: 700 12px 'Manrope', sans-serif; color: var(--text-muted); white-space: nowrap; }
+    .dx-empty { font-size: 13px; color: var(--text-muted); padding: 8px 0 4px; line-height: 1.5; }
+    .dx-moods { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+    .dx-mood { background: none; border: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; font: 600 11.5px 'Manrope', sans-serif; color: var(--text-muted); cursor: pointer; padding: 2px 0; }
+    .dx-mood svg { width: 46px; height: 46px; border-radius: 50%; transition: transform .15s; }
+    .dx-mood[aria-pressed="true"] { color: var(--primary-deep); }
+    .dx-mood[aria-pressed="true"] svg { box-shadow: 0 0 0 3px var(--primary); transform: scale(1.06); }
+    .dx-dots { display: flex; gap: 5px; margin-top: 12px; align-items: center; }
+    .dx-dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--ste-soft); }
+    .dx-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .dx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--ste-soft2); color: var(--text-main); font: 600 12px 'Manrope', sans-serif; cursor: pointer; }
+    .dx-chip.done { color: #3F7C55; border-color: #A9D3B9; } .dark .dx-chip.done { color: #6FBE8C; border-color: #3E6B52; }
+    .dx-tip { background: linear-gradient(135deg, #F4EEFC, #E7DEF8); position: relative; overflow: hidden; }
+    .dark .dx-tip { background: linear-gradient(135deg, #2B2560, #241F52); }
+    .dx-tip p { font-size: 14px; line-height: 1.5; margin-top: 8px; max-width: 92%; }
+    .dx-tip .dx-btn2 { margin-top: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--primary); background: transparent; color: var(--primary-deep); font: 700 12.5px 'Manrope', sans-serif; cursor: pointer; }
+    .dx-tip .deco { position: absolute; right: 12px; top: 10px; color: var(--primary); opacity: .35; }
+    .dx-sec { font: 700 10.5px 'Manrope', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin: 4px 2px 8px; }
+
+    /* Tela "Mais" */
+    .dx-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 18px; }
+    @media (min-width: 620px) { .dx-tiles { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 900px) { .dx-tiles { grid-template-columns: repeat(4, 1fr); } }
+    .dx-tile { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 10px; border-radius: 22px; border: 1px solid var(--border-color); background: var(--card-bg); box-shadow: var(--shadow-card); color: var(--text-main); font: 700 12.5px/1.25 'Manrope', sans-serif; text-align: center; cursor: pointer; }
+    .dx-tile i { font-style: normal; width: 52px; height: 52px; border-radius: 18px; background: var(--ste-soft); color: var(--primary-deep); display: flex; align-items: center; justify-content: center; }
+
+    /* Formulários e módulos novos */
+    .dx-seg { display: flex; gap: 4px; padding: 4px; border-radius: 16px; background: var(--ste-soft); margin-bottom: 14px; }
+    .dx-seg button { flex: 1; padding: 10px 6px; border: 0; border-radius: 12px; background: transparent; color: var(--text-muted); font: 700 12.5px 'Manrope', sans-serif; cursor: pointer; }
+    .dx-seg button.on { background: var(--card-bg); color: var(--primary-deep); box-shadow: 0 4px 12px -6px rgba(50, 35, 110, .4); }
+    .dx-lbl { display: block; font: 700 10.5px 'Manrope', sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin: 12px 0 5px; }
+    .dx-in { width: 100%; padding: 11px 13px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--ste-soft2); color: var(--text-main); font: 500 14px 'Manrope', sans-serif; min-width: 0; }
+    textarea.dx-in { resize: vertical; line-height: 1.5; min-height: 110px; }
+    .dx-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .dx-btn { padding: 11px 18px; border-radius: 14px; border: 0; background: var(--primary); color: #fff; font: 700 13px 'Manrope', sans-serif; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .dx-btn.ghost { background: transparent; color: var(--primary-deep); border: 1px solid var(--border-color); }
+    .dx-btn.sm { padding: 7px 12px; font-size: 12px; border-radius: 12px; }
+    .dx-btn.danger { background: transparent; color: #B3413F; border: 1px solid rgba(179, 65, 63, .35); }
+    .dark .dx-btn.danger { color: #E79A98; }
+    .dx-sel { padding: 8px 13px; border-radius: 999px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-main); font: 600 12.5px 'Manrope', sans-serif; cursor: pointer; }
+    .dx-sel[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .dx-flex { display: flex; flex-wrap: wrap; gap: 8px; }
+    .dx-entry { padding: 14px 0; border-top: 1px solid var(--border-color); }
+    .dx-entry:first-child { border-top: 0; }
+    .dx-entry p.txt { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; line-height: 1.55; margin: 6px 0 8px; }
+    .dx-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-muted); }
+    .dx-badge { display: inline-flex; padding: 3px 10px; border-radius: 999px; background: var(--ste-soft); color: var(--primary-deep); font: 700 11px 'Manrope', sans-serif; }
+    .dx-badge.gold { background: rgba(198, 164, 103, .2); color: #8C6D36; } .dark .dx-badge.gold { color: #E8D2A7; }
+    .dx-badge.ok { background: #E4F1E9; color: #3F7C55; } .dark .dx-badge.ok { background: rgba(111, 190, 140, .16); color: #6FBE8C; }
+    .dx-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .dx-cal .dow { font: 700 10px 'Manrope', sans-serif; color: var(--text-muted); padding: 2px 0; }
+    .dx-cal button { aspect-ratio: 1; border-radius: 14px; border: 1px solid transparent; background: transparent; color: var(--text-main); font: 600 13px 'Manrope', sans-serif; cursor: pointer; position: relative; padding: 0; display: flex; align-items: center; justify-content: center; }
+    .dx-cal button.empty { visibility: hidden; }
+    .dx-cal button.today { border-color: var(--primary); }
+    .dx-cal button.sel { background: var(--primary); color: #fff; }
+    .dx-cal button.has::after { content: ''; position: absolute; bottom: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+    .dx-tiles2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (min-width: 620px) { .dx-tiles2 { grid-template-columns: repeat(4, 1fr); } }
+    .dx-stat { padding: 12px; border-radius: 16px; background: var(--ste-soft2); border: 1px solid var(--border-color); }
+    .dx-stat small { display: block; font: 700 10px 'Manrope', sans-serif; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+    .dx-stat strong { display: block; font-family: 'Fraunces', serif; font-size: 22px; margin-top: 4px; }
+    .dx-stat em { font-style: normal; font-size: 11px; color: var(--text-muted); }
+    .dx-pstage { display: flex; gap: 3px; margin: 6px 0 2px; }
+    .dx-pstage i { flex: 1; height: 5px; border-radius: 5px; background: var(--ste-soft); }
+    .dx-pstage i.on { background: var(--primary); }
+    .dx-msg { font-size: 12px; font-weight: 700; color: #B3413F; margin-top: 8px; min-height: 0; }
+    .dark .dx-msg { color: #E79A98; }
+
+    .dx-side, .dx-main, .dx-top, .dx-tabbar, .dx-side *, .dx-main *, .dx-top *, .dx-tabbar * { box-sizing: border-box; }
+
+    @media (min-width: 768px) and (max-width: 979px) { .dx-side { width: 232px; flex-basis: 232px; } .dx-main { padding: 28px 24px 80px; } }
   </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row antialiased">
+<body class="antialiased">
 
-  <!-- SIDEBAR (DESKTOP) -->
-  <aside class="hidden md:flex flex-col w-64 bg-white dark:bg-[#200B2B] border-r border-[#EFE1F5] dark:border-[#3D224D] min-h-screen sticky top-0 p-5 z-20">
-    <div class="flex items-center gap-3 px-2 mb-8">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#A56ABD] to-[#49225B] text-white flex items-center justify-center shadow-md font-serif-display text-xl font-bold">
-        <i data-ico="sparkles" data-size="22"></i>
-      </div>
-      <div>
-        <h1 class="font-serif-display text-2xl font-bold tracking-tight text-[#49225B] dark:text-[#E7DBEF]">STE</h1>
-        <p class="text-[10px] font-bold uppercase tracking-wider text-[#8B7D95] dark:text-[#C1B1CB]">Espaço Pessoal</p>
-      </div>
+  <!-- MENU LATERAL (tablet e computador) -->
+  <aside class="dx-side" aria-label="Menu principal">
+    <div class="dx-brand">
+      <h1>STE <span data-ico="sparkles" data-size="26"></span></h1>
+      <p>Espaço Pessoal</p>
     </div>
-
-    <!-- Campo de Busca Rápida -->
-    <div class="relative mb-6">
-      <input type="text" id="sidebar-search" oninput="handleSearch(this.value)" onfocus="openSearch('')" placeholder="Buscar no app..." class="w-full text-xs py-2.5 pl-8 pr-3 rounded-xl bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] text-[#2A1730] dark:text-white placeholder-[#8B7D95] focus:outline-none focus:border-[#A56ABD]">
-      <span class="absolute left-2.5 top-2.5 text-xs text-[#8B7D95]"><i data-ico="search" data-size="14"></i></span>
+    <div class="dx-sidesearch">
+      <span data-ico="search" data-size="16"></span>
+      <input type="text" id="sidebar-search" oninput="handleSearch(this.value)" onfocus="openSearch('')" placeholder="Buscar no app..." aria-label="Buscar no app">
     </div>
-
-    <!-- Links de Navegação -->
-    <nav class="flex-1 space-y-1 overflow-y-auto no-scrollbar" id="nav-links-container"></nav>
-
-    <!-- Rodapé Usuário e Tema -->
-    <div class="pt-4 mt-auto border-t border-[#EFE1F5] dark:border-[#3D224D] flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-[#E7DBEF] dark:bg-[#3D224D] flex items-center justify-center text-xs font-bold text-[#49225B] dark:text-[#E7DBEF]">
-          S
-        </div>
-        <span class="text-xs font-semibold text-[#2A1730] dark:text-[#F7EDFB]">Stephanie</span>
-      </div>
-      <button onclick="toggleTheme()" class="p-2 rounded-lg bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] text-sm hover:scale-105 transition-transform" title="Alternar Tema">
-        <span id="theme-icon"><i data-ico="moon" data-size="18"></i></span>
+    <nav class="dx-nav" id="nav-links-container"></nav>
+    <div class="dx-sidefoot">
+      <div class="dx-script">Você consegue!</div>
+      <button type="button" class="dx-bk" onclick="navigate('backup')">
+        <b><span data-ico="download" data-size="16"></span> Backup dos dados</b>
+        <small id="dx-bk-info">Seus dados ficam neste aparelho</small>
       </button>
+      <div class="dx-userrow">
+        <div><span class="dx-avatar">S</span>Stephanie</div>
+        <button type="button" onclick="toggleTheme()" title="Alternar tema" aria-label="Alternar tema claro e escuro"><span id="theme-icon"><span data-ico="moon" data-size="18"></span></span></button>
+      </div>
     </div>
   </aside>
 
-  <!-- CABEÇALHO MOBILE -->
-  <header class="md:hidden flex items-center justify-between p-4 bg-white/90 dark:bg-[#200B2B]/90 backdrop-blur-md sticky top-0 z-30 border-b border-[#EFE1F5] dark:border-[#3D224D]">
-    <div class="flex items-center gap-2.5">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#A56ABD] to-[#49225B] text-white flex items-center justify-center font-serif-display font-bold text-sm">
-        <i data-ico="sparkles" data-size="18"></i>
-      </div>
-      <span class="font-serif-display text-xl font-bold text-[#49225B] dark:text-[#E7DBEF]">STE</span>
-    </div>
-    <div class="flex items-center gap-2">
-      <button onclick="openSearch('')" aria-label="Buscar no app" class="p-2 rounded-lg bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] text-xs"><i data-ico="search" data-size="16"></i></button>
-      <button onclick="toggleTheme()" class="p-2 rounded-lg bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] text-xs">
-        <span id="mobile-theme-icon"><i data-ico="moon" data-size="16"></i></span>
-      </button>
+  <!-- CABEÇALHO (celular) -->
+  <header class="dx-top">
+    <div class="dx-logo">STE <span data-ico="sparkles" data-size="20"></span></div>
+    <div class="dx-tools">
+      <button type="button" class="dx-iconbtn" onclick="openSearch('')" aria-label="Buscar no app"><span data-ico="search" data-size="18"></span></button>
+      <button type="button" class="dx-iconbtn" onclick="toggleTheme()" aria-label="Alternar tema claro e escuro"><span id="mobile-theme-icon"><span data-ico="moon" data-size="18"></span></span></button>
     </div>
   </header>
 
-  <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
-  <main class="flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full pb-28 md:pb-12" id="main-screen-container"></main>
+  <!-- CONTEÚDO -->
+  <main class="dx-main" id="main-screen-container"></main>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR MOBILE -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#200B2B]/95 backdrop-blur-md border-t border-[#EFE1F5] dark:border-[#3D224D] px-2 py-2 flex justify-around items-center z-30">
-    <button onclick="navigate('hoje')" class="mobile-tab flex flex-col items-center gap-1 text-[11px] font-medium text-[#A56ABD]" data-target="hoje">
-      <span class="text-lg leading-none"><i data-ico="sparkles" data-size="22"></i></span>
-      <span>Hoje</span>
-    </button>
-    <button onclick="navigate('tarefas')" class="mobile-tab flex flex-col items-center gap-1 text-[11px] font-medium text-[#8B7D95] dark:text-[#C1B1CB]" data-target="tarefas">
-      <span class="text-lg leading-none"><i data-ico="check-circle" data-size="22"></i></span>
-      <span>Tarefas</span>
-    </button>
-    <button onclick="navigate('saude')" class="mobile-tab flex flex-col items-center gap-1 text-[11px] font-medium text-[#8B7D95] dark:text-[#C1B1CB]" data-target="saude">
-      <span class="text-lg leading-none"><i data-ico="heart-pulse" data-size="22"></i></span>
-      <span>Saúde</span>
-    </button>
-    <button onclick="navigate('financas')" class="mobile-tab flex flex-col items-center gap-1 text-[11px] font-medium text-[#8B7D95] dark:text-[#C1B1CB]" data-target="financas">
-      <span class="text-lg leading-none"><i data-ico="gem" data-size="22"></i></span>
-      <span>Finanças</span>
-    </button>
-    <button onclick="navigate('mais')" class="mobile-tab flex flex-col items-center gap-1 text-[11px] font-medium text-[#8B7D95] dark:text-[#C1B1CB]" data-target="mais">
-      <span class="text-lg leading-none"><i data-ico="menu" data-size="22"></i></span>
-      <span>Mais</span>
-    </button>
+  <!-- BARRA INFERIOR (celular) -->
+  <nav class="dx-tabbar" aria-label="Navegação rápida">
+    <button type="button" class="dx-tab" data-target="hoje" onclick="navigate('hoje')"><span data-ico="home" data-size="22"></span><span>Início</span></button>
+    <button type="button" class="dx-tab" data-target="saude" onclick="navigate('saude')"><span data-ico="heart-pulse" data-size="22"></span><span>Saúde</span></button>
+    <button type="button" class="dx-tab" data-target="agenda" onclick="navigate('agenda')"><span data-ico="calendar" data-size="22"></span><span>Rotina</span></button>
+    <button type="button" class="dx-tab" data-target="financas" onclick="navigate('financas')"><span data-ico="gem" data-size="22"></span><span>Finanças</span></button>
+    <button type="button" class="dx-tab" data-target="mais" onclick="navigate('mais')"><span data-ico="menu" data-size="22"></span><span>Mais</span></button>
   </nav>
 
   <script>
@@ -559,23 +765,25 @@
     let isDark = localStorage.getItem('ste_theme') === 'dark';
 
     const NAV_ITEMS = [
-      { id: 'hoje', label: 'Hoje', icon: 'sparkles', group: 'Geral' },
+      { id: 'hoje', label: 'Início', icon: 'home', group: 'Geral' },
+      { id: 'saude', label: 'Saúde & Autocuidado', icon: 'heart-pulse', group: 'Bem-estar' },
+      { id: 'academia', label: 'Academia & Treinos', icon: 'dumbbell', group: 'Bem-estar' },
+      { id: 'ciclo', label: 'Ciclo menstrual', icon: 'droplet', group: 'Bem-estar' },
+      { id: 'descarrega', label: 'Descarrega a Cabeça', icon: 'brain', group: 'Bem-estar' },
       { id: 'agenda', label: 'Agenda', icon: 'calendar', group: 'Organização' },
       { id: 'tarefas', label: 'Tarefas', icon: 'check-circle', group: 'Organização' },
       { id: 'habitos', label: 'Hábitos & Contadores', icon: 'target', group: 'Organização' },
       { id: 'ponto', label: 'Registrar Ponto', icon: 'clock', group: 'Organização' },
-      { id: 'saude', label: 'Saúde & Autocuidado', icon: 'heart-pulse', group: 'Bem-estar' },
-      { id: 'academia', label: 'Academia & Treinos', icon: 'dumbbell', group: 'Bem-estar' },
+      { id: 'revisao', label: 'Revisão semanal', icon: 'check-circle', group: 'Organização' },
       { id: 'financas', label: 'Finanças', icon: 'gem', group: 'Vida' },
       { id: 'estudos', label: 'Estudos & Carreira', icon: 'book-open', group: 'Vida' },
-      { id: 'ciclo', label: 'Ciclo menstrual', icon: 'droplet', group: 'Bem-estar' },
+      { id: 'conteudo', label: 'Planejador de Conteúdo', icon: 'video', group: 'Vida' },
+      { id: 'sonhos', label: 'Sonhos & Fé', icon: 'dove', group: 'Vida' },
+      { id: 'viagens', label: 'Viagens & Memórias', icon: 'map-pin', group: 'Vida' },
+      { id: 'pessoas', label: 'Pessoas & Datas', icon: 'users', group: 'Vida' },
+      { id: 'documentos', label: 'Documentos & Vencimentos', icon: 'bell', group: 'Vida' },
       { id: 'signos', label: 'Signos & Lua', icon: 'moon', group: 'Vida' },
       { id: 'backup', label: 'Sons e backup', icon: 'download', group: 'Sistema' },
-      { id: 'documentos', label: 'Documentos & Vencimentos', icon: 'bell', group: 'Vida' },
-      { id: 'revisao', label: 'Revisão semanal', icon: 'check-circle', group: 'Vida' },
-      { id: 'pessoas', label: 'Pessoas & Datas', icon: 'users', group: 'Vida' },
-      { id: 'viagens', label: 'Viagens & Memórias', icon: 'map-pin', group: 'Vida' },
-      { id: 'sonhos', label: 'Sonhos & Fé', icon: 'dove', group: 'Vida' },
     ];
 
     let tasks = getStore('tasks', [
@@ -1012,7 +1220,7 @@
       s += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(goal) + '" y2="' + y(goal) + '" stroke="currentColor" stroke-opacity=".45" stroke-dasharray="3 3"/>';
       keys.forEach((k, i) => {
         const v = vals[i], x = padL + i * bw + (bw - bar) / 2, yy = y(v), h = Math.max(2, top + ch - yy);
-        s += '<rect x="' + x.toFixed(1) + '" y="' + (top + ch - h).toFixed(1) + '" width="' + bar.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="' + (v >= goal ? '#C6A467' : '#A56ABD') + '"' + (v > 0 ? '' : ' fill-opacity=".3"') + '/>';
+        s += '<rect x="' + x.toFixed(1) + '" y="' + (top + ch - h).toFixed(1) + '" width="' + bar.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="' + (v >= goal ? '#C6A467' : '#8266C4') + '"' + (v > 0 ? '' : ' fill-opacity=".3"') + '/>';
         if (v > 0) s += '<text x="' + (x + bar / 2).toFixed(1) + '" y="' + (top + ch - h - 3).toFixed(1) + '" text-anchor="middle" font-size="9" fill="currentColor">' + fmt(v) + '</text>';
         s += '<text x="' + (x + bar / 2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="10" fill="currentColor"' + (i === keys.length - 1 ? ' font-weight="700"' : '') + '>' + (i === keys.length - 1 ? 'hoje' : weekdayShort(k)) + '</text>';
       });
@@ -1062,47 +1270,9 @@
       initTheme();
     }
 
-    function renderNav() {
-      const container = document.getElementById('nav-links-container');
-      const groups = ['Geral', 'Organização', 'Bem-estar', 'Vida', 'Sistema'];
-      let html = '';
 
-      groups.forEach(group => {
-        const items = NAV_ITEMS.filter(i => i.group === group);
-        if (items.length > 0) {
-          if (group !== 'Geral') {
-            html += '<p class="text-[10px] font-bold uppercase tracking-wider text-[#8B7D95] dark:text-[#C1B1CB] px-3 pt-4 pb-1">' + group + '</p>';
-          }
-          items.forEach(item => {
-            const isActive = currentScreen === item.id;
-            const cls = isActive 
-              ? 'bg-gradient-to-r from-[#A56ABD] to-[#8E4EA7] text-white shadow-sm font-bold' 
-              : 'text-[#2A1730] dark:text-[#F7EDFB] hover:bg-[#FAF5FC] dark:hover:bg-[#2C153A]';
-            html += '<button onclick="navigate(\'' + item.id + '\')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ' + cls + '">';
-            html += '<span class="flex ' + (isActive ? '' : 'text-[#A56ABD]') + '">' + ico(item.icon, 18) + '</span><span>' + item.label + '</span></button>';
-          });
-        }
-      });
-      container.innerHTML = html;
 
-      document.querySelectorAll('.mobile-tab').forEach(btn => {
-        const target = btn.getAttribute('data-target');
-        if (target === currentScreen) {
-          btn.classList.add('text-[#A56ABD]');
-          btn.classList.remove('text-[#8B7D95]', 'dark:text-[#C1B1CB]');
-        } else {
-          btn.classList.remove('text-[#A56ABD]');
-          btn.classList.add('text-[#8B7D95]', 'dark:text-[#C1B1CB]');
-        }
-      });
-    }
 
-    function navigate(screenId) {
-      currentScreen = screenId;
-      renderNav();
-      renderScreen();
-      window.scrollTo({ top: 0, behavior: steScroll() });
-    }
 
     // ---- Busca global: telas, tarefas, compromissos, gastos, notas, pessoas, viagens, memórias, hábitos e estudos ----
     // Não indexa o Cofre (cartas criptografadas), a Carta para Deus, pedidos de oração nem gratidão.
@@ -1151,6 +1321,7 @@
       grp('Documentos', dcData.filter(x => has(x.name, x.cat, x.note)).map(x => ({ icon: 'bell', t: x.name, s: x.cat + ' · vence ' + fmtDMY(x.due), tab: 'documentos' })));
       grp('Hábitos', habits.filter(h => has(h.title, h.group)).map(h => ({ icon: 'target', t: h.title, s: h.group || 'Hábito', tab: 'habitos' })));
       grp('Estudos', eduData.subjects.filter(x => has(x.name)).map(x => ({ icon: 'book-open', t: x.name, s: 'Matéria', tab: 'estudos' })).concat(eduData.ideas.filter(x => has(x.text)).map(x => ({ icon: 'lightbulb', t: x.text, s: 'Ideia de conteúdo', tab: 'estudos' }))));
+      grp('Conteúdo (TikTok)', cpData.posts.filter(p => has(p.title, p.tags)).map(p => ({ icon: 'video', t: p.title, s: cpLabel(p.status) + (p.date ? ' · ' + fmtDMY(p.date) : ''), tab: 'conteudo' })));
       grp('Sonhos', sonhosData.items.filter(x => has(x.title, x.cat)).map(x => ({ icon: 'dove', t: x.title, s: x.cat, tab: 'sonhos' })));
       return G;
     }
@@ -1166,30 +1337,7 @@
       box.innerHTML = html || '<p class="pg-none">Nada encontrado para "' + esc(raw.trim()) + '".</p>';
     }
 
-    function renderScreen() {
-      const container = document.getElementById('main-screen-container');
-      rolloverDay();
-      syncHabits();
-      if (currentScreen !== 'sonhos' && vaultKey && !vaultDirty()) vaultReset();
-      if (currentScreen === 'hoje') renderHoje(container);
-      else if (currentScreen === 'tarefas') renderTarefas(container);
-      else if (currentScreen === 'agenda') renderAgenda(container);
-      else if (currentScreen === 'habitos') renderHabitos(container);
-      else if (currentScreen === 'saude') renderSaude(container);
-      else if (currentScreen === 'academia') renderAcademia(container);
-      else if (currentScreen === 'financas') renderFinancas(container);
-      else if (currentScreen === 'estudos') renderEstudos(container);
-      else if (currentScreen === 'sonhos') renderSonhos(container);
-      else if (currentScreen === 'ponto') renderPonto(container);
-      else if (currentScreen === 'pessoas') renderPessoas(container);
-      else if (currentScreen === 'revisao') renderRevisao(container);
-      else if (currentScreen === 'documentos') renderDocumentos(container);
-      else if (currentScreen === 'ciclo') renderCiclo(container);
-      else if (currentScreen === 'signos') renderSignos(container);
-      else if (currentScreen === 'backup') renderBackup(container);
-      else if (currentScreen === 'viagens') renderViagens(container);
-      else if (currentScreen === 'mais') renderMais(container);
-    }
+
 
     // ---- Resumo do dia (tela Hoje) ----
     function fmtFalta(d) {
@@ -1382,7 +1530,7 @@
       if (!cgData.set.confetti || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
       const cv = document.createElement('canvas'), W = innerWidth, H = innerHeight, dpr = Math.min(2, devicePixelRatio || 1); cv.className = 'cg-conf'; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
       document.body.appendChild(cv); const g = cv.getContext('2d'); g.scale(dpr, dpr);
-      const cols = ['#A56ABD', '#6E3482', '#C6A467', '#E7DBEF', '#7A8CC4'], ps = [];
+      const cols = ['#8266C4', '#5B47A0', '#C6A467', '#E7DBEF', '#7A8CC4'], ps = [];
       for (let i = 0; i < 46; i++) { const a = Math.random() * Math.PI * 2, v = 2 + Math.random() * 6; ps.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 3, r: 2 + Math.random() * 3.2, c: cols[i % cols.length], rot: Math.random() * 6, vr: (Math.random() - .5) * .4, life: 1 }); }
       let last = performance.now();
       (function tick(now) {
@@ -1457,109 +1605,7 @@
       const pr = ptRegister; ptRegister = function () { pr.apply(this, arguments); steSound('soft'); };
     })();
 
-    function renderHoje(container) {
-      const primKey = hojePrimary(new Date());
-      hojePrimaryKey = primKey;
-      const doneTasks = tasks.filter(t => t.done).length;
-      const progressPercent = tasks.length > 0 ? Math.round((doneTasks / tasks.length) * 100) : 0;
-      let tasksListHtml = tasks.map(t => {
-        const pColor = t.priority === 'Urgente' ? 'bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-400' :
-                       t.priority === 'Importante' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400' :
-                       'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400';
-        return '<div onclick="toggleTask(' + t.id + ')" class="cursor-pointer flex items-center justify-between p-3.5 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] hover:bg-[#FAF5FC] dark:hover:bg-[#2C153A] transition-colors">' +
-               '<div class="flex items-center gap-3"><div class="w-5 h-5 rounded-full border border-[#A56ABD] flex items-center justify-center ' + (t.done ? 'bg-[#A56ABD] text-white' : '') + '">' +
-               (t.done ? ico('check', 12, '', 2.8) : '') + '</div><span class="text-xs md:text-sm font-medium ' + (t.done ? 'line-through text-[#8B7D95]' : '') + '">' + t.title + '</span></div>' +
-               '<span class="text-[10px] font-bold px-2.5 py-1 rounded-full ' + pColor + '">' + t.priority + '</span></div>';
-      }).join('');
 
-      container.innerHTML = `
-        <header class="mb-8">
-          <div class="flex items-center justify-between mb-2">
-            <p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-            <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-[#E7DBEF] dark:bg-[#3D224D] text-[#49225B] dark:text-[#E7DBEF]">${ico('sparkles', 13, 'mr-1')}Dia Produtivo</span>
-          </div>
-          <h1 class="font-serif-display text-3xl md:text-4xl font-medium">Olá, Stephanie</h1>
-          <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB] mt-1">Que seu dia seja leve, produtivo e cheio de realizações.</p>
-        </header>
-
-        <div onclick="showDailyPopup()" class="ste-psalm-card custom-card rounded-2xl p-5 mb-6 border-l-4 border-[#C6A467] bg-gradient-to-r from-white to-[#FAF5FC] dark:from-[#261131] dark:to-[#1B0A24]">
-          <p class="text-xs uppercase font-bold tracking-wider text-[#C6A467] mb-1">${ico('bible', 14, 'mr-1.5')}Salmo do Dia · Salmo ${dailyState && dailyState.psalm ? dailyState.psalm : ''}</p>
-          <p class="font-serif-display text-base md:text-lg italic text-[#2A1730] dark:text-[#F7EDFB]">
-            ${dailyState && dailyState.psalm ? esc(PSALM_THEMES[dailyState.psalm - 1]) : ''}
-          </p>
-          <p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-2">Toque para abrir · ler o salmo completo</p>
-        </div>
-
-        ${cgChipsHtml()}
-
-        ${hojePrincipalHtml(primKey)}
-
-        ${hojeAttentionHtml()}
-
-        ${primKey === 'ponto' ? '' : ptHojeHtml()}
-
-        ${summaryHtml()}
-
-        ${hojeExtrasHtml()}
-
-        ${primKey === 'treino' ? '' : hojeTreinoHtml()}
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-          <div class="custom-card rounded-2xl p-6 flex items-center justify-between">
-            <div>
-              <p class="text-xs font-semibold text-[#8B7D95] dark:text-[#C1B1CB] uppercase">Metas de Hoje</p>
-              <h3 class="font-serif-display text-3xl font-bold mt-1 text-[#49225B] dark:text-white">${progressPercent}%</h3>
-              <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mt-1">${doneTasks} de ${tasks.length} concluídas</p>
-            </div>
-            <div class="w-16 h-16 rounded-full flex items-center justify-center bg-[#E7DBEF] dark:bg-[#3D224D]">
-              <span class="font-bold text-sm text-[#A56ABD]">${doneTasks}/${tasks.length}</span>
-            </div>
-          </div>
-
-          <div class="custom-card rounded-2xl p-6">
-            <div class="flex justify-between items-start mb-3">
-              <div>
-                <p class="text-xs font-semibold text-[#8B7D95] dark:text-[#C1B1CB] uppercase">Água</p>
-                <h3 class="font-serif-display text-2xl font-bold mt-1">${counters.water} <span class="text-xs font-normal text-[#8B7D95]">/ ${waterGoal()} copos</span></h3>
-              </div>
-              <span class="text-[#A56ABD]">${ico('droplet', 26)}</span>
-            </div>
-            <div class="w-full bg-[#E7DBEF] dark:bg-[#3D224D] h-2 rounded-full overflow-hidden mb-3">
-              <div class="bg-[#A56ABD] h-full" style="width: ${Math.min(100, (counters.water / waterGoal()) * 100)}%"></div>
-            </div>
-            <button onclick="addWater()" class="w-full py-2 bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] rounded-lg text-xs font-bold text-[#A56ABD]">
-              + Beber 1 copo
-            </button>
-          </div>
-
-          <div class="custom-card rounded-2xl p-6">
-            <div class="flex justify-between items-start mb-3">
-              <div>
-                <p class="text-xs font-semibold text-[#8B7D95] dark:text-[#C1B1CB] uppercase">Passos</p>
-                <h3 class="font-serif-display text-2xl font-bold mt-1">${counters.steps.toLocaleString('pt-BR')}</h3>
-              </div>
-              <span class="text-[#C6A467]">${ico('footprints', 26)}</span>
-            </div>
-            <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB]">Meta: ${fmtPassos(stepsGoal())} passos</p>
-            <div class="mt-3 flex gap-2">
-              <button onclick="addSteps(500)" class="flex-1 py-2 bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] rounded-lg text-xs font-bold text-[#A56ABD]">+ 500</button>
-              <button onclick="addSteps(1000)" class="flex-1 py-2 bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] rounded-lg text-xs font-bold text-[#A56ABD]">+ 1.000</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="custom-card rounded-2xl p-6">
-          <div class="flex justify-between items-center mb-5">
-            <div>
-              <h2 class="font-serif-display text-xl font-bold">Tarefas Prioritárias</h2>
-              <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB]">Foco do seu dia</p>
-            </div>
-            <button onclick="navigate('tarefas')" class="text-xs font-bold text-[#A56ABD] hover:underline">Ver todas ${ico('arrow-right', 13, 'ml-0.5')}</button>
-          </div>
-          <div class="space-y-3">${tasksListHtml}</div>
-        </div>
-      `;
-    }
 
     // ---- Resumo da semana ----
     function taskWeekSummaryHtml() {
@@ -2406,8 +2452,8 @@
       const meio = isoDay(new Date(now.getFullYear(), now.getMonth(), now.getDate() - Math.round(span / 2)));
       const marcas = span >= 6 ? [[startKey, 'start'], [meio, 'middle'], [hoje, 'end']] : [[startKey, 'start'], [hoje, 'end']];
       marcas.filter((m, n) => n === 0 || m[0] !== marcas[n - 1][0]).forEach(m => { g += '<text x="' + x(m[0]).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + m[1] + '" font-size="10" fill="currentColor"' + (m[0] === hoje ? ' font-weight="700"' : '') + '>' + (m[0] === hoje ? 'hoje' : fmtDM(m[0])) + '</text>'; });
-      if (vis.length > 1) g += '<polyline fill="none" stroke="#A56ABD" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="' + vis.map(p => x(p.k).toFixed(1) + ',' + y(p.v).toFixed(1)).join(' ') + '"/>';
-      vis.forEach((p, n) => { const ult = n === vis.length - 1; g += '<circle cx="' + x(p.k).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (ult ? 5 : 3) + '" fill="' + (ult ? '#C6A467' : '#A56ABD') + '"><title>' + fmtDM(p.k) + ': ' + fmtLoad(p.v) + ' ' + unit + (p.reps ? ' × ' + p.reps : '') + '</title></circle>'; });
+      if (vis.length > 1) g += '<polyline fill="none" stroke="#8266C4" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="' + vis.map(p => x(p.k).toFixed(1) + ',' + y(p.v).toFixed(1)).join(' ') + '"/>';
+      vis.forEach((p, n) => { const ult = n === vis.length - 1; g += '<circle cx="' + x(p.k).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (ult ? 5 : 3) + '" fill="' + (ult ? '#C6A467' : '#8266C4') + '"><title>' + fmtDM(p.k) + ': ' + fmtLoad(p.v) + ' ' + unit + (p.reps ? ' × ' + p.reps : '') + '</title></circle>'; });
       [vis.length > 1 ? first : null, last].forEach(p => {
         if (!p) return;
         const ax = x(p.k), anc = ax > W - 40 ? 'end' : ax < padL + 24 ? 'start' : 'middle';
@@ -3409,7 +3455,7 @@
       let g = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="w-full h-auto" role="img" aria-label="Horas de estudo por dia, últimos 7 dias: ' + resumo + '">';
       keys.forEach((k, i) => {
         const h = Math.max(1, (vals[i] / max) * ch), x = padL + i * bw + bw * 0.18, w = bw * 0.64, y = top + ch - h, hoje = k === isoDay(new Date());
-        g += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="' + (hoje ? '#C6A467' : '#A56ABD') + '" fill-opacity="' + (vals[i] > 0 ? '1' : '.25') + '"><title>' + fmtDM(k) + ': ' + fmtH(vals[i]) + ' h</title></rect>' +
+        g += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="' + (hoje ? '#C6A467' : '#8266C4') + '" fill-opacity="' + (vals[i] > 0 ? '1' : '.25') + '"><title>' + fmtDM(k) + ': ' + fmtH(vals[i]) + ' h</title></rect>' +
           '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (top + ch + 14) + '" text-anchor="middle" font-size="9" fill="#8B7D95">' + weekdayShort(k) + '</text>' +
           (vals[i] > 0 ? '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (y - 4).toFixed(1) + '" text-anchor="middle" font-size="9" font-weight="700" fill="#8B7D95">' + fmtH(vals[i]) + '</text>' : '');
       });
@@ -4827,7 +4873,7 @@
       const it = vbOpenId != null ? sonhosData.items.find(x => x.id === vbOpenId && !x.doneOn) : null;
       if (!it) return '';
       return '<div class="vb-ov" onmousedown="if(event.target===this)vbClose()" role="dialog" aria-modal="true" aria-label="' + esc(it.title) + '"><div class="vb-sheet"><div class="vb-cover">' + (it.img ? '<img src="' + it.img + '" alt="Foto do sonho">' : '') +
-        '<button class="vb-x" onclick="vbClose()" aria-label="Fechar">' + ico('x', 16) + '</button><div style="position:absolute;left:10px;bottom:10px;display:flex;gap:8px"><label class="px-3 py-1.5 rounded-lg bg-white/90 text-[#49225B] text-xs font-bold cursor-pointer">' + (it.img ? 'Trocar foto' : 'Adicionar foto') + '<input type="file" accept="image/*" style="display:none" onchange="vbCoverPick(' + it.id + ',this)"></label>' + (it.img ? '<button onclick="vbCoverClear(' + it.id + ')" class="px-3 py-1.5 rounded-lg bg-[rgba(36,9,47,.7)] text-white text-xs font-bold">Remover</button>' : '') + '</div></div>' +
+        '<button class="vb-x" onclick="vbClose()" aria-label="Fechar">' + ico('x', 16) + '</button><div style="position:absolute;left:10px;bottom:10px;display:flex;gap:8px"><label class="px-3 py-1.5 rounded-lg bg-white/90 text-[#49225B] text-xs font-bold cursor-pointer">' + (it.img ? 'Trocar foto' : 'Adicionar foto') + '<input type="file" accept="image/*" style="display:none" onchange="vbCoverPick(' + it.id + ',this)"></label>' + (it.img ? '<button onclick="vbCoverClear(' + it.id + ')" class="px-3 py-1.5 rounded-lg bg-[rgba(24,20,58,.7)] text-white text-xs font-bold">Remover</button>' : '') + '</div></div>' +
         '<div style="padding:16px">' + (it.desc ? '<p class="text-sm mb-3">' + esc(it.desc) + '</p>' : '') + dreamItemHtml(it) + '</div></div></div>';
     }
     function renderSonhos(container) {
@@ -4889,27 +4935,7 @@
       `;
     }
 
-    function renderMais(container) {
-      container.innerHTML = `
-        <header class="mb-6">
-          <h1 class="font-serif-display text-3xl font-bold">Todas as Áreas</h1>
-          <p class="text-xs text-[#8B7D95]">Acesse qualquer módulo do STE</p>
-        </header>
 
-        <div class="grid grid-cols-2 gap-3">
-          ${NAV_ITEMS.map(item => `
-            <button onclick="navigate('${item.id}')" class="custom-card p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2">
-              <span class="w-12 h-12 rounded-2xl bg-[#F5EBFA] dark:bg-[#3F234F] text-[#A56ABD] dark:text-[#DAB97C] flex items-center justify-center">${ico(item.icon, 26)}</span>
-              <span class="text-xs font-bold">${item.label}</span>
-            </button>
-          `).join('')}
-        </div>
-
-        ${renderAppCard()}
-
-        ${backupCardHtml()}
-      `;
-    }
 
     function toggleTask(id) {
       const t = tasks.find(x => x.id === id);
@@ -5305,6 +5331,7 @@
       (typeof healthData !== 'undefined' ? listOf('appts') : []).forEach(a => { if (a.date === day) out.push({ id: 'h' + a.id, icon: 'heart-pulse', title: a.title, sub: a.kind, tab: 'saude' }); });
       (typeof eduData !== 'undefined' ? eduData.exams : []).forEach(x => { if (x.date === day && !x.done) out.push({ id: 'e' + x.id, icon: 'book-open', title: x.title, sub: x.kind + (x.sid && eduSub(x.sid) ? ' · ' + eduSub(x.sid).name : ''), tab: 'estudos' }); });
       pdForDay(day).forEach(x => out.push(x));
+      if (typeof cpData !== 'undefined') cpData.posts.forEach(p => { if (p.date === day && p.status !== 'publicado' && p.status !== 'ideia') out.push({ id: 'cp' + p.id, icon: 'video', title: 'Postar: ' + p.title, sub: 'TikTok' + (p.time ? ' · ' + p.time : ''), tab: 'conteudo' }); });
       dcForDay(day).forEach(x => out.push(x));
       vgTripsForDay(day).forEach(x => out.push(x));
       (typeof tasks !== 'undefined' ? tasks : []).forEach(t => { if (t.due === day && !t.done) out.push({ id: 't' + t.id, icon: 'check-circle', title: t.title, sub: 'Tarefa · ' + t.priority + (t.cat ? ' · ' + t.cat : ''), tab: 'tarefas' }); });
@@ -5643,7 +5670,7 @@
 
 
     // ================= Ciclo menstrual: registro simples + estimativas calculadas só com as datas que você marca =================
-    const CY_COL = { p: '#D1607A', fol: '#A56ABD', ov: '#C6A467', lut: '#7A8CC4' };
+    const CY_COL = { p: '#D1607A', fol: '#8266C4', ov: '#C6A467', lut: '#7A8CC4' };
     const CY_SYM = ['Cólica', 'Dor de cabeça', 'Inchaço', 'Sensibilidade', 'Cansaço', 'Acne', 'Desejo por doce', 'Insônia'];
     const CY_MOOD = ['Tranquila', 'Animada', 'Irritada', 'Ansiosa', 'Triste', 'Sensível'];
     const CY_FLOW = ['Nenhum', 'Leve', 'Médio', 'Intenso'];
@@ -5768,7 +5795,7 @@
       ['Sagitário', 11, 22, 'Fogo', 'Mutável', 'Júpiter', 'liberdade, otimismo, busca de sentido'], ['Capricórnio', 12, 22, 'Terra', 'Cardinal', 'Saturno', 'disciplina, ambição, responsabilidade'],
       ['Aquário', 1, 20, 'Ar', 'Fixo', 'Urano e Saturno', 'originalidade, coletivo, independência'], ['Peixes', 2, 19, 'Água', 'Mutável', 'Netuno e Júpiter', 'sensibilidade, intuição, imaginação']
     ];
-    const SG_COL = { Fogo: '#D1607A', Terra: '#C6A467', Ar: '#7A8CC4', Água: '#A56ABD' };
+    const SG_COL = { Fogo: '#D1607A', Terra: '#C6A467', Ar: '#7A8CC4', Água: '#8266C4' };
     let sgData = getStore('signos', null);
     if (!sgData || typeof sgData !== 'object' || Array.isArray(sgData)) sgData = {};
     function sgSave() { setStore('signos', sgData); }
@@ -5922,7 +5949,7 @@
           const v = vals[i];
           return '<div class="text-center"><div class="h-8 rounded-md flex items-center justify-center text-[11px] font-bold ' +
             (v ? (v >= 4 ? 'text-white' : '') : 'bg-[#E7DBEF] dark:bg-[#3D224D] text-[#8B7D95]') + '"' +
-            (v ? ' style="background:rgba(165,106,189,' + (0.18 + v * 0.16).toFixed(2) + ')"' : '') + '>' + (v || '·') + '</div>' +
+            (v ? ' style="background:rgba(130,102,196,' + (0.18 + v * 0.16).toFixed(2) + ')"' : '') + '>' + (v || '·') + '</div>' +
             '<span class="text-[10px] text-[#8B7D95]">' + (i === 6 ? 'hoje' : weekdayShort(k)) + '</span></div>';
         }).join('') + '</div></div>';
     }
@@ -6329,10 +6356,10 @@
       marcas.filter((m, n) => n === 0 || m[0] !== marcas[n - 1][0]).forEach(m => { g += '<text x="' + x(m[0]).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + m[1] + '" font-size="10" fill="currentColor"' + (m[0] === hoje ? ' font-weight="700"' : '') + '>' + (m[0] === hoje ? 'hoje' : fmtDM(m[0])) + '</text>'; });
       if (temMeta) g += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(goal).toFixed(1) + '" y2="' + y(goal).toFixed(1) + '" stroke="#C6A467" stroke-width="1.5" stroke-dasharray="5 4"/>' +
         '<text x="' + (W - padR) + '" y="' + (y(goal) - 4).toFixed(1) + '" text-anchor="end" font-size="10" fill="#C6A467" font-weight="700">meta ' + fy(goal) + '</text>';
-      if (pts.length > 1) g += '<polyline fill="none" stroke="#A56ABD" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="' + pts.map(p => x(p.k).toFixed(1) + ',' + y(p.v).toFixed(1)).join(' ') + '"/>';
+      if (pts.length > 1) g += '<polyline fill="none" stroke="#8266C4" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="' + pts.map(p => x(p.k).toFixed(1) + ',' + y(p.v).toFixed(1)).join(' ') + '"/>';
       pts.forEach((p, n) => {
         const ultimo = n === pts.length - 1;
-        g += '<circle cx="' + x(p.k).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (ultimo ? 5 : 3) + '" fill="' + (ultimo ? '#C6A467' : '#A56ABD') + '"><title>' + fmtDM(p.k) + ': ' + fmtH(p.v) + ' ' + M.unit + '</title></circle>';
+        g += '<circle cx="' + x(p.k).toFixed(1) + '" cy="' + y(p.v).toFixed(1) + '" r="' + (ultimo ? 5 : 3) + '" fill="' + (ultimo ? '#C6A467' : '#8266C4') + '"><title>' + fmtDM(p.k) + ': ' + fmtH(p.v) + ' ' + M.unit + '</title></circle>';
       });
       [pts.length > 1 ? first : null, lastP].forEach((p, n) => {
         if (!p) return;
@@ -6839,6 +6866,7 @@
       pdReminders(now).forEach(x => out.push(x));
       dcReminders(now).forEach(x => out.push(x));
       cyReminders(now).forEach(x => out.push(x));
+      cpReminders(now).forEach(x => out.push(x));
       return out;
     }
     function remTick() {
@@ -7231,6 +7259,441 @@
     }, 1000);
     setInterval(() => { if (currentScreen === 'hoje' && !document.hidden) ptRefreshTop(); }, 30000);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) ptRefreshTop(); });
+
+    // ================= STE v2: ícones novos, navegação, tela inicial e "Mais" =================
+    Object.assign(ICONS, {
+      'home': { f: 'M4 11l8-7 8 7v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z', l: 'M10 21v-6h4v6' },
+      'heart': { f: 'M12 20s-7-4.4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.6-9 9-9 9z', l: '' },
+      'scale': { f: 'M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z', l: 'M8 10a4.5 4.5 0 0 1 8 0 M12 10l1.7-1.9' },
+      'utensils': { f: '', l: 'M7 3v7 M4 3v4a3 3 0 0 0 6 0V3 M7 10v11 M17 3c-2.2 1.8-3 4.4-3 7.5h3V21' },
+      'pill': { f: 'M10.5 20.5a5 5 0 0 1-7-7l9-9a5 5 0 0 1 7 7z', l: 'M8.5 8.5l7 7' },
+      'brain': { f: 'M9 4.5a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 4.2A3 3 0 0 0 11 19V6a1.6 1.6 0 0 0-2-1.5z M15 4.5a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 4.2A3 3 0 0 1 13 19V6a1.6 1.6 0 0 1 2-1.5z', l: 'M8 10h2 M14 14h2' },
+      'video': { f: 'M3 7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', l: 'M15 10l6-3v10l-6-3' },
+      'star': { f: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z', l: '' },
+      'pencil': { f: '', l: 'M4 20l4-1 11-11-3-3L5 16z M14 6l3 3' },
+      'trash': { f: '', l: 'M4 7h16 M9 7V4h6v3 M6 7l1 13h10l1-13 M10 11v6 M14 11v6' },
+      'chevron-left': { f: '', l: 'M15 5l-7 7 7 7' },
+      'chevron-right': { f: '', l: 'M9 5l7 7-7 7' }
+    });
+
+    // ---- Navegação ----
+    const DX_TABOF = { hoje: 'hoje', saude: 'saude', academia: 'saude', ciclo: 'saude', descarrega: 'saude', agenda: 'agenda', tarefas: 'agenda', habitos: 'agenda', ponto: 'agenda', revisao: 'agenda', financas: 'financas' };
+    function dxTab(screen) { return DX_TABOF[screen] || 'mais'; }
+    function renderNav() {
+      const c = document.getElementById('nav-links-container');
+      let html = '';
+      ['Geral', 'Bem-estar', 'Organização', 'Vida', 'Sistema'].forEach(g => {
+        const items = NAV_ITEMS.filter(i => i.group === g);
+        if (!items.length) return;
+        if (g !== 'Geral') html += '<h6>' + g + '</h6>';
+        items.forEach(it => {
+          const on = currentScreen === it.id;
+          html += '<button type="button" class="' + (on ? 'on' : '') + '" onclick="navigate(\'' + it.id + '\')"' + (on ? ' aria-current="page"' : '') + '>' + ico(it.icon, 22) + '<span>' + it.label + '</span></button>';
+        });
+      });
+      if (c) c.innerHTML = html;
+      document.querySelectorAll('.dx-tab').forEach(b => {
+        const on = b.getAttribute('data-target') === dxTab(currentScreen);
+        b.classList.toggle('on', on);
+        if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+      });
+      const bk = document.getElementById('dx-bk-info');
+      if (bk) {
+        const d = getStore('lastbackup', null), dt = d ? new Date(d) : null;
+        bk.textContent = dt && !isNaN(dt) ? 'Último backup: ' + pad2(dt.getDate()) + '/' + pad2(dt.getMonth() + 1) : 'Nenhum backup feito ainda';
+      }
+    }
+    function dxScrollTo(txt) {
+      setTimeout(() => {
+        const hs = [].slice.call(document.querySelectorAll('#main-screen-container h2, #main-screen-container h3'));
+        const h = hs.find(x => x.textContent.trim().toLowerCase().indexOf(txt.toLowerCase()) === 0);
+        const el = h && (h.closest('.custom-card') || h);
+        if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); else window.scrollTo({ top: 0 });
+      }, 90);
+    }
+    function navigate(screenId, section) {
+      currentScreen = screenId;
+      renderNav();
+      renderScreen();
+      if (section) dxScrollTo(section); else window.scrollTo({ top: 0, behavior: steScroll() });
+    }
+    const DX_SUB = [['agenda', 'tarefas', 'habitos', 'ponto', 'revisao'], ['saude', 'academia', 'ciclo', 'descarrega'], ['sonhos', 'viagens', 'pessoas', 'documentos', 'signos'], ['estudos', 'conteudo']];
+    const DX_SHORT = { agenda: 'Agenda', tarefas: 'Tarefas', habitos: 'Hábitos', ponto: 'Ponto', revisao: 'Revisão', saude: 'Saúde', academia: 'Academia', ciclo: 'Ciclo', descarrega: 'Descarrega a Cabeça', sonhos: 'Sonhos & Fé', viagens: 'Viagens', pessoas: 'Pessoas', documentos: 'Documentos', signos: 'Signos & Lua', estudos: 'Estudos', conteudo: 'Conteúdo' };
+    function dxSubnavHtml(id) {
+      const g = DX_SUB.find(a => a.indexOf(id) >= 0);
+      if (!g) return '';
+      return '<nav class="dx-sub" aria-label="Seções relacionadas">' + g.map(k => '<button type="button" class="' + (k === id ? 'on' : '') + '"' + (k === id ? ' aria-current="page"' : '') + ' onclick="navigate(\'' + k + '\')">' + DX_SHORT[k] + '</button>').join('') + '</nav>';
+    }
+    function renderScreen() {
+      const container = document.getElementById('main-screen-container');
+      rolloverDay();
+      syncHabits();
+      if (currentScreen !== 'sonhos' && vaultKey && !vaultDirty()) vaultReset();
+      const R = { hoje: renderHoje, tarefas: renderTarefas, agenda: renderAgenda, habitos: renderHabitos, saude: renderSaude, academia: renderAcademia, financas: renderFinancas, estudos: renderEstudos, sonhos: renderSonhos, ponto: renderPonto, pessoas: renderPessoas, revisao: renderRevisao, documentos: renderDocumentos, ciclo: renderCiclo, signos: renderSignos, backup: renderBackup, viagens: renderViagens, mais: renderMais, descarrega: renderDescarrega, conteudo: renderConteudo };
+      const fn = R[currentScreen];
+      if (fn) fn(container);
+      const sub = dxSubnavHtml(currentScreen);
+      if (sub) container.insertAdjacentHTML('afterbegin', sub);
+    }
+
+    // ---- Tela "Mais" ----
+    function renderMais(container) {
+      const groups = ['Bem-estar', 'Organização', 'Vida', 'Sistema'];
+      container.innerHTML = '<header class="mb-6"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Menu</p><h1 class="font-serif-display text-3xl font-bold">Todas as Áreas</h1><p class="text-xs md:text-sm text-[#8B7D95]">Acesse qualquer módulo do STE</p></header>' +
+        groups.map(g => '<p class="dx-sec">' + g + '</p><div class="dx-tiles">' + NAV_ITEMS.filter(i => i.group === g).map(it => '<button type="button" class="dx-tile" onclick="navigate(\'' + it.id + '\')"><i>' + ico(it.icon, 26) + '</i><span>' + it.label + '</span></button>').join('') + '</div>').join('') +
+        renderAppCard() + backupCardHtml();
+    }
+
+    // ---- Tela inicial ----
+    const DX_QUOTES = ['Pequenos hábitos, repetidos com carinho, mudam uma vida inteira.', 'Cuidar de você também é ser produtiva.', 'Um passo de cada vez ainda é caminho.', 'Constância vale mais do que perfeição.', 'Você não precisa fazer tudo hoje, só o próximo passo.', 'O que você faz com regularidade te constrói em silêncio.', 'Descansar também faz parte do plano.', 'Seu ritmo é válido. Siga com gentileza.', 'Grandes sonhos cabem em tarefas pequenas.', 'Hoje é um bom dia para recomeçar do seu jeito.', 'Gratidão abre espaço; foco preenche.', 'Respire. Você está construindo algo bonito.'];
+    const DX_TIPS = [
+      ['Reserve um momento só seu hoje', 'Pode ser um treino, uma série, um banho relaxante ou apenas um tempo longe do celular. Você merece se priorizar!'],
+      ['Água por perto', 'Deixe um copo ou garrafa à vista na mesa. Fica muito mais fácil bater a meta do dia.'],
+      ['Alongue por 5 minutos', 'Ombros, pescoço e costas agradecem uma pausa curta entre uma tarefa e outra.'],
+      ['Três linhas de gratidão', 'Escreva três coisas boas de hoje. Leva um minuto e muda o tom do fim do dia.'],
+      ['Esvazie a cabeça', 'Se algo está rodando na sua mente, escreva em Descarrega a Cabeça e depois escolha só o próximo passo.'],
+      ['Luz natural pela manhã', 'Alguns minutos perto de uma janela ajudam a marcar o começo do dia.'],
+      ['Prepare o amanhã', 'Antes de dormir, escolha as três tarefas mais importantes de amanhã. A manhã começa mais leve.'],
+      ['Caminhada curta', 'Dez minutos andando já contam. Que tal depois do almoço?'],
+      ['Pausa de tela', 'Olhe para longe por 20 segundos a cada meia hora de tela. Seus olhos descansam.'],
+      ['Respire fundo', 'Inspire contando até quatro e solte contando até seis, algumas vezes, quando o dia apertar.']
+    ];
+    let dxTipOff = 0;
+    function dxNextTip() { dxTipOff++; const el = document.getElementById('dx-tipcard'); if (el) el.outerHTML = dxTipHtml(); }
+    function dxTipHtml() {
+      const n = Math.floor(Date.now() / 864e5), t = DX_TIPS[(n + dxTipOff) % DX_TIPS.length];
+      return '<section class="dx-card dx-tip" id="dx-tipcard"><span class="deco">' + ico('lightbulb', 30) + '</span><h2>Dica da STE ' + ico('sparkles', 18) + '</h2><p><b>' + esc(t[0]) + '.</b> ' + esc(t[1]) + '</p><button type="button" class="dx-btn2" onclick="dxNextTip()">Ver mais dicas ' + ico('arrow-right', 14) + '</button></section>';
+    }
+    function dxHeroArt() {
+      return '<svg class="dx-art" viewBox="0 0 300 220" aria-hidden="true">' +
+        '<g transform="translate(176 14)"><path d="M54 60C50 40 44 20 40 4M54 60C60 36 70 20 82 8M54 60C54 40 56 24 56 2" stroke="#7D9A7B" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+        [[40, 8], [38, 20], [42, 32], [44, 44], [82, 12], [78, 24], [74, 36], [56, 6], [58, 18], [57, 30], [56, 42]].map((p, i) => '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="4.6" ry="9" fill="' + (i % 2 ? '#8E73CC' : '#A58BE0') + '" transform="rotate(' + (i % 3 * 14 - 14) + ' ' + p[0] + ' ' + p[1] + ')"/>').join('') +
+        '<path d="M26 60h56l-6 62a8 8 0 0 1-8 7H40a8 8 0 0 1-8-7z" fill="#EDE5FA" stroke="#C9B8F0" stroke-width="1.5"/></g>' +
+        '<g transform="translate(150 120)"><rect x="0" y="0" width="120" height="26" rx="5" fill="#4B3F8F"/><text x="60" y="17" text-anchor="middle" font-family="Fraunces,serif" font-size="12" fill="#E8D2A7" letter-spacing="2">FOCO</text>' +
+        '<rect x="-6" y="28" width="132" height="26" rx="5" fill="#3A2F7C"/><text x="60" y="45" text-anchor="middle" font-family="Fraunces,serif" font-size="12" fill="#E8D2A7" letter-spacing="2">SAÚDE</text>' +
+        '<rect x="0" y="56" width="120" height="26" rx="5" fill="#2D2566"/><text x="60" y="73" text-anchor="middle" font-family="Fraunces,serif" font-size="12" fill="#E8D2A7" letter-spacing="2">SONHOS</text></g>' +
+        '<g transform="translate(88 40)"><rect x="4" y="0" width="64" height="10" rx="5" fill="#3A2F7C"/><path d="M0 12h72l-9 128a10 10 0 0 1-10 9H19a10 10 0 0 1-10-9z" fill="#9C84D8"/><path d="M8 12h14l-6 137H20a10 10 0 0 1-10-9z" fill="#B9A5E8" opacity=".6"/>' +
+        '<text x="38" y="62" text-anchor="middle" font-family="Fraunces,serif" font-size="17" fill="#E8D2A7" letter-spacing="1">STE</text></g></svg>';
+    }
+    function dxFace(n) {
+      const eye = n === 5 ? '<path d="M14 20q3-4 6 0M28 20q3-4 6 0" stroke="#7A5A22" stroke-width="2" fill="none" stroke-linecap="round"/>' : n === 2 ? '<path d="M14 21h6M28 21h6" stroke="#7A5A22" stroke-width="2" stroke-linecap="round"/>' : '<circle cx="17" cy="21" r="2.2" fill="#7A5A22"/><circle cx="31" cy="21" r="2.2" fill="#7A5A22"/>';
+      const mouth = { 1: 'M16 34q8-7 16 0', 2: 'M17 33q7-3 14 0', 3: 'M17 32h14', 4: 'M16 30q8 7 16 0', 5: 'M14 28q10 12 20 0z' }[n];
+      const extra = n === 1 ? '<path d="M12 14l8 3M36 14l-8 3" stroke="#7A5A22" stroke-width="1.6" stroke-linecap="round"/>' : n === 2 ? '<path d="M35 26q2 4 0 6" stroke="#8FA8D8" stroke-width="2" fill="none" stroke-linecap="round"/>' : '';
+      return '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#F4E3B8" stroke="#C6A467" stroke-width="1.4"/>' + eye + extra + '<path d="' + mouth + '" stroke="#7A5A22" stroke-width="2" fill="' + (n === 5 ? '#fff' : 'none') + '" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+    const DX_MOODS = [[1, 'Mal'], [2, 'Cansada'], [3, 'Normal'], [4, 'Bem'], [5, 'Animada']];
+
+    function dxHealthToday() {
+      const hoje = isoDay(new Date()), wg = waterGoal(), w = counters.water || 0, sg = stepsGoal(), st = counters.steps || 0;
+      let kcal = 0, feitas = 0;
+      listOf('meals').forEach(m => { if (mealDone(m.id, hoje)) { feitas++; kcal += (mealEntry(m, todayIdx()).k || 0); } });
+      const kg = parseInt(healthData.kcalGoal, 10) || 0, parts = [];
+      parts.push({ n: 'água', f: Math.min(1, w / wg) });
+      parts.push({ n: 'passos', f: Math.min(1, st / sg) });
+      if (habits.length) parts.push({ n: 'hábitos', f: habits.filter(h => h.done).length / habits.length });
+      const plano = wkData.workouts.length ? wkById(wkPlan()[todayIdx()]) : null;
+      if (plano) parts.push({ n: 'treino', f: wkDoneOn(hoje).indexOf(plano.id) >= 0 ? 1 : 0 });
+      const pct = Math.round(parts.reduce((a, p) => a + p.f, 0) / parts.length * 100);
+      return { w, wg, st, sg, kcal, kg, feitas, pct, parts };
+    }
+    function dxMetric(icon, label, big, sub, frac, gold, extra) {
+      return '<div class="dx-metric"><div><span><span style="color:' + (gold ? 'var(--gold)' : 'var(--primary)') + '">' + ico(icon, 15) + '</span>' + label + '</span>' + (extra || '') + '</div><strong>' + big + (sub ? ' <small>' + sub + '</small>' : '') + '</strong>' + (frac == null ? '' : '<div class="dx-bar' + (gold ? ' gold' : '') + '"><b style="width:' + Math.round(Math.min(1, Math.max(0, frac)) * 100) + '%"></b></div>') + '</div>';
+    }
+    function dxHealthHtml() {
+      const h = dxHealthToday(), r = 52, C = 2 * Math.PI * r, off = C * (1 - h.pct / 100);
+      const tone = h.pct >= 70 ? '' : h.pct >= 30 ? ' mid' : ' low', txt = h.pct >= 70 ? 'Em dia' : h.pct >= 30 ? 'A caminho' : 'Começando o dia';
+      const cal = h.kg || h.kcal ? dxMetric('flame', 'Calorias consumidas', fmtPassos(Math.round(h.kcal)), h.kg ? '/ ' + fmtPassos(h.kg) + ' kcal' : 'kcal', h.kg ? h.kcal / h.kg : null, true) : dxMetric('flame', 'Calorias consumidas', 'Sem registro', 'marque as refeições feitas', null, true);
+      return '<section class="dx-card" id="dx-saude"><div class="dx-head"><h2>Minha saúde hoje</h2><span class="dx-pill' + tone + '">' + txt + '</span></div><div class="dx-health"><div><div class="dx-ring"><svg viewBox="0 0 128 128"><defs><linearGradient id="dxrg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5BA07B"/><stop offset="1" stop-color="#8266C4"/></linearGradient></defs><circle cx="64" cy="64" r="' + r + '" fill="none" stroke="var(--ste-soft)" stroke-width="12"/><circle cx="64" cy="64" r="' + r + '" fill="none" stroke="url(#dxrg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"/></svg><div class="pct">' + h.pct + '%</div></div><p class="dx-ringcap">das metas de hoje<br>(' + h.parts.map(p => p.n).join(', ') + ')</p></div><div>' +
+        cal + dxMetric('droplet', 'Água ingerida', h.w, '/ ' + h.wg + ' copos', h.w / h.wg, false, '<button type="button" class="dx-mini" onclick="addWater()" aria-label="Adicionar um copo de água">+1 copo</button>') +
+        dxMetric('footprints', 'Passos do dia', fmtPassos(h.st), '/ ' + fmtPassos(h.sg), h.st / h.sg, false, '<button type="button" class="dx-mini" onclick="addSteps(500)" aria-label="Adicionar 500 passos">+500</button>') +
+        '</div></div><button type="button" class="dx-btnwide" onclick="navigate(\'saude\')">Ver detalhes da saúde ' + ico('arrow-right', 15) + '</button></section>';
+    }
+    function dxGoalRow(icon, titulo, sub, right, ok) {
+      return '<div class="dx-goal"><span class="dx-gico">' + ico(icon, 24) + '</span><div><b>' + titulo + '</b><small>' + sub + '</small></div><div class="dx-gright">' + (ok ? '<span class="dx-ok">' + ico('check', 14, '', 3) + '</span>' : right) + '</div></div>';
+    }
+    function dxBarSmall(f) { return '<div class="dx-bar" style="margin-top:6px"><b style="width:' + Math.round(Math.min(1, Math.max(0, f)) * 100) + '%"></b></div>'; }
+    function dxGoalsHtml() {
+      const hoje = isoDay(new Date()), rows = [];
+      const goal = parseWeight((healthData.goals || {}).weight), ser = measureSeries('weight');
+      if (goal > 0 && ser.length) {
+        const cur = ser[ser.length - 1].v, start = ser[0].v;
+        const f = start === goal ? (cur === goal ? 1 : 0) : (goal < start ? (start - cur) / (start - goal) : (cur - start) / (goal - start));
+        const falta = Math.abs(cur - goal), ok = (goal < start && cur <= goal) || (goal > start && cur >= goal) || cur === goal;
+        rows.push(dxGoalRow('scale', 'Chegar ao peso desejado', 'Meta: ' + fmtKg(goal) + ' kg · atual ' + fmtKg(cur) + ' kg' + dxBarSmall(f), 'faltam ' + fmtKg(falta) + ' kg', ok));
+      } else rows.push(dxGoalRow('scale', 'Peso desejado', goal > 0 ? 'Registre seu peso para acompanhar' : 'Ainda sem meta de peso', '<button type="button" class="dx-link" onclick="navigate(\'saude\',\'Medidas\')">Definir</button>', false));
+      const fq = Number(wkData.freqGoal) || 0, feitos = weekKeys(0).filter(k => wkDoneOn(k).length > 0).length;
+      if (fq > 0) rows.push(dxGoalRow('dumbbell', 'Treinar ' + fq + 'x por semana', 'Dias com treino nesta semana' + dxBarSmall(feitos / fq), feitos + ' / ' + fq, feitos >= fq));
+      else rows.push(dxGoalRow('dumbbell', 'Treinos da semana', feitos + (feitos === 1 ? ' dia' : ' dias') + ' com treino · sem meta definida', '<button type="button" class="dx-link" onclick="navigate(\'academia\')">Definir</button>', false));
+      const wg = waterGoal(), w = counters.water || 0;
+      rows.push(dxGoalRow('droplet', 'Beber ' + wg + ' copos de água', 'Hoje' + dxBarSmall(w / wg), w + ' / ' + wg, w >= wg));
+      if (habits.length) { const hf = habits.filter(h => h.done).length; rows.push(dxGoalRow('target', 'Hábitos de hoje', 'Marque no Hábitos & Contadores' + dxBarSmall(hf / habits.length), hf + ' / ' + habits.length, hf === habits.length)); }
+      return '<section class="dx-card" id="dx-metas"><div class="dx-head"><h2>Suas metas</h2><button type="button" class="dx-link" onclick="navigate(\'habitos\')">Ver todas ' + ico('arrow-right', 13) + '</button></div>' + rows.join('') + '</section>';
+    }
+    function dxEvIcon(e) { const t = (e.title || '') + ' ' + (e.cat || ''); return /treino|academia/i.test(t) ? 'dumbbell' : /consulta|m[eé]dic|exame|dentista|dermat|sa[uú]de/i.test(t) ? 'heart-pulse' : /estudo|aula|prova/i.test(t) ? 'book-open' : 'calendar'; }
+    function dxCalendarHtml() {
+      const hoje = isoDay(new Date()), keys = weekKeys(0), L = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+      const week = keys.map((k, i) => '<button type="button" class="dx-wd' + (k === hoje ? ' today' : '') + (agendaDayTotal(k) ? ' has' : '') + '" onclick="agendaDay=\'' + k + '\';navigate(\'agenda\')" aria-label="' + L[i] + ' ' + fmtDMY(k) + (agendaDayTotal(k) ? ', com compromissos' : '') + '"><span>' + L[i] + '</span><b>' + (+k.slice(8)) + '</b></button>').join('');
+      const items = eventsForDay(hoje).map(e => ({ icon: dxEvIcon(e), t: e.title, r: e.time || '', s: e.place && e.place !== 'Geral' ? e.place : '', tab: 'agenda' })).concat(externalForDay(hoje).map(x => ({ icon: x.icon, t: x.title, r: '', s: x.sub || '', tab: x.tab })));
+      const list = items.slice(0, 4).map(it => '<button type="button" class="dx-row" onclick="navigate(\'' + it.tab + '\')"><span class="ic">' + ico(it.icon, 18) + '</span><span class="tx"><b>' + esc(it.t) + '</b>' + (it.s ? '<small>' + esc(it.s) + '</small>' : '') + '</span><span class="rt">' + esc(it.r) + '</span></button>').join('');
+      return '<section class="dx-card"><div class="dx-head"><h2>Seu calendário</h2><button type="button" class="dx-link" onclick="navigate(\'agenda\')">Ver mês ' + ico('arrow-right', 13) + '</button></div><div class="dx-week">' + week + '</div>' +
+        (list || '<p class="dx-empty">Nada na agenda para hoje. Toque no + para adicionar um compromisso.</p>') + (items.length > 4 ? '<button type="button" class="dx-link" onclick="navigate(\'agenda\')">+ ' + (items.length - 4) + ' hoje</button>' : '') + '</section>';
+    }
+    function dxMoodHtml() {
+      const hoje = isoDay(new Date()), cur = dayMetric('mood'), keys = lastDays(7), vals = keys.map(k => dayMetric('mood', k)), ok = vals.filter(v => v > 0);
+      const faces = DX_MOODS.map(m => '<button type="button" class="dx-mood" aria-pressed="' + (cur === m[0]) + '" aria-label="Humor ' + m[0] + ' de 5: ' + m[1] + '" onclick="setDayMetric(\'mood\',' + m[0] + ')">' + dxFace(m[0]) + '<span>' + m[1] + '</span></button>').join('');
+      const dots = vals.map(v => '<i title="' + (v || 'sem registro') + '" style="' + (v ? 'background:rgba(130,102,196,' + (0.2 + v * 0.16).toFixed(2) + ')' : '') + '"></i>').join('');
+      const sk = skinData(), chips = [];
+      ['am', 'pm'].forEach(p => { if (sk[p].length) { const okp = skinComplete(hoje, p); chips.push('<button type="button" class="dx-chip' + (okp ? ' done' : '') + '" onclick="navigate(\'saude\',\'Rotina de Skincare\')">' + ico(okp ? 'check' : 'sparkles', 14) + 'Skincare ' + SKIN_PER[p].toLowerCase() + (okp ? ' feito' : '') + '</button>'); } });
+      const meds = listOf('meds'); if (meds.length) { const md = meds.filter(m => medDone(m.id)).length; chips.push('<button type="button" class="dx-chip' + (md === meds.length ? ' done' : '') + '" onclick="navigate(\'saude\',\'Suplementos\')">' + ico('pill', 14) + 'Suplementos ' + md + '/' + meds.length + '</button>'); }
+      return '<section class="dx-card"><div class="dx-head"><div><h2>Bem-estar mental</h2><p class="dx-muted">Como você está se sentindo hoje?</p></div></div><div class="dx-moods" role="group" aria-label="Humor de hoje">' + faces + '</div>' +
+        '<div class="dx-dots" role="img" aria-label="Humor dos últimos 7 dias">' + dots + '<span class="dx-muted" style="margin-left:8px">' + (ok.length ? 'média ' + fmtH(ok.reduce((a, b) => a + b, 0) / ok.length) + ' em 7 dias' : 'sem registros nos últimos 7 dias') + '</span></div>' +
+        (chips.length ? '<div class="dx-chips">' + chips.join('') + '</div>' : '') +
+        '<button type="button" class="dx-btnwide" onclick="navigate(\'descarrega\')">' + ico('brain', 18) + ' Descarrega a Cabeça</button></section>';
+    }
+    function dxUpcoming() {
+      const out = [], base = new Date(), hoje = isoDay(base);
+      for (let i = 1; i <= 90 && out.length < 12; i++) {
+        const k = isoDay(new Date(base.getFullYear(), base.getMonth(), base.getDate() + i));
+        eventsForDay(k).forEach(e => out.push({ k, i, icon: dxEvIcon(e), t: e.title, s: e.time || '', tab: 'agenda' }));
+        externalForDay(k).forEach(x => out.push({ k, i, icon: x.icon, t: x.title, s: x.sub || '', tab: x.tab }));
+      }
+      return out.slice(0, 5);
+    }
+    function dxUpcomingHtml() {
+      const list = dxUpcoming().map(u => '<button type="button" class="dx-row" onclick="navigate(\'' + u.tab + '\')"><span class="ic">' + ico(u.icon, 18) + '</span><span class="tx"><b>' + esc(u.t) + '</b><small>' + fmtDM(u.k) + (u.s ? ' · ' + esc(u.s) : '') + '</small></span><span class="rt">' + pdFalta(u.i) + '</span></button>').join('');
+      return '<section class="dx-card"><div class="dx-head"><h2>Próximos eventos</h2><button type="button" class="dx-link" onclick="navigate(\'agenda\')">Ver todos ' + ico('arrow-right', 13) + '</button></div>' + (list || '<p class="dx-empty">Nenhum evento, aniversário, vencimento ou viagem nos próximos 90 dias.</p>') + '</section>';
+    }
+    function dxQuickHtml() {
+      const q = [['scale', 'Registrar<br>peso', "navigate('saude','Medidas')"], ['dumbbell', 'Treino<br>do dia', "navigate('academia')"], ['utensils', 'Registrar<br>alimentação', "navigate('saude','Rotina Alimentar')"], ['droplet', 'Meu<br>ciclo', "navigate('ciclo')"], ['pill', 'Medicamentos', "navigate('saude','Suplementos')"], ['target', 'Minhas<br>metas', "dxScrollTo('Suas metas')"]];
+      return '<section class="dx-card dx-span2" aria-label="Acesso rápido"><div class="dx-head"><h2>Acesso rápido</h2><button type="button" class="dx-link" onclick="navigate(\'mais\')">Ver todos ' + ico('arrow-right', 13) + '</button></div><div class="dx-quick">' + q.map(x => '<button type="button" class="dx-q" onclick="' + x[2] + '"><i>' + ico(x[0], 28) + '</i><span>' + x[1] + '</span></button>').join('') + '</div></section>';
+    }
+    function dxTasksHtml() {
+      const done = tasks.filter(t => t.done).length, pct = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+      const rows = tasks.slice().sort((a, b) => (a.done ? 1 : 0) - (b.done ? 1 : 0)).slice(0, 8).map(t => {
+        const tone = t.priority === 'Urgente' ? 'background:#FBE9E8;color:#B3413F' : t.priority === 'Importante' ? 'background:rgba(198,164,103,.22);color:#8C6D36' : 'background:var(--ste-soft);color:var(--primary-deep)';
+        return '<div onclick="toggleTask(' + t.id + ')" class="dx-row" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleTask(' + t.id + ')}"><span class="ic" style="border-radius:50%;' + (t.done ? 'background:var(--primary);color:#fff' : '') + '">' + (t.done ? ico('check', 16, '', 2.8) : '') + '</span><span class="tx"><b style="' + (t.done ? 'text-decoration:line-through;color:var(--text-muted)' : '') + '">' + esc(t.title) + '</b></span><span class="dx-badge" style="' + tone + '">' + esc(t.priority) + '</span></div>';
+      }).join('');
+      return '<section class="dx-card dx-span2"><div class="dx-head"><div><h2>Tarefas prioritárias</h2><p class="dx-muted">' + (tasks.length ? done + ' de ' + tasks.length + ' concluídas' : 'Nenhuma tarefa cadastrada') + '</p></div><button type="button" class="dx-link" onclick="navigate(\'tarefas\')">Ver todas ' + ico('arrow-right', 13) + '</button></div>' + (tasks.length ? '<div class="dx-bar" style="margin-bottom:6px"><b style="width:' + pct + '%"></b></div>' : '') + (rows || '<p class="dx-empty">Use o botão + para criar sua primeira tarefa.</p>') + '</section>';
+    }
+    function renderHoje(container) {
+      const primKey = hojePrimary(new Date());
+      hojePrimaryKey = primKey;
+      const now = new Date(), doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
+      const psalm = '<div onclick="showDailyPopup()" class="ste-psalm-card custom-card rounded-2xl p-5 border-l-4 border-[#C6A467]"><p class="text-xs uppercase font-bold tracking-wider text-[#C6A467] mb-1">' + ico('bible', 14, 'mr-1.5') + 'Salmo do Dia · Salmo ' + (dailyState && dailyState.psalm ? dailyState.psalm : '') + '</p><p class="font-serif-display text-base md:text-lg italic">' + (dailyState && dailyState.psalm ? esc(PSALM_THEMES[dailyState.psalm - 1]) : '') + '</p><p class="text-[11px] text-[#8B7D95] mt-2">Toque para abrir · ler o salmo completo</p></div>';
+      container.innerHTML =
+        '<section class="dx-hero"><div class="dx-herotxt"><p class="dx-date">' + now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) + '</p><h1>Olá, Stephanie! ' + ico('heart', 26) + '</h1><p class="dx-ask">Que tal cuidar de você hoje?</p><blockquote>“' + esc(DX_QUOTES[doy % DX_QUOTES.length]) + '”</blockquote>' + cgChipsHtml() + '</div>' + dxHeroArt() + '</section>' +
+        '<div class="dx-grid">' + dxQuickHtml() + dxHealthHtml() + dxGoalsHtml() + dxCalendarHtml() + dxMoodHtml() + dxTipHtml() + dxUpcomingHtml() +
+        '<div class="dx-span2">' + hojeAttentionHtml() + '</div>' +
+        (hojePrincipalHtml(primKey) ? '<div class="dx-span2">' + hojePrincipalHtml(primKey) + '</div>' : '') +
+        (primKey === 'ponto' ? '' : '<div>' + ptHojeHtml() + '</div>') + (primKey === 'treino' ? '' : '<div>' + hojeTreinoHtml() + '</div>') +
+        (hojeExtrasHtml() ? '<div class="dx-span2">' + hojeExtrasHtml() + '</div>' : '') +
+        dxTasksHtml() + '<div class="dx-span2">' + psalm + '</div></div>';
+    }
+
+    // ================= Descarrega a Cabeça: pensamentos, preocupações e sentimentos (só neste aparelho) =================
+    let dgData = getStore('descarrega', null);
+    if (!dgData || typeof dgData !== 'object' || !Array.isArray(dgData.items)) dgData = { items: [] };
+    let dgTab = 'pensamento', dgEditId = null, dgFilter = 'todas', dgQuery = '', dgMsg = '';
+    let dgDraft = { text: '', emotion: '', intensity: 0, control: '', step: '' };
+    const DG_KINDS = { pensamento: 'Pensamentos', preocupacao: 'Preocupações', sentimento: 'Sentimentos' };
+    const DG_EMOTIONS = ['Calma', 'Grata', 'Animada', 'Ansiosa', 'Cansada', 'Triste', 'Irritada', 'Sobrecarregada', 'Insegura', 'Saudade'];
+    function dgSave() { if (!setStoreChecked('descarrega', dgData)) { dgMsg = 'Não foi possível salvar: o armazenamento do aparelho está cheio.'; return false; } return true; }
+    function dgSetTab(k) { dgTab = k; dgEditId = null; dgFilter = 'todas'; dgMsg = ''; dgDraft = { text: dgDraft.text, emotion: '', intensity: 0, control: '', step: '' }; renderScreen(); }
+    function dgSetFilter(f) { dgFilter = f; renderScreen(); }
+    function dgSetQuery(v) { dgQuery = v; dgRefreshList(); }
+    function dgAdd() {
+      const text = dgDraft.text.trim();
+      if (!text) { dgMsg = 'Escreva algo antes de salvar.'; renderScreen(); return; }
+      const now = new Date();
+      if (dgEditId) {
+        const it = dgData.items.find(x => x.id === dgEditId);
+        if (it) Object.assign(it, { text: text.slice(0, 1500), emotion: dgDraft.emotion, intensity: dgDraft.intensity, control: dgDraft.control, step: dgDraft.step.trim().slice(0, 140) });
+      } else {
+        dgData.items.unshift({ id: Date.now(), kind: dgTab, text: text.slice(0, 1500), date: isoDay(now), time: pad2(now.getHours()) + ':' + pad2(now.getMinutes()), emotion: dgTab === 'sentimento' ? dgDraft.emotion : '', intensity: dgTab === 'sentimento' ? dgDraft.intensity : 0, control: dgTab === 'preocupacao' ? dgDraft.control : '', step: dgTab === 'preocupacao' ? dgDraft.step.trim().slice(0, 140) : '', status: 'aberta' });
+      }
+      dgMsg = '';
+      if (!dgSave()) { renderScreen(); return; }
+      dgEditId = null; dgDraft = { text: '', emotion: '', intensity: 0, control: '', step: '' };
+      renderScreen(); qcToast('Guardado em Descarrega a Cabeça');
+    }
+    function dgEdit(id) { const it = dgData.items.find(x => x.id === id); if (!it) return; dgTab = it.kind; dgEditId = id; dgDraft = { text: it.text, emotion: it.emotion || '', intensity: it.intensity || 0, control: it.control || '', step: it.step || '' }; renderScreen(); window.scrollTo({ top: 0, behavior: steScroll() }); }
+    function dgCancel() { dgEditId = null; dgDraft = { text: '', emotion: '', intensity: 0, control: '', step: '' }; dgMsg = ''; renderScreen(); }
+    function dgDel(id) { const it = dgData.items.find(x => x.id === id); if (!it || !confirm('Apagar este registro? Não dá para desfazer.')) return; dgData.items = dgData.items.filter(x => x.id !== id); dgSave(); renderScreen(); }
+    function dgStatus(id, st) { const it = dgData.items.find(x => x.id === id); if (!it) return; it.status = st; dgSave(); if (st !== 'aberta') steCelebrate('dg' + id); renderScreen(); }
+    function dgToTask(id) {
+      const it = dgData.items.find(x => x.id === id); if (!it || it.taskId) return;
+      const title = (it.step || it.text).replace(/\s+/g, ' ').slice(0, 140);
+      const t = { id: Date.now(), title, priority: 'Importante', done: false, cat: 'Pessoal', due: '', subtasks: [], recur: '' };
+      tasks.push(t); setStore('tasks', tasks); it.taskId = t.id; dgSave(); renderScreen(); qcToast('Virou tarefa: ' + title.slice(0, 40));
+    }
+    function dgItemHtml(it) {
+      const meta = fmtDMY(it.date) + (it.time ? ' · ' + it.time : '');
+      let badges = '';
+      if (it.kind === 'sentimento' && it.emotion) badges += '<span class="dx-badge">' + esc(it.emotion) + (it.intensity ? ' · ' + it.intensity + '/5' : '') + '</span>';
+      if (it.kind === 'preocupacao') {
+        badges += it.control === 'posso' ? '<span class="dx-badge gold">Posso agir</span>' : it.control === 'nao' ? '<span class="dx-badge">Fora do meu controle</span>' : '';
+        if (it.status === 'resolvida') badges += '<span class="dx-badge ok">Resolvida</span>';
+        if (it.status === 'solta') badges += '<span class="dx-badge ok">Soltei</span>';
+      }
+      const step = it.kind === 'preocupacao' && it.step ? '<p style="font-size:13px;margin-bottom:8px"><b>Próximo passo:</b> ' + esc(it.step) + '</p>' : '';
+      let acts = '';
+      if (it.kind === 'preocupacao') {
+        if (it.status === 'aberta') acts += '<button type="button" class="dx-btn sm ghost" onclick="dgStatus(' + it.id + ',\'resolvida\')">Resolvi</button><button type="button" class="dx-btn sm ghost" onclick="dgStatus(' + it.id + ',\'solta\')">Soltei</button>';
+        else acts += '<button type="button" class="dx-btn sm ghost" onclick="dgStatus(' + it.id + ',\'aberta\')">Reabrir</button>';
+        acts += it.taskId ? '<span class="dx-badge ok">Já virou tarefa</span>' : '<button type="button" class="dx-btn sm ghost" onclick="dgToTask(' + it.id + ')">Virar tarefa</button>';
+      }
+      acts += '<button type="button" class="dx-btn sm ghost" onclick="dgEdit(' + it.id + ')" aria-label="Editar">' + ico('pencil', 14) + 'Editar</button><button type="button" class="dx-btn sm danger" onclick="dgDel(' + it.id + ')" aria-label="Apagar">' + ico('trash', 14) + '</button>';
+      return '<div class="dx-entry"><div class="dx-meta"><span>' + meta + '</span>' + badges + '</div><p class="txt">' + esc(it.text) + '</p>' + step + '<div class="dx-flex">' + acts + '</div></div>';
+    }
+    function dgListItems() {
+      const q = pgNorm(dgQuery).trim();
+      return dgData.items.filter(x => x.kind === dgTab && (dgFilter === 'todas' || (dgFilter === 'abertas' ? x.status === 'aberta' : x.status !== 'aberta')) && (!q || pgNorm(x.text + ' ' + (x.step || '') + ' ' + (x.emotion || '')).includes(q)));
+    }
+    function dgListHtml() {
+      const l = dgListItems();
+      return l.length ? l.map(dgItemHtml).join('') : '<p class="dx-empty">' + (dgData.items.some(x => x.kind === dgTab) ? 'Nada encontrado com esse filtro.' : 'Nada registrado aqui ainda. Escreva acima o que estiver na sua cabeça.') + '</p>';
+    }
+    function dgRefreshList() { const el = document.getElementById('dg-list'); if (el) el.innerHTML = dgListHtml(); }
+    function renderDescarrega(container) {
+      const week = weekKeys(0), inWeek = x => x.date >= week[0] && x.date <= week[6];
+      const nWeek = dgData.items.filter(inWeek).length, abertas = dgData.items.filter(x => x.kind === 'preocupacao' && x.status === 'aberta').length;
+      const ph = { pensamento: 'O que está passando pela sua cabeça agora?', preocupacao: 'O que está te preocupando?', sentimento: 'Como você está se sentindo e por quê?' }[dgTab];
+      let extra = '';
+      if (dgTab === 'preocupacao') extra = '<span class="dx-lbl">Isso depende de você?</span><div class="dx-flex">' + [['posso', 'Posso agir'], ['nao', 'Fora do meu controle']].map(o => '<button type="button" class="dx-sel" aria-pressed="' + (dgDraft.control === o[0]) + '" onclick="dgDraft.control=dgDraft.control===\'' + o[0] + '\'?\'\':\'' + o[0] + '\';dgSync()">' + o[1] + '</button>').join('') + '</div>' +
+        '<label class="dx-lbl" for="dg-step">Próximo passo (opcional)</label><input id="dg-step" class="dx-in" maxlength="140" value="' + esc(dgDraft.step) + '" oninput="dgDraft.step=this.value" placeholder="Qual é o menor passo possível?">';
+      if (dgTab === 'sentimento') extra = '<span class="dx-lbl">Emoção</span><div class="dx-flex">' + DG_EMOTIONS.map(e => '<button type="button" class="dx-sel" aria-pressed="' + (dgDraft.emotion === e) + '" onclick="dgDraft.emotion=dgDraft.emotion===\'' + e + '\'?\'\':\'' + e + '\';dgSync()">' + e + '</button>').join('') + '</div>' +
+        '<span class="dx-lbl">Intensidade (1 leve, 5 forte)</span><div class="dx-flex">' + [1, 2, 3, 4, 5].map(n => '<button type="button" class="dx-sel" aria-pressed="' + (dgDraft.intensity === n) + '" onclick="dgDraft.intensity=dgDraft.intensity===' + n + '?0:' + n + ';dgSync()" aria-label="Intensidade ' + n + ' de 5">' + n + '</button>').join('') + '</div>';
+      const filt = dgTab === 'preocupacao' ? '<div class="dx-flex" style="margin-bottom:6px">' + [['todas', 'Todas'], ['abertas', 'Abertas'], ['fechadas', 'Resolvidas ou soltas']].map(o => '<button type="button" class="dx-sel" aria-pressed="' + (dgFilter === o[0]) + '" onclick="dgSetFilter(\'' + o[0] + '\')">' + o[1] + '</button>').join('') + '</div>' : '';
+      container.innerHTML = '<header class="mb-6"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Bem-estar</p><h1 class="font-serif-display text-3xl font-bold">Descarrega a Cabeça</h1><p class="text-xs md:text-sm text-[#8B7D95]">Escreva, organize o que preocupa e registre o que sente. Fica só neste aparelho e não aparece na busca.</p></header>' +
+        '<div class="dx-grid"><section class="dx-card dx-span2"><div class="dx-two" style="grid-template-columns:repeat(3,1fr)"><div class="dx-stat"><small>Esta semana</small><strong>' + nWeek + '</strong><em>registros</em></div><div class="dx-stat"><small>Preocupações abertas</small><strong>' + abertas + '</strong><em>' + (abertas ? 'para organizar' : 'nenhuma agora') + '</em></div><div class="dx-stat"><small>Total</small><strong>' + dgData.items.length + '</strong><em>no histórico</em></div></div></section>' +
+        '<section class="dx-card dx-span2"><div class="dx-seg" role="tablist">' + Object.keys(DG_KINDS).map(k => '<button type="button" role="tab" aria-selected="' + (dgTab === k) + '" class="' + (dgTab === k ? 'on' : '') + '" onclick="dgSetTab(\'' + k + '\')">' + DG_KINDS[k] + '</button>').join('') + '</div>' +
+        '<label class="dx-lbl" for="dg-text" style="margin-top:0">' + (dgEditId ? 'Editando registro' : 'Novo registro') + '</label><textarea id="dg-text" class="dx-in" maxlength="1500" placeholder="' + ph + '" oninput="dgDraft.text=this.value">' + esc(dgDraft.text) + '</textarea>' + extra +
+        '<div class="dx-flex" style="margin-top:14px"><button type="button" class="dx-btn" onclick="dgAdd()">' + (dgEditId ? 'Salvar alterações' : 'Guardar') + '</button>' + (dgEditId ? '<button type="button" class="dx-btn ghost" onclick="dgCancel()">Cancelar</button>' : '') + '</div><p class="dx-msg" role="status" aria-live="polite">' + esc(dgMsg) + '</p></section>' +
+        '<section class="dx-card dx-span2"><div class="dx-head"><h2>' + DG_KINDS[dgTab] + '</h2></div>' + filt + '<input type="search" class="dx-in" placeholder="Buscar neste espaço" value="' + esc(dgQuery) + '" oninput="dgSetQuery(this.value)" aria-label="Buscar em ' + DG_KINDS[dgTab] + '" style="margin-bottom:6px"><div id="dg-list">' + dgListHtml() + '</div></section></div>';
+    }
+    // atualiza só os botões de escolha sem perder o texto digitado
+    function dgSync() { const t = document.getElementById('dg-text'); if (t) dgDraft.text = t.value; const s = document.getElementById('dg-step'); if (s) dgDraft.step = s.value; renderScreen(); }
+
+    // ================= Planejador de Conteúdo (TikTok) =================
+    let cpData = getStore('conteudo', null);
+    if (!cpData || typeof cpData !== 'object' || !Array.isArray(cpData.posts)) cpData = { posts: [], goal: 0 };
+    if (!(Number(cpData.goal) > 0)) cpData.goal = 0;
+    const CP_STATUS = [['ideia', 'Ideia'], ['roteiro', 'Roteiro'], ['gravado', 'Gravado'], ['agendado', 'Agendado'], ['publicado', 'Publicado']];
+    const CP_FORMATS = ['Vídeo curto', 'Carrossel de fotos', 'Live', 'Trend ou áudio', 'Outro'];
+    let cpMonth = isoDay(new Date()).slice(0, 7), cpSel = '', cpFilter = 'todos', cpForm = null, cpMetricId = null, cpMsg = '';
+    function cpSaveData() { if (!setStoreChecked('conteudo', cpData)) { cpMsg = 'Não foi possível salvar: o armazenamento do aparelho está cheio.'; return false; } return true; }
+    function cpLabel(s) { const f = CP_STATUS.find(x => x[0] === s); return f ? f[1] : s; }
+    function cpShift(d) { const y = +cpMonth.slice(0, 4), m = +cpMonth.slice(5, 7) - 1 + d, dt = new Date(y, m, 1); cpMonth = dt.getFullYear() + '-' + pad2(dt.getMonth() + 1); renderScreen(); }
+    function cpPickDay(k) { cpSel = cpSel === k ? '' : k; renderScreen(); }
+    function cpSetFilter(f) { cpFilter = f; renderScreen(); }
+    function cpNew(date, title) { cpForm = { id: 0, title: title || '', date: date || cpSel || isoDay(new Date()), time: '', format: CP_FORMATS[0], status: 'ideia', text: '', tags: '', url: '' }; cpMsg = ''; renderScreen(); const el = document.getElementById('cp-form'); if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); }
+    function cpEdit(id) { const p = cpData.posts.find(x => x.id === id); if (!p) return; cpForm = Object.assign({}, p); cpMsg = ''; renderScreen(); const el = document.getElementById('cp-form'); if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); }
+    function cpCancel() { cpForm = null; cpMsg = ''; renderScreen(); }
+    function cpField(k, v) { if (cpForm) cpForm[k] = v; }
+    function cpSavePost() {
+      if (!cpForm) return;
+      const title = String(cpForm.title || '').trim();
+      if (!title) { cpMsg = 'Escreva um título para o post.'; renderScreen(); return; }
+      if (cpForm.date && !validIsoDate(cpForm.date)) { cpMsg = 'Data inválida.'; renderScreen(); return; }
+      if (cpForm.time && !/^\d{2}:\d{2}$/.test(cpForm.time)) { cpMsg = 'Hora inválida.'; renderScreen(); return; }
+      const rec = { id: cpForm.id || Date.now(), title: title.slice(0, 120), date: cpForm.date || '', time: cpForm.time || '', format: cpForm.format, status: cpForm.status, text: String(cpForm.text || '').slice(0, 2000), tags: String(cpForm.tags || '').slice(0, 300), url: String(cpForm.url || '').slice(0, 300), m: cpForm.m || null };
+      if (cpForm.id) cpData.posts = cpData.posts.map(p => p.id === cpForm.id ? rec : p); else cpData.posts.push(rec);
+      if (!cpSaveData()) { renderScreen(); return; }
+      cpForm = null; cpMsg = ''; renderScreen(); qcToast('Post guardado');
+    }
+    function cpDel(id) { const p = cpData.posts.find(x => x.id === id); if (!p || !confirm('Apagar "' + p.title + '"? Não dá para desfazer.')) return; cpData.posts = cpData.posts.filter(x => x.id !== id); cpSaveData(); renderScreen(); }
+    function cpAdvance(id, ev) {
+      const p = cpData.posts.find(x => x.id === id); if (!p) return;
+      const i = CP_STATUS.findIndex(x => x[0] === p.status); if (i < 0 || i >= CP_STATUS.length - 1) return;
+      p.status = CP_STATUS[i + 1][0]; cpSaveData();
+      if (p.status === 'publicado') { steCelebrate('cp' + id, ev); cpMetricId = id; }
+      renderScreen();
+    }
+    function cpSetGoal(v) { const t = String(v).trim(); const n = t === '' ? 0 : parseInt(t, 10); if (isNaN(n) || n < 0 || n > 50) { cpMsg = 'Meta semanal: digite um número de 1 a 50.'; renderScreen(); return; } cpData.goal = n; cpMsg = ''; cpSaveData(); renderScreen(); }
+    function cpOpenMetrics(id) { cpMetricId = cpMetricId === id ? null : id; renderScreen(); }
+    function cpSaveMetrics(id) {
+      const p = cpData.posts.find(x => x.id === id); if (!p) return;
+      const g = k => { const e = document.getElementById('cpm-' + k), t = e ? e.value.trim() : ''; if (t === '') return null; const n = parseInt(t.replace(/\./g, ''), 10); return isNaN(n) || n < 0 ? NaN : n; };
+      const m = { views: g('views'), likes: g('likes'), comments: g('comments'), shares: g('shares'), saves: g('saves') };
+      if (Object.values(m).some(v => v !== null && isNaN(v))) { cpMsg = 'Resultados: use só números inteiros, sem negativos.'; renderScreen(); return; }
+      if (Object.values(m).every(v => v === null)) p.m = null; else p.m = Object.assign(m, { at: isoDay(new Date()) });
+      cpMsg = ''; cpSaveData(); cpMetricId = null; renderScreen();
+    }
+    function cpFromIdea(id) {
+      const idea = eduData.ideas.find(x => x.id === id); if (!idea) return;
+      cpNew('', idea.text); cpForm.ideaId = id;
+    }
+    function cpMarkIdea() { if (cpForm && cpForm.ideaId && !cpForm.id) { eduData.ideas = eduData.ideas.map(i => i.id === cpForm.ideaId ? Object.assign({}, i, { used: true }) : i); saveEdu(); } }
+    const cpSavePostOrig = cpSavePost;
+    cpSavePost = function () { const wasIdea = cpForm && cpForm.ideaId && !cpForm.id ? cpForm.ideaId : 0; const antes = cpData.posts.length; cpSavePostOrig(); if (wasIdea && cpData.posts.length > antes) { eduData.ideas = eduData.ideas.map(i => i.id === wasIdea ? Object.assign({}, i, { used: true }) : i); saveEdu(); } };
+    function cpForDay(k) { return cpData.posts.filter(p => p.date === k); }
+    function cpReminders(now) {
+      const today = isoDay(now), nowMin = now.getHours() * 60 + now.getMinutes(), out = [];
+      cpData.posts.forEach(p => {
+        if (p.status === 'publicado' || p.status === 'ideia' || p.date !== today) return;
+        const t = timeToMin(p.time); if (t === null || nowMin < t - 10 || nowMin > t + 60) return;
+        out.push({ key: 'cp:' + p.id + ':' + today, icon: 'video', title: 'Hora de postar: ' + p.title, okLabel: 'Ok', sub: p.format + ' · ' + p.time });
+      });
+      return out;
+    }
+    function cpEng(m) { return m && m.views > 0 ? ((m.likes || 0) + (m.comments || 0) + (m.shares || 0) + (m.saves || 0)) / m.views : null; }
+    function cpFmtPct(x) { return (Math.round(x * 1000) / 10).toLocaleString('pt-BR') + '%'; }
+    function cpResultsHtml() {
+      const list = cpData.posts.filter(p => p.m && p.m.views > 0).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+      if (!list.length) return '<p class="dx-empty">Sem resultados registrados ainda. Quando publicar, toque em “Resultados” no post e informe visualizações, curtidas e outros números.</p>';
+      const tv = list.reduce((a, p) => a + p.m.views, 0), tl = list.reduce((a, p) => a + (p.m.likes || 0), 0), best = list.slice().sort((a, b) => b.m.views - a.m.views)[0];
+      const eng = list.map(p => cpEng(p.m)).filter(x => x != null), engAvg = eng.reduce((a, b) => a + b, 0) / eng.length;
+      const last = list.slice(-10), mx = Math.max.apply(null, last.map(p => p.m.views)), bw = 100 / last.length;
+      const bars = last.map((p, i) => { const h = Math.max(3, p.m.views / mx * 90); return '<rect x="' + (i * bw + bw * .15).toFixed(2) + '" y="' + (100 - h).toFixed(1) + '" width="' + (bw * .7).toFixed(2) + '" height="' + h.toFixed(1) + '" rx="2" fill="var(--primary)"><title>' + esc(p.title) + ': ' + fmtPassos(p.m.views) + ' visualizações</title></rect>'; }).join('');
+      return '<div class="dx-tiles2"><div class="dx-stat"><small>Posts com resultado</small><strong>' + list.length + '</strong></div><div class="dx-stat"><small>Visualizações</small><strong>' + fmtPassos(tv) + '</strong><em>média ' + fmtPassos(Math.round(tv / list.length)) + '</em></div><div class="dx-stat"><small>Curtidas</small><strong>' + fmtPassos(tl) + '</strong></div><div class="dx-stat"><small>Engajamento médio</small><strong>' + cpFmtPct(engAvg) + '</strong><em>interações ÷ views</em></div></div>' +
+        '<p class="dx-lbl">Visualizações dos últimos ' + last.length + ' posts com resultado</p><svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:110px" role="img" aria-label="Gráfico de visualizações por post">' + bars + '</svg>' +
+        '<p class="dx-muted" style="margin-top:8px">Melhor post: <b>' + esc(best.title) + '</b> · ' + fmtPassos(best.m.views) + ' visualizações</p>';
+    }
+    function cpPostHtml(p) {
+      const i = CP_STATUS.findIndex(x => x[0] === p.status), nxt = CP_STATUS[i + 1];
+      const stage = '<div class="dx-pstage" aria-hidden="true">' + CP_STATUS.map((s, j) => '<i class="' + (j <= i ? 'on' : '') + '"></i>').join('') + '</div>';
+      const m = p.m;
+      const mTxt = m && m.views != null ? '<p class="dx-muted" style="margin-top:4px">' + fmtPassos(m.views) + ' views · ' + fmtPassos(m.likes || 0) + ' curtidas · ' + fmtPassos(m.comments || 0) + ' comentários · ' + fmtPassos(m.shares || 0) + ' compart. · ' + fmtPassos(m.saves || 0) + ' salvos' + (cpEng(m) != null ? ' · engajamento ' + cpFmtPct(cpEng(m)) : '') + '</p>' : '';
+      const mForm = cpMetricId === p.id ? '<div class="dx-two" style="margin-top:10px;grid-template-columns:repeat(auto-fit,minmax(110px,1fr))">' + [['views', 'Visualizações'], ['likes', 'Curtidas'], ['comments', 'Comentários'], ['shares', 'Compart.'], ['saves', 'Salvos']].map(f => '<div><label class="dx-lbl" for="cpm-' + f[0] + '" style="margin-top:0">' + f[1] + '</label><input id="cpm-' + f[0] + '" class="dx-in" inputmode="numeric" value="' + (m && m[f[0]] != null ? m[f[0]] : '') + '"></div>').join('') + '</div><div class="dx-flex" style="margin-top:10px"><button type="button" class="dx-btn sm" onclick="cpSaveMetrics(' + p.id + ')">Salvar resultados</button><button type="button" class="dx-btn sm ghost" onclick="cpOpenMetrics(' + p.id + ')">Fechar</button></div>' : '';
+      return '<div class="dx-entry"><div class="dx-meta"><span>' + (p.date ? fmtDMY(p.date) + (p.time ? ' · ' + p.time : '') : 'Sem data') + '</span><span class="dx-badge' + (p.status === 'publicado' ? ' ok' : '') + '">' + cpLabel(p.status) + '</span><span>' + esc(p.format) + '</span></div><p class="txt" style="margin-bottom:2px"><b>' + esc(p.title) + '</b></p>' + stage +
+        (p.text ? '<p class="dx-muted" style="white-space:pre-wrap;margin-top:6px">' + esc(p.text.length > 160 ? p.text.slice(0, 160) + '…' : p.text) + '</p>' : '') + (p.tags ? '<p class="dx-muted" style="margin-top:4px">' + esc(p.tags) + '</p>' : '') + mTxt + mForm +
+        '<div class="dx-flex" style="margin-top:10px">' + (nxt ? '<button type="button" class="dx-btn sm" onclick="cpAdvance(' + p.id + ',event)">Marcar como ' + nxt[1].toLowerCase() + '</button>' : '') + ((p.status === 'publicado' || p.status === 'agendado') && cpMetricId !== p.id ? '<button type="button" class="dx-btn sm ghost" onclick="cpOpenMetrics(' + p.id + ')">Resultados</button>' : '') + (p.url ? '<a class="dx-btn sm ghost" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer">Abrir link</a>' : '') + '<button type="button" class="dx-btn sm ghost" onclick="cpEdit(' + p.id + ')">' + ico('pencil', 14) + 'Editar</button><button type="button" class="dx-btn sm danger" onclick="cpDel(' + p.id + ')" aria-label="Apagar">' + ico('trash', 14) + '</button></div></div>';
+    }
+    function cpFormHtml() {
+      const f = cpForm; if (!f) return '';
+      const inp = (id, lab, type, val, extra) => '<div><label class="dx-lbl" for="' + id + '" style="margin-top:0">' + lab + '</label><input id="' + id + '" type="' + type + '" class="dx-in" value="' + esc(val) + '" ' + (extra || '') + '></div>';
+      return '<section class="dx-card dx-span2" id="cp-form"><div class="dx-head"><h2>' + (f.id ? 'Editar post' : 'Novo post') + '</h2></div>' +
+        '<label class="dx-lbl" for="cp-title" style="margin-top:0">Título ou ideia</label><input id="cp-title" class="dx-in" maxlength="120" value="' + esc(f.title) + '" oninput="cpField(\'title\',this.value)">' +
+        '<div class="dx-two" style="margin-top:10px">' + inp('cp-date', 'Data', 'date', f.date, 'onchange="cpField(\'date\',this.value)"') + inp('cp-time', 'Hora', 'time', f.time, 'onchange="cpField(\'time\',this.value)"') + '</div>' +
+        '<div class="dx-two"><div><label class="dx-lbl" for="cp-format">Formato</label><select id="cp-format" class="dx-in" onchange="cpField(\'format\',this.value)">' + CP_FORMATS.map(x => '<option' + (x === f.format ? ' selected' : '') + '>' + x + '</option>').join('') + '</select></div><div><label class="dx-lbl" for="cp-status">Etapa</label><select id="cp-status" class="dx-in" onchange="cpField(\'status\',this.value)">' + CP_STATUS.map(x => '<option value="' + x[0] + '"' + (x[0] === f.status ? ' selected' : '') + '>' + x[1] + '</option>').join('') + '</select></div></div>' +
+        '<label class="dx-lbl" for="cp-text">Roteiro ou legenda</label><textarea id="cp-text" class="dx-in" maxlength="2000" oninput="cpField(\'text\',this.value)">' + esc(f.text) + '</textarea>' +
+        '<label class="dx-lbl" for="cp-tags">Hashtags</label><input id="cp-tags" class="dx-in" maxlength="300" value="' + esc(f.tags) + '" oninput="cpField(\'tags\',this.value)" placeholder="#rotina #autocuidado">' +
+        '<label class="dx-lbl" for="cp-url">Link do post publicado (opcional)</label><input id="cp-url" class="dx-in" maxlength="300" value="' + esc(f.url) + '" oninput="cpField(\'url\',this.value)" placeholder="https://www.tiktok.com/...">' +
+        '<div class="dx-flex" style="margin-top:14px"><button type="button" class="dx-btn" onclick="cpSavePost()">Guardar post</button><button type="button" class="dx-btn ghost" onclick="cpCancel()">Cancelar</button></div></section>';
+    }
+    function renderConteudo(container) {
+      const hoje = isoDay(new Date()), wk = weekKeys(0);
+      const wkPosts = cpData.posts.filter(p => p.date >= wk[0] && p.date <= wk[6] && p.status !== 'ideia'), wkPub = wkPosts.filter(p => p.status === 'publicado').length;
+      const y = +cpMonth.slice(0, 4), mo = +cpMonth.slice(5, 7) - 1, first = (new Date(y, mo, 1).getDay() + 6) % 7, dim = new Date(y, mo + 1, 0).getDate();
+      let cells = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => '<div class="dow">' + d + '</div>').join('');
+      for (let i = 0; i < first; i++) cells += '<button type="button" class="empty" tabindex="-1" aria-hidden="true"></button>';
+      for (let d = 1; d <= dim; d++) { const k = cpMonth + '-' + pad2(d), n = cpForDay(k).length; cells += '<button type="button" class="' + (k === hoje ? 'today ' : '') + (k === cpSel ? 'sel ' : '') + (n ? 'has' : '') + '" onclick="cpPickDay(\'' + k + '\')" aria-label="' + d + (n ? ', ' + n + (n === 1 ? ' post' : ' posts') : '') + '">' + d + '</button>'; }
+      const counts = {}; cpData.posts.forEach(p => { counts[p.status] = (counts[p.status] || 0) + 1; });
+      let list = cpData.posts.filter(p => (cpFilter === 'todos' || p.status === cpFilter) && (!cpSel || p.date === cpSel));
+      list.sort((a, b) => a.status === 'publicado' && b.status === 'publicado' ? (b.date || '').localeCompare(a.date || '') : (a.date || '9999').localeCompare(b.date || '9999'));
+      const ideas = eduData.ideas.filter(i => !i.used).slice(0, 5);
+      const goalTxt = cpData.goal ? wkPub + ' de ' + cpData.goal + ' publicados nesta semana' : 'Defina uma meta semanal de posts';
+      container.innerHTML = '<header class="mb-6"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Criação</p><h1 class="font-serif-display text-3xl font-bold">Planejador de Conteúdo</h1><p class="text-xs md:text-sm text-[#8B7D95]">Calendário de publicações do TikTok, etapas de produção e resultados dos posts</p></header>' +
+        '<div class="dx-grid">' + cpFormHtml() +
+        '<section class="dx-card"><div class="dx-head"><h2>Calendário</h2><div class="dx-flex" style="gap:4px"><button type="button" class="dx-iconbtn" onclick="cpShift(-1)" aria-label="Mês anterior">' + ico('chevron-left', 18) + '</button><button type="button" class="dx-iconbtn" onclick="cpShift(1)" aria-label="Próximo mês">' + ico('chevron-right', 18) + '</button></div></div><p class="dx-muted" style="margin:-6px 0 10px">' + PT_MESES[mo] + ' de ' + y + (cpSel ? ' · filtrando ' + fmtDM(cpSel) + ' (toque de novo para limpar)' : '') + '</p><div class="dx-cal">' + cells + '</div>' +
+        '<div class="dx-flex" style="margin-top:12px"><button type="button" class="dx-btn sm" onclick="cpNew()">+ Novo post</button></div></section>' +
+        '<section class="dx-card"><div class="dx-head"><h2>Meta da semana</h2></div><div class="dx-stat"><small>Publicações</small><strong>' + wkPub + (cpData.goal ? ' / ' + cpData.goal : '') + '</strong><em>' + goalTxt + '</em></div>' + (cpData.goal ? '<div class="dx-bar" style="margin-top:10px"><b style="width:' + Math.min(100, Math.round(wkPub / cpData.goal * 100)) + '%"></b></div>' : '') +
+        '<label class="dx-lbl" for="cp-goal">Posts por semana</label><input id="cp-goal" class="dx-in" inputmode="numeric" maxlength="2" value="' + (cpData.goal || '') + '" onchange="cpSetGoal(this.value)" style="max-width:110px"><p class="dx-msg" role="status" aria-live="polite">' + esc(cpMsg) + '</p></section>' +
+        '<section class="dx-card dx-span2"><div class="dx-head"><h2>Posts</h2></div><div class="dx-flex" style="margin-bottom:6px"><button type="button" class="dx-sel" aria-pressed="' + (cpFilter === 'todos') + '" onclick="cpSetFilter(\'todos\')">Todos · ' + cpData.posts.length + '</button>' + CP_STATUS.map(s => '<button type="button" class="dx-sel" aria-pressed="' + (cpFilter === s[0]) + '" onclick="cpSetFilter(\'' + s[0] + '\')">' + s[1] + ' · ' + (counts[s[0]] || 0) + '</button>').join('') + '</div>' +
+        (list.length ? list.map(cpPostHtml).join('') : '<p class="dx-empty">' + (cpData.posts.length ? 'Nenhum post neste filtro.' : 'Nenhum post planejado ainda. Toque em “+ Novo post” para começar.') + '</p>') + '</section>' +
+        '<section class="dx-card"><div class="dx-head"><h2>Resultados</h2></div>' + cpResultsHtml() + '</section>' +
+        '<section class="dx-card"><div class="dx-head"><h2>Banco de ideias</h2><button type="button" class="dx-link" onclick="navigate(\'estudos\')">Abrir ' + ico('arrow-right', 13) + '</button></div>' + (ideas.length ? ideas.map(i => '<div class="dx-row"><span class="ic">' + ico('lightbulb', 18) + '</span><span class="tx"><b style="white-space:normal">' + esc(i.text) + '</b></span><button type="button" class="dx-btn sm ghost" onclick="cpFromIdea(' + i.id + ')">Planejar</button></div>').join('') : '<p class="dx-empty">Nenhuma ideia livre no Banco de Ideias (Estudos). Anote ideias por lá ou pela captura rápida.</p>') + '</section></div>';
+    }
 
     hydrateIcons();
     initTheme();
