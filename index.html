@@ -109,6 +109,39 @@
     .cy-btn { padding: 9px 14px; border-radius: 12px; border: 0; background: var(--primary); color: #fff; font: 700 12px 'Manrope', sans-serif; cursor: pointer; margin: 0 8px 8px 0; }
     .cy-btn.alt { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
     .cy-in { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border-color); background: transparent; color: inherit; font: 500 13px 'Manrope', sans-serif; width: 72px; }
+    /* ---- Sonhos & Fé: Vision Board ---- */
+    .vb-banner { position: relative; border-radius: 22px; overflow: hidden; min-height: 190px; display: flex; align-items: flex-end; border: 1px solid var(--gold); background: linear-gradient(135deg, #6E3482, #49225B); color: #fff; }
+    .vb-banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .vb-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(36, 9, 47, .78), rgba(36, 9, 47, .1) 70%); }
+    .vb-banner > div { position: relative; z-index: 1; padding: 18px; width: 100%; }
+    .vb-g5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
+    .vb-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+    .vb-two { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+    @media (min-width: 768px) { .vb-grid { grid-template-columns: repeat(3, 1fr); } .vb-two { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1280px) { .vb-grid { grid-template-columns: repeat(4, 1fr); } }
+    .vb-short { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px; border-radius: 16px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); font: 700 10.5px 'Manrope', sans-serif; text-align: center; line-height: 1.2; cursor: pointer; }
+    .vb-short svg { color: var(--primary); }
+    .vb-short.on { border-color: var(--gold); }
+    .vb-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4 / 5; border: 1px solid var(--border-color); background: linear-gradient(160deg, #6E3482, #3D1A4D); color: #fff; text-align: left; cursor: pointer; padding: 0; display: block; width: 100%; }
+    .vb-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .vb-card .vb-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, .35); }
+    .vb-card .vb-lab { position: absolute; left: 8px; right: 8px; bottom: 8px; padding: 9px 10px; border-radius: 14px; background: rgba(36, 9, 47, .78); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+    .vb-card .vb-lab small { display: block; font: 700 9.5px 'Manrope', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); }
+    .vb-card .vb-lab b { display: block; font: 700 13px 'Manrope', sans-serif; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .vb-card .vb-lab i { display: block; height: 4px; border-radius: 99px; background: rgba(255, 255, 255, .22); margin-top: 7px; overflow: hidden; }
+    .vb-card .vb-lab i u { display: block; height: 100%; background: var(--gold); }
+    .vb-add { border: 2px dashed var(--border-color); background: transparent; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font: 700 12px 'Manrope', sans-serif; }
+    .vb-ov { position: fixed; inset: 0; z-index: 8200; background: rgba(36, 9, 47, .62); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; }
+    @media (min-width: 768px) { .vb-ov { align-items: center; padding: 18px; } }
+    .vb-sheet { width: 100%; max-width: 600px; max-height: 92vh; max-height: 92dvh; overflow-y: auto; background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 24px 24px 0 0; padding: 0 0 calc(18px + env(safe-area-inset-bottom, 0px)); }
+    @media (min-width: 768px) { .vb-sheet { border-radius: 24px; } }
+    .vb-cover { position: relative; height: 190px; background: linear-gradient(160deg, #6E3482, #3D1A4D); border-radius: 24px 24px 0 0; overflow: hidden; }
+    .vb-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .vb-cover .vb-x { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(36, 9, 47, .7); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .vb-in { width: 100%; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--border-color); background: transparent; color: inherit; font: 500 13px 'Manrope', sans-serif; min-width: 0; }
+    .vb-btn { padding: 9px 14px; border-radius: 12px; border: 0; background: var(--primary); color: #fff; font: 700 12px 'Manrope', sans-serif; cursor: pointer; }
+    .vb-btn.alt { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+    @media (prefers-reduced-motion: reduce) { .vb-ov { animation: none; } }
     /* ---- Celebrações: confete, conquistas e contadores ---- */
     .cg-conf { position: fixed; inset: 0; z-index: 9700; pointer-events: none; }
     .cg-win { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); z-index: 9800; width: min(92vw, 420px); background: var(--card-bg); color: var(--text-main); border: 1px solid var(--gold); border-radius: 20px; padding: 14px 16px; box-shadow: 0 14px 40px rgba(73, 34, 91, .45); transition: transform .45s cubic-bezier(.2, .9, .3, 1.2); }
@@ -3637,14 +3670,13 @@
 
 
     // ================= Sonhos & Fé =================
-    const DREAM_CATS = ['Viagem', 'Carreira', 'Casa', 'Compras', 'Estudos', 'Família', 'Saúde', 'Outro'];
+    const DREAM_CATS = ['Amor', 'Saúde', 'Casa', 'Viagem', 'Prosperidade', 'Carreira', 'Fé', 'Desenvolvimento pessoal', 'Compras', 'Estudos', 'Família', 'Outro'];
+    const DREAM_LBL = { 'Saúde': 'Saúde e bem-estar', 'Casa': 'Meu lar', 'Viagem': 'Viagens' };
+    function dreamLbl(c) { return DREAM_LBL[c] || c; }
     let sonhosData = getStore('sonhosfe', null);
     if (!sonhosData || typeof sonhosData !== 'object' || !Array.isArray(sonhosData.items)) {
       sonhosData = {
-        items: [
-          { id: 1, cat: 'Viagem', title: 'Viagem para a Europa dos sonhos', date: '' },
-          { id: 2, cat: 'Carreira', title: 'Lançamento de projeto próprio', date: '' }
-        ],
+        items: [],
         letter: { text: 'Confie no processo, dê um passo de cada vez e seja paciente com a sua evolução. Você é capaz de realizar coisas grandiosas!', written: '', openOn: '' },
         psalmRead: {}
       };
@@ -3656,7 +3688,7 @@
     if (!Array.isArray(sonhosData.prayers)) sonhosData.prayers = [];
     if (!Array.isArray(sonhosData.notes)) sonhosData.notes = [];
     let dreamEditId = null;
-    function saveSonhos() { setStore('sonhosfe', sonhosData); }
+    function saveSonhos() { if (!setStoreChecked('sonhosfe', sonhosData)) alert('Não foi possível salvar: o armazenamento do aparelho está cheio. Baixe um backup e remova fotos antigas.'); }
 
     // ---- Mural de sonhos ----
     function dreamWhen(date) {
@@ -3665,35 +3697,37 @@
       return 'Meta: ' + fmtDMY(date) + (d === 0 ? ' (hoje)' : d > 0 ? ' (' + fmtWhen(d) + ')' : ' (passou ' + fmtWhen(d) + ')');
     }
     function addDream() {
-      const t = document.getElementById('dream-title'), c = document.getElementById('dream-cat'), d = document.getElementById('dream-date'), msg = document.getElementById('dream-msg');
-      const title = t ? t.value.trim().slice(0, 80) : '', cat = c && DREAM_CATS.includes(c.value) ? c.value : 'Outro', date = d ? d.value : '';
+      const g = id => { const e = document.getElementById(id); return e ? e.value : ''; }, msg = document.getElementById('dream-msg');
+      const title = g('dream-title').trim().slice(0, 80), cat = DREAM_CATS.includes(g('dream-cat')) ? g('dream-cat') : 'Outro', date = g('dream-date'), desc = g('dream-desc').trim().slice(0, 400);
       if (msg) msg.textContent = '';
       if (!title) { if (msg) msg.textContent = 'Escreva o sonho.'; return; }
       if (date && !validIsoDate(date)) { if (msg) msg.textContent = 'Escolha uma data válida ou deixe em branco.'; return; }
       let novoId = null;
       if (dreamEditId != null) {
-        sonhosData.items = sonhosData.items.map(it => it.id === dreamEditId ? Object.assign({}, it, { title, cat, date }) : it);
+        sonhosData.items = sonhosData.items.map(it => it.id === dreamEditId ? Object.assign({}, it, { title, cat, date, desc }, vbFormImg !== undefined ? { img: vbFormImg || '' } : {}) : it);
         dreamEditId = null;
       } else {
         novoId = Date.now();
-        sonhosData.items = sonhosData.items.concat({ id: novoId, cat, title, date, steps: [], goal: 0, saved: 0, doneOn: '' });
+        sonhosData.items = sonhosData.items.concat({ id: novoId, cat, title, date, desc, img: vbFormImg || '', steps: [], goal: 0, saved: 0, doneOn: '' });
       }
+      vbFormImg = undefined; vbPanel = '';
       saveSonhos();
       renderScreen();
       if (novoId) openCoach(novoId);
     }
     function editDream(id) {
-      dreamEditId = id;
+      dreamEditId = id; vbFormImg = undefined; vbPanel = 'novo'; vbOpenId = null;
       renderScreen();
-      const el = document.getElementById('dream-form');
-      if (el) el.scrollIntoView({ behavior: steScroll(), block: 'center' });
+      const el = document.getElementById('vb-panel');
+      if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' });
     }
-    function cancelDream() { dreamEditId = null; renderScreen(); }
+    function cancelDream() { dreamEditId = null; vbFormImg = undefined; vbPanel = ''; renderScreen(); }
     function deleteDream(id) {
       const it = sonhosData.items.find(x => x.id === id);
       if (!it || !confirm('Remover "' + it.title + '" do mural?')) return;
       sonhosData.items = sonhosData.items.filter(x => x.id !== id);
       if (dreamEditId === id) dreamEditId = null;
+      if (vbOpenId === id) vbOpenId = null;
       saveSonhos();
       renderScreen();
     }
@@ -3747,7 +3781,8 @@
       const text = input ? input.value.trim().slice(0, 80) : '';
       if (msg) msg.textContent = '';
       if (!text) { if (msg) msg.textContent = 'Escreva o passo.'; return; }
-      updateDream(id, it => ({ steps: dreamSteps(it).concat({ id: Date.now(), text, done: false }) }));
+      const dueEl = document.getElementById('step-due-' + id), due = dueEl && validIsoDate(dueEl.value) ? dueEl.value : '';
+      updateDream(id, it => ({ steps: dreamSteps(it).concat({ id: Date.now(), text, done: false, due }) }));
       dreamOpen[id] = true;
       renderScreen();
     }
@@ -3782,7 +3817,7 @@
                   <div class="flex items-center justify-between gap-2 py-1">
                     <button onclick="toggleStep(${it.id}, ${st.id})" aria-pressed="${st.done}" class="flex items-center gap-2.5 text-left flex-1 min-w-0">
                       <span class="w-4 h-4 shrink-0 rounded-full border border-[#A56ABD] flex items-center justify-center ${st.done ? 'bg-[#A56ABD] text-white' : ''}">${st.done ? ico('check', 9, '', 3) : ''}</span>
-                      <span class="text-xs ${st.done ? 'line-through text-[#8B7D95]' : ''}">${esc(st.text)}</span>
+                      <span class="text-xs ${st.done ? 'line-through text-[#8B7D95]' : ''}">${esc(st.text)}${st.due ? ' <span class="text-[10px] font-bold ' + (!st.done && st.due < isoDay(new Date()) ? 'text-red-500' : 'text-[#C6A467]') + '">· ' + fmtDMY(st.due) + '</span>' : ''}</span>
                     </button>
                     <button onclick="deleteStep(${it.id}, ${st.id})" aria-label="Remover o passo ${esc(st.text)}" class="text-[#8B7D95] hover:text-red-500">${ico('x', 12)}</button>
                   </div>`).join('');
@@ -3792,7 +3827,7 @@
                 ${passos || '<p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB]">Nenhum passo ainda. Quebre o sonho em etapas pequenas.</p>'}
                 <div class="flex gap-2 mt-2">
                   <input type="text" id="step-new-${it.id}" maxlength="80" aria-label="Novo passo" placeholder="Ex.: Tirar o passaporte" onkeydown="if (event.key === 'Enter') addStep(${it.id})" class="flex-1 min-w-0 px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-[#FAF5FC] dark:bg-[#2C153A] text-xs">
-                  <button onclick="addStep(${it.id})" class="px-3 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">+ Passo</button>
+                  <input type="date" id="step-due-${it.id}" aria-label="Prazo do passo, opcional" class="w-[8.5rem] px-2 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs"><button onclick="addStep(${it.id})" class="px-3 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">+ Passo</button>
                 </div>
                 <p class="text-[10px] font-bold uppercase text-[#8B7D95] mt-4 mb-1">Valor, opcional</p>
                 <div class="flex flex-wrap gap-x-4 gap-y-2">
@@ -3828,17 +3863,15 @@
                 ${aberto ? detalhes : ''}
               </div>`;
     }
-    function dreamCardHtml() {
+    function dreamFormHtml() {
       const editando = dreamEditId != null ? sonhosData.items.find(x => x.id === dreamEditId) : null;
-      const ativos = sonhosData.items.filter(it => !it.doneOn).sort((a, b) => (a.date && b.date) ? a.date.localeCompare(b.date) : a.date ? -1 : b.date ? 1 : 0);
-      return `          <div class="md:col-span-2 custom-card rounded-2xl p-6">
-            <h2 class="font-serif-display text-xl font-bold mb-3">Mural de Sonhos</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">${ativos.map(dreamItemHtml).join('') || '<p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB]">Nenhum sonho em andamento. Escreva um abaixo.</p>'}</div>
-            <div id="dream-form" class="mt-4 p-3 rounded-xl bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D]">
+      return `<div id="dream-form" class="mt-4 p-3 rounded-xl bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D]">
               <p class="text-[10px] font-bold uppercase text-[#8B7D95] mb-2">${editando ? 'Editando um sonho' : 'Novo sonho'}</p>
               <input type="text" id="dream-title" maxlength="80" aria-label="Sonho" placeholder="Ex.: Conhecer Lisboa" value="${editando ? esc(editando.title) : ''}" onkeydown="if (event.key === 'Enter') addDream()" class="w-full mb-2 px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-[#FAF5FC] dark:bg-[#2C153A] text-xs">
+              <textarea id="dream-desc" maxlength="400" rows="2" aria-label="Descrição do sonho" placeholder="Descreva o sonho: como ele é, por que importa (opcional)" class="w-full mb-2 px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs">${editando ? esc(editando.desc || '') : ''}</textarea>
+              <div class="flex flex-wrap items-center gap-3 mb-3"><label class="px-3 py-1.5 rounded-lg border border-[#A56ABD] text-[#A56ABD] text-xs font-bold cursor-pointer">Foto da galeria<input type="file" accept="image/*" style="display:none" onchange="vbFormPick(this)"></label><img id="vb-form-prev" alt="Prévia da foto do sonho" class="${(vbFormImg || (editando && editando.img && vbFormImg === undefined)) ? '' : 'hidden '}h-12 w-12 rounded-lg object-cover" src="${esc(vbFormImg || (editando && vbFormImg === undefined ? editando.img || '' : ''))}"><span id="vb-form-msg" class="text-[11px] text-[#8B7D95]"></span>${(editando && editando.img && vbFormImg === undefined) || vbFormImg ? '<button type="button" onclick="vbFormClear()" class="text-[11px] text-[#8B7D95] underline">Remover foto</button>' : ''}</div>
               <div class="flex flex-wrap gap-2">
-                <select id="dream-cat" aria-label="Categoria" class="px-2 py-1.5 rounded-lg border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs font-bold">${DREAM_CATS.map(c => '<option' + (editando && editando.cat === c ? ' selected' : '') + '>' + c + '</option>').join('')}</select>
+                <select id="dream-cat" aria-label="Categoria" class="px-2 py-1.5 rounded-lg border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs font-bold">${DREAM_CATS.map(c => '<option value="' + c + '"' + (editando && editando.cat === c ? ' selected' : '') + '>' + dreamLbl(c) + '</option>').join('')}</select>
                 <label class="flex items-center gap-1.5 text-[10px] font-bold uppercase text-[#8B7D95]">Data-alvo <input type="date" id="dream-date" value="${editando ? esc(editando.date || '') : ''}" class="px-2 py-1.5 rounded-lg border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs font-bold"></label>
               </div>
               <div class="flex gap-2 mt-3">
@@ -3846,10 +3879,15 @@
                 ${editando ? '<button onclick="cancelDream()" class="px-4 py-2 border border-[#A56ABD] text-[#A56ABD] font-bold text-xs rounded-xl">Cancelar</button>' : ''}
               </div>
               <p id="dream-msg" aria-live="polite" class="text-[11px] font-semibold text-red-600 dark:text-red-400 mt-2"></p>
-            </div>
-            ${dreamDoneHtml()}
+            </div>`;
+    }
+    function dreamCardHtml() {
+      const feitos = dreamDoneHtml();
+      return feitos ? `          <div class="md:col-span-2 custom-card rounded-2xl p-6">
+            <h2 class="font-serif-display text-xl font-bold mb-3">Sonhos realizados</h2>
+            ${feitos}
           </div>
-`;
+` : '';
     }
     // ---- Diário de fé: oração (hábito), gratidão, pedidos e anotações ----
     let gratLimit = 10, prayerEditId = null, prayerAnswerId = null, prayerAnsweredOpen = false, noteEditId = null, notesAll = false;
@@ -4052,12 +4090,7 @@
       renderScreen();
     }
     function nextFeatured() { featOff++; renderScreen(); }
-    function openDreamSteps(id) {
-      dreamOpen[id] = true;
-      renderScreen();
-      const el = document.getElementById('dream-' + id);
-      if (el) el.scrollIntoView({ behavior: steScroll(), block: 'center' });
-    }
+    function openDreamSteps(id) { vbOpen(id); }
     function featuredDream() {
       const ativos = sonhosData.items.filter(it => !it.doneOn).sort((a, b) => a.id - b.id), n = ativos.length;
       if (!n) return null;
@@ -4079,9 +4112,11 @@
           : `<p class="text-xs mt-3">Ainda sem passos. Quebre este sonho em etapas pequenas.</p>
             <button onclick="openDreamSteps(${it.id})" class="mt-2 px-3 py-1.5 bg-[#A56ABD] text-white font-bold text-xs rounded-lg">Adicionar passos</button>`;
       return `          <div class="md:col-span-2 custom-card rounded-2xl p-6 border-l-4 border-[#A56ABD]">
+            ${it.img ? '<img src="' + it.img + '" alt="Foto do sonho ' + esc(it.title) + '" class="w-full h-40 object-cover rounded-xl mb-4">' : ''}
             <p class="text-xs uppercase font-bold tracking-wider text-[#A56ABD] mb-1">Sonho da semana</p>
             <span class="text-[10px] font-bold text-[#C6A467] uppercase">${esc(it.cat)}</span>
             <h2 class="font-serif-display text-xl font-bold">${esc(it.title)}</h2>
+            ${it.desc ? '<p class="text-xs mt-1">' + esc(it.desc) + '</p>' : ''}
             ${it.date ? '<p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-0.5">' + dreamWhen(it.date) + '</p>' : ''}
             ${barras}
             ${acao}
@@ -4669,13 +4704,145 @@
       card.innerHTML = h;
       card.scrollTop = rolagem;
     }
+
+    // ================= Vision Board: organização nova dentro de Sonhos & Fé =================
+    let vbPanel = '', vbOpenId = null, vbPhrEdit = false, vbSurp = 0, vbFormImg;
+    function vbData() {
+      const v = sonhosData.vb && typeof sonhosData.vb === 'object' ? sonhosData.vb : (sonhosData.vb = {});
+      if (typeof v.phrase !== 'string') v.phrase = ''; if (typeof v.banner !== 'string') v.banner = '';
+      if (!v.version || typeof v.version !== 'object') v.version = { text: '', updated: '' };
+      return v;
+    }
+    function vbPhoto(file, max) {
+      return new Promise((resolve, reject) => {
+        const r = new FileReader(); r.onerror = () => reject(new Error('read'));
+        r.onload = () => { const im = new Image(); im.onerror = () => reject(new Error('img')); im.onload = () => {
+          const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.width * k)); c.height = Math.max(1, Math.round(im.height * k));
+          c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); resolve(c.toDataURL('image/jpeg', .72)); }; im.src = r.result; };
+        r.readAsDataURL(file);
+      });
+    }
+    function vbActive() { return sonhosData.items.filter(it => !it.doneOn).sort((a, b) => (a.date && b.date) ? a.date.localeCompare(b.date) : a.date ? -1 : b.date ? 1 : 0); }
+    function vbPct(it) { const st = dreamSteps(it); return st.length ? Math.round(st.filter(x => x.done).length / st.length * 100) : 0; }
+    function vbToggle(panel) { vbPanel = vbPanel === panel ? '' : panel; if (panel === 'novo') { dreamEditId = null; vbFormImg = undefined; } renderScreen(); const el = document.getElementById('vb-panel'); if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); }
+    function vbOpen(id) { vbOpenId = id; dreamOpen[id] = true; renderScreen(); }
+    function vbClose() { vbOpenId = null; renderScreen(); }
+    function vbGoCarta() { const el = document.getElementById('vb-carta'); if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); }
+    // fotos
+    function vbBannerPick(input) { const f = input.files && input.files[0]; if (!f) return; vbPhoto(f, 1100).then(d => { vbData().banner = d; saveSonhos(); renderScreen(); }).catch(() => alert('Não consegui ler essa foto.')); }
+    function vbBannerClear() { vbData().banner = ''; saveSonhos(); renderScreen(); }
+    function vbCoverPick(id, input) { const f = input.files && input.files[0]; if (!f) return; vbPhoto(f, 800).then(d => { updateDream(id, { img: d }); renderScreen(); }).catch(() => alert('Não consegui ler essa foto.')); }
+    function vbCoverClear(id) { updateDream(id, { img: '' }); renderScreen(); }
+    function vbFormPick(input) {
+      const f = input.files && input.files[0], m = document.getElementById('vb-form-msg'); if (!f) return; if (m) m.textContent = 'Lendo foto...';
+      vbPhoto(f, 800).then(d => { vbFormImg = d; const im = document.getElementById('vb-form-prev'); if (im) { im.src = d; im.classList.remove('hidden'); } if (m) m.textContent = 'Foto pronta.'; }).catch(() => { if (m) m.textContent = 'Não consegui ler essa foto.'; });
+    }
+    function vbFormClear() { vbFormImg = null; renderScreen(); }
+    // frase, versão, metas
+    function vbPhrEditToggle() { vbPhrEdit = !vbPhrEdit; renderScreen(); }
+    function vbPhrSave() { const e = document.getElementById('vb-phrase'); vbData().phrase = e ? e.value.trim().slice(0, 140) : ''; vbPhrEdit = false; saveSonhos(); renderScreen(); }
+    function vbVersionSave() { const e = document.getElementById('vb-version'); const v = vbData().version; v.text = e ? e.value.trim().slice(0, 3000) : ''; v.updated = isoDay(new Date()); saveSonhos(); renderScreen(); }
+    function vbGoalAdd() {
+      const g = id => { const e = document.getElementById(id); return e ? e.value : ''; }, msg = document.getElementById('vb-goal-msg'), id = +g('vb-goal-dream'), text = g('vb-goal-text').trim().slice(0, 80), due = g('vb-goal-due');
+      if (!sonhosData.items.some(x => x.id === id && !x.doneOn)) { if (msg) msg.textContent = 'Escolha o sonho da meta.'; return; }
+      if (!text) { if (msg) msg.textContent = 'Escreva a meta.'; return; }
+      if (due && !validIsoDate(due)) { if (msg) msg.textContent = 'Data inválida.'; return; }
+      updateDream(id, it => ({ steps: dreamSteps(it).concat({ id: Date.now(), text, done: false, due }) })); renderScreen();
+    }
+    function vbGoals() {
+      const out = []; vbActive().forEach(it => dreamSteps(it).forEach(st => { out.push({ it, st }); }));
+      return out;
+    }
+    function vbNext() {
+      const hoje = isoDay(new Date()), c = vbGoals().filter(x => !x.st.done && x.st.due).sort((a, b) => a.st.due.localeCompare(b.st.due));
+      return c[0] || null;
+    }
+    // desenho
+    function vbHeaderHtml() {
+      const v = vbData(), frase = v.phrase;
+      return '<header class="mb-5"><p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Sonhos & Fé</p><h1 class="font-serif-display text-3xl md:text-4xl font-bold">Meu Vision Board</h1>' +
+        '<p class="text-base font-semibold mt-2">Olá, Stephanie</p>' +
+        (vbPhrEdit ? '<div class="flex gap-2 mt-2"><input id="vb-phrase" class="vb-in" maxlength="140" value="' + esc(frase) + '" placeholder="Escreva a sua frase" aria-label="Frase motivacional" onkeydown="if(event.key===\'Enter\')vbPhrSave()"><button class="vb-btn" onclick="vbPhrSave()">Salvar</button></div>' :
+          '<p class="text-sm text-[#8B7D95] dark:text-[#C1B1CB] mt-0.5">' + (frase ? esc(frase) : 'Escreva uma frase que te lembre do caminho.') + ' <button onclick="vbPhrEditToggle()" class="text-[#A56ABD] underline text-xs font-semibold" aria-label="Editar a frase">Editar</button></p>') + '</header>' +
+        '<div class="vb-banner mb-4">' + (v.banner ? '<img src="' + v.banner + '" alt="Imagem principal do Vision Board">' : '') + '<div><p class="font-serif-display text-2xl md:text-3xl font-bold leading-tight">' + (frase ? esc(frase) : 'A vida que eu sonho viver') + '</p>' +
+        '<div class="flex flex-wrap gap-2 mt-3"><label class="px-3 py-1.5 rounded-lg bg-white/90 text-[#49225B] text-xs font-bold cursor-pointer">' + (v.banner ? 'Trocar imagem' : 'Escolher imagem') + '<input type="file" accept="image/*" style="display:none" onchange="vbBannerPick(this)"></label>' + (v.banner ? '<button onclick="vbBannerClear()" class="px-3 py-1.5 rounded-lg border border-white/60 text-white text-xs font-bold">Remover</button>' : '') + '</div></div></div>';
+    }
+    function vbShortcutsHtml() {
+      const b = (ic, t, fn, on) => '<button type="button" class="vb-short' + (on ? ' on' : '') + '" onclick="' + fn + '">' + ico(ic, 22) + t + '</button>';
+      return '<div class="vb-g5">' + b('plus', 'Adicionar sonho', "vbToggle('novo')", vbPanel === 'novo') + b('target', 'Minhas metas', "vbToggle('metas')", vbPanel === 'metas') + b('dove', 'Minha cartinha', 'vbGoCarta()', false) + b('gem', 'Minha versão', "vbToggle('versao')", vbPanel === 'versao') + b('sparkles', 'Surpresa do dia', "vbToggle('surpresa')", vbPanel === 'surpresa') + '</div>';
+    }
+    function vbSurpriseHtml() {
+      const c = [];
+      sonhosData.items.forEach(it => { if (it.doneOn) c.push({ k: 'Você realizou', t: it.title }); else { c.push({ k: 'Um sonho seu', t: it.title + (it.desc ? ': ' + it.desc : '') }); dreamSteps(it).filter(x => x.done).forEach(x => c.push({ k: 'Um passo que você já deu em "' + it.title + '"', t: x.text })); } });
+      Object.keys(sonhosData.gratitude).forEach(k => { const a = sonhosData.gratitude[k]; if (Array.isArray(a)) a.filter(x => typeof x === 'string' && x.trim()).forEach(x => c.push({ k: 'Você agradeceu em ' + fmtDMY(k), t: x })); });
+      sonhosData.notes.forEach(n => c.push({ k: 'Uma nota sua', t: n.title + (n.text ? ': ' + n.text.slice(0, 160) : '') }));
+      const vt = vbData().version.text; if (vt) c.push({ k: 'Da sua versão do futuro', t: vt.slice(0, 220) });
+      if (!c.length) return '<p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB]">A surpresa do dia é sempre algo seu: um sonho, uma gratidão, uma nota ou um passo que você já deu. Cadastre algumas coisas e ela aparece aqui.</p>';
+      const hoje = isoDay(new Date()); let h = vbSurp * 7919; for (let i = 0; i < hoje.length; i++) h = (h * 31 + hoje.charCodeAt(i)) % 100003;
+      const x = c[h % c.length];
+      return '<p class="text-[10px] font-bold uppercase text-[#C6A467] mb-1">' + esc(x.k) + '</p><p class="font-serif-display text-lg leading-snug">' + esc(x.t) + '</p>' + (c.length > 1 ? '<button class="vb-btn alt mt-3" onclick="vbSurp++;renderScreen()">Outra surpresa</button>' : '');
+    }
+    function vbPanelHtml() {
+      if (!vbPanel) return '';
+      let t = '', body = '';
+      if (vbPanel === 'novo') { t = dreamEditId != null ? 'Editar sonho' : 'Novo sonho'; body = dreamFormHtml(); }
+      else if (vbPanel === 'versao') { const v = vbData().version; t = 'Minha versão do futuro'; body = '<p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-2">Descreva quem você quer ser: como é o seu dia, o que você sente, o que já conquistou.</p><textarea id="vb-version" rows="7" maxlength="3000" class="vb-in" aria-label="Minha versão do futuro" placeholder="Escreva com calma...">' + esc(v.text) + '</textarea><div class="flex items-center gap-3 mt-3"><button class="vb-btn" onclick="vbVersionSave()">Salvar</button>' + (v.updated ? '<span class="text-[11px] text-[#8B7D95]">Atualizada em ' + fmtDMY(v.updated) + '</span>' : '') + '</div>'; }
+      else if (vbPanel === 'surpresa') { t = 'Surpresa do dia'; body = vbSurpriseHtml(); }
+      else if (vbPanel === 'metas') {
+        const hoje = isoDay(new Date()), g = vbGoals(), abertas = g.filter(x => !x.st.done), com = abertas.filter(x => x.st.due).sort((a, b) => a.st.due.localeCompare(b.st.due)), sem = abertas.filter(x => !x.st.due), ativos = vbActive();
+        const row = x => '<div class="flex items-center gap-2 py-1.5 border-t border-[#EFE1F5] dark:border-[#3D224D]"><button onclick="toggleStep(' + x.it.id + ',' + x.st.id + ')" aria-label="Concluir ' + esc(x.st.text) + '" class="w-5 h-5 shrink-0 rounded-full border border-[#A56ABD]"></button><div class="min-w-0 flex-1"><p class="text-xs font-semibold">' + esc(x.st.text) + '</p><p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB]">' + esc(x.it.title) + '</p></div>' + (x.st.due ? '<span class="text-[11px] font-bold ' + (x.st.due < hoje ? 'text-red-500' : 'text-[#C6A467]') + '">' + fmtDM(x.st.due) + '</span>' : '') + '</div>';
+        t = 'Minhas metas';
+        body = (ativos.length ? '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3"><select id="vb-goal-dream" class="vb-in" aria-label="Sonho da meta">' + ativos.map(i => '<option value="' + i.id + '">' + esc(i.title) + '</option>').join('') + '</select><input id="vb-goal-text" class="vb-in" maxlength="80" placeholder="Nova meta (ex.: Tirar o passaporte)" aria-label="Nova meta"><input id="vb-goal-due" type="date" class="vb-in" aria-label="Prazo da meta"><button class="vb-btn" onclick="vbGoalAdd()">Adicionar meta ao sonho</button></div><p id="vb-goal-msg" aria-live="polite" class="text-[11px] font-semibold text-red-600 mb-2"></p>' : '<p class="text-xs text-[#8B7D95] mb-2">Cadastre um sonho primeiro. Toda meta fica ligada a um sonho.</p>') +
+          (com.length ? '<p class="text-[10px] font-bold uppercase text-[#C6A467] mt-1">Com prazo</p>' + com.map(row).join('') : '') + (sem.length ? '<p class="text-[10px] font-bold uppercase text-[#8B7D95] mt-3">Sem prazo</p>' + sem.map(row).join('') : '') + (!abertas.length && ativos.length ? '<p class="text-xs text-[#8B7D95]">Nenhuma meta em aberto. Adicione a primeira acima.</p>' : '');
+      }
+      return '<div id="vb-panel" class="custom-card rounded-2xl p-5 mb-6 border border-[#C6A467]"><div class="flex items-center justify-between mb-3"><h2 class="font-serif-display text-xl font-bold">' + t + '</h2><button onclick="' + (vbPanel === 'novo' ? 'cancelDream()' : "vbToggle('" + vbPanel + "')") + '" class="text-[11px] font-semibold text-[#8B7D95] underline">Fechar</button></div>' + body + '</div>';
+    }
+    function vbGridHtml() {
+      const at = vbActive();
+      const cards = at.map(it => '<button type="button" class="vb-card" onclick="vbOpen(' + it.id + ')" aria-label="Abrir o sonho ' + esc(it.title) + '">' + (it.img ? '<img src="' + it.img + '" alt="" loading="lazy">' : '<span class="vb-ph">' + ico('gem', 44) + '</span>') +
+        '<span class="vb-lab"><small>' + esc(dreamLbl(it.cat)) + (it.date ? ' · ' + fmtDM(it.date) : '') + '</small><b>' + esc(it.title) + '</b>' + (dreamSteps(it).length ? '<i><u style="width:' + vbPct(it) + '%"></u></i>' : '') + '</span></button>').join('');
+      return '<div class="flex items-baseline justify-between mb-3"><h2 class="font-serif-display text-2xl font-bold">Meus grandes sonhos</h2><span class="text-[11px] font-semibold text-[#8B7D95]">' + at.length + (at.length === 1 ? ' em andamento' : ' em andamento') + '</span></div>' +
+        '<div class="vb-grid">' + cards + '<button type="button" class="vb-card vb-add" onclick="vbToggle(\'novo\')" aria-label="Adicionar sonho">' + ico('plus', 30) + 'Adicionar sonho</button></div>';
+    }
+    function vbEvolutionHtml() {
+      const at = vbActive(), g = vbGoals(), feitos = g.filter(x => x.st.done).length, feitosS = sonhosData.items.filter(x => x.doneOn).length, tot = sonhosData.items.length;
+      const pct = g.length ? Math.round(feitos / g.length * 100) : 0;
+      return '<div class="custom-card rounded-2xl p-6"><div class="flex items-center justify-between mb-2"><h2 class="font-serif-display text-xl font-bold">Minha evolução</h2><span class="px-3 py-1 rounded-full bg-[#F5EBFA] dark:bg-[#3F234F] text-xs font-bold">' + feitos + ' / ' + g.length + '</span></div>' +
+        (g.length ? '<div class="h-2 rounded-full bg-[#F5EBFA] dark:bg-[#3F234F] overflow-hidden"><div class="h-full bg-[#A56ABD]" style="width:' + pct + '%"></div></div><p class="text-xs mt-2">' + feitos + ' de ' + g.length + ' passos e metas concluídos (' + pct + '%).</p>' : '<p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB]">Quando você dividir um sonho em passos, o progresso aparece aqui.</p>') +
+        '<p class="text-xs mt-2 text-[#8B7D95] dark:text-[#C1B1CB]">' + feitosS + (feitosS === 1 ? ' sonho realizado' : ' sonhos realizados') + ' de ' + tot + ' cadastrados.</p></div>';
+    }
+    function vbNextGoalHtml() {
+      const n = vbNext(), hoje = isoDay(new Date());
+      if (n) { const d = daysBetween(hoje, n.st.due); return '<div class="custom-card rounded-2xl p-6 border-l-4 border-[#C6A467]"><p class="text-xs uppercase font-bold tracking-wider text-[#C6A467] mb-1">Minha próxima meta</p><h2 class="font-serif-display text-xl font-bold">' + esc(n.st.text) + '</h2><p class="text-xs mt-1 text-[#8B7D95] dark:text-[#C1B1CB]">' + esc(n.it.title) + ' · ' + fmtDMY(n.st.due) + (d < 0 ? ' (atrasada)' : d === 0 ? ' (hoje)' : ' (' + fmtWhen(d) + ')') + '</p><button class="vb-btn mt-3" onclick="toggleStep(' + n.it.id + ',' + n.st.id + ')">Concluir esta meta</button></div>'; }
+      return '<div class="custom-card rounded-2xl p-6 border-l-4 border-[#C6A467]"><p class="text-xs uppercase font-bold tracking-wider text-[#C6A467] mb-1">Minha próxima meta</p><p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB]">Nenhuma meta com prazo ainda. Crie uma ligada a um dos seus sonhos.</p><button class="vb-btn mt-3" onclick="vbToggle(\'metas\')">Criar uma meta</button></div>';
+    }
+    function vbHistoryHtml() {
+      const w = (cgData.won || []).map(id => CG_WINS.find(x => x.id === id)).filter(Boolean), feitos = sonhosData.items.filter(x => x.doneOn).sort((a, b) => b.doneOn.localeCompare(a.doneOn));
+      if (!w.length && !feitos.length) return '';
+      return '<div class="md:col-span-2 custom-card rounded-2xl p-6"><h2 class="font-serif-display text-xl font-bold mb-3">Histórico de conquistas</h2>' +
+        feitos.slice(0, 6).map(it => '<div class="flex justify-between gap-3 py-1.5 border-t border-[#EFE1F5] dark:border-[#3D224D] text-xs"><span class="font-semibold">Sonho realizado: ' + esc(it.title) + '</span><span class="text-[#8B7D95] shrink-0">' + fmtDMY(it.doneOn) + '</span></div>').join('') +
+        w.map(x => '<div class="flex justify-between gap-3 py-1.5 border-t border-[#EFE1F5] dark:border-[#3D224D] text-xs"><span class="font-semibold">' + esc(x.t) + '</span><span class="text-[#C6A467] shrink-0">conquista</span></div>').join('') + '</div>';
+    }
+    function vbDetailHtml() {
+      const it = vbOpenId != null ? sonhosData.items.find(x => x.id === vbOpenId && !x.doneOn) : null;
+      if (!it) return '';
+      return '<div class="vb-ov" onmousedown="if(event.target===this)vbClose()" role="dialog" aria-modal="true" aria-label="' + esc(it.title) + '"><div class="vb-sheet"><div class="vb-cover">' + (it.img ? '<img src="' + it.img + '" alt="Foto do sonho">' : '') +
+        '<button class="vb-x" onclick="vbClose()" aria-label="Fechar">' + ico('x', 16) + '</button><div style="position:absolute;left:10px;bottom:10px;display:flex;gap:8px"><label class="px-3 py-1.5 rounded-lg bg-white/90 text-[#49225B] text-xs font-bold cursor-pointer">' + (it.img ? 'Trocar foto' : 'Adicionar foto') + '<input type="file" accept="image/*" style="display:none" onchange="vbCoverPick(' + it.id + ',this)"></label>' + (it.img ? '<button onclick="vbCoverClear(' + it.id + ')" class="px-3 py-1.5 rounded-lg bg-[rgba(36,9,47,.7)] text-white text-xs font-bold">Remover</button>' : '') + '</div></div>' +
+        '<div style="padding:16px">' + (it.desc ? '<p class="text-sm mb-3">' + esc(it.desc) + '</p>' : '') + dreamItemHtml(it) + '</div></div></div>';
+    }
     function renderSonhos(container) {
+      const old = document.querySelector('.vb-sheet'), keep = old ? old.scrollTop : 0;
+      if (vbOpenId != null && !sonhosData.items.some(x => x.id === vbOpenId && !x.doneOn)) vbOpenId = null;
       container.innerHTML = `
-        <header class="mb-6">
-          <p class="text-xs uppercase font-bold tracking-widest text-[#A56ABD]">Propósito</p>
-          <h1 class="font-serif-display text-3xl font-bold">Sonhos & Fé</h1>
-          <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Mural e lembretes para o coração</p>
-        </header>
+        ${vbHeaderHtml()}
+        ${vbShortcutsHtml()}
+        ${vbPanelHtml()}
+        ${vbGridHtml()}
+
+        <div class="vb-two">
+          ${vbEvolutionHtml()}
+          ${vbNextGoalHtml()}
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           ${psalmCardHtml()}
@@ -4683,12 +4850,15 @@
           ${faithMonthHtml()}
           ${prayerHabitCardHtml()}
           ${gratitudeCardHtml()}
+          ${vbHistoryHtml()}
           ${dreamCardHtml()}
           ${prayerRequestsCardHtml()}
           ${notesCardHtml()}
-          ${cartaCardHtml()}
+          ${cartaCardHtml().replace('<div ', '<div id="vb-carta" ')}
         </div>
+        ${vbDetailHtml()}
       `;
+      const sh = container.querySelector('.vb-sheet'); if (sh) sh.scrollTop = keep;
     }
 
     function backupCardHtml() {
