@@ -594,6 +594,13 @@
     .dx-side, .dx-main, .dx-top, .dx-tabbar, .dx-side *, .dx-main *, .dx-top *, .dx-tabbar * { box-sizing: border-box; }
 
     @media (min-width: 768px) and (max-width: 979px) { .dx-side { width: 232px; flex-basis: 232px; } .dx-main { padding: 28px 24px 80px; } }
+
+    .dx-pane { display: contents; }
+    .dx-pane[hidden] { display: none !important; }
+    .dx-seg.scroll { overflow-x: auto; scrollbar-width: none; }
+    .dx-seg.scroll::-webkit-scrollbar { display: none; }
+    .dx-seg.scroll button { flex: 1 0 auto; white-space: nowrap; padding: 10px 16px; }
+    .dx-seg.scroll { margin-bottom: 18px; }
   </style>
 </head>
 <body class="antialiased">
@@ -1098,16 +1105,20 @@
         if (!confirm('Restaurar o backup de ' + quando + '? Isso substitui todos os dados atuais deste navegador.')) return;
         const antes = {};
         backupKeys().forEach(k => { antes[k] = localStorage.getItem(k); });
+        const total = entries.reduce((a, e) => a + e[0].length + e[1].length, 0);
+        let falhou = '';
         try {
-          entries.forEach(([k, v]) => localStorage.setItem(k, v));
           const novas = new Set(entries.map(e => e[0]));
           backupKeys().forEach(k => { if (!novas.has(k)) localStorage.removeItem(k); });
+          entries.slice().sort((a, b) => a[1].length - b[1].length).forEach(([k, v]) => { falhou = k; localStorage.setItem(k, v); });
         } catch (e) {
           try {
             entries.forEach(([k]) => { if (!(k in antes)) localStorage.removeItem(k); });
             Object.keys(antes).forEach(k => localStorage.setItem(k, antes[k]));
           } catch (e2) {}
-          backupMsg('O navegador recusou os dados, então mantive os atuais.', false);
+          const nome = (e && e.name) || 'erro desconhecido', cota = /quota/i.test(nome) || (e && (e.code === 22 || e.code === 1014));
+          const mb = (total / 1048576).toFixed(1).replace('.', ',');
+          backupMsg('O navegador recusou os dados (' + nome + (falhou ? ' em "' + falhou.replace('ste_', '') + '"' : '') + '). O backup tem cerca de ' + mb + ' MB de texto. Mantive os dados atuais. ' + (cota ? 'Este navegador guarda por volta de 5 MB por site: no aparelho de origem, apague fotos grandes do Dream Board (veja a lista de espaço usado acima) e baixe o backup de novo.' : 'Se você abriu o arquivo pelo app Arquivos, abra o STE pelo endereço do site ou pelo ícone da tela de início e tente de novo.'), false);
           return;
         }
         location.reload();
@@ -1990,7 +2001,9 @@
           <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Acompanhe sua rotina com leveza</p>
         </header>
 
+        ${habTabsHtml()}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="dx-pane" ${habTab !== 'habitos' ? 'hidden' : ''}>
           <div class="custom-card rounded-2xl p-6">
             <div class="flex justify-between items-center mb-4">
               <h2 class="font-serif-display text-xl font-bold">Hábitos</h2>
@@ -2003,16 +2016,6 @@
               <input type="text" id="new-habit-title" placeholder="Novo hábito..." class="flex-1 px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-[#FAF5FC] dark:bg-[#2C153A] text-xs">
               <button onclick="addHabit()" class="px-4 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">+ Adicionar</button>
             </div>
-          </div>
-
-          ${habitWeekSummaryHtml()}
-          ${habitMonthSummaryHtml()}
-          ${pdCountersCardHtml()}
-
-          <div class="custom-card rounded-2xl p-6">
-            <h3 class="font-serif-display text-xl font-bold mb-3">Modelos de rotina</h3>
-            <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-3">Cria hábitos de exemplo, já com grupo, para você editar. Não apaga os que você já tem.</p>
-            <div class="flex flex-col gap-2">${Object.keys(HABIT_TEMPLATES).map(k => '<button onclick="useHabitTemplate(\'' + k + '\')" class="px-3 py-2 rounded-xl border border-[#A56ABD] text-[#A56ABD] text-xs font-bold text-left">' + esc(HABIT_TEMPLATES[k].label) + '</button>').join('')}</div>
           </div>
 
           <div class="custom-card rounded-2xl p-6">
@@ -2030,6 +2033,21 @@
               </div>
             </div>
           </div>
+          </div>
+          <div class="dx-pane" ${habTab !== 'resumos' ? 'hidden' : ''}>
+          ${habitWeekSummaryHtml()}
+          ${habitMonthSummaryHtml()}
+          ${pdCountersCardHtml()}
+
+          </div>
+          <div class="dx-pane" ${habTab !== 'modelos' ? 'hidden' : ''}>
+          <div class="custom-card rounded-2xl p-6">
+            <h3 class="font-serif-display text-xl font-bold mb-3">Modelos de rotina</h3>
+            <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-3">Cria hábitos de exemplo, já com grupo, para você editar. Não apaga os que você já tem.</p>
+            <div class="flex flex-col gap-2">${Object.keys(HABIT_TEMPLATES).map(k => '<button onclick="useHabitTemplate(\'' + k + '\')" class="px-3 py-2 rounded-xl border border-[#A56ABD] text-[#A56ABD] text-xs font-bold text-left">' + esc(HABIT_TEMPLATES[k].label) + '</button>').join('')}</div>
+          </div>
+
+          </div>
         </div>
       `;
     }
@@ -2043,8 +2061,28 @@
           <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Cronograma capilar, medidas, sono, alimentação, suplementos e consultas</p>
         </header>
 
+        ${saudeTabsHtml()}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="dx-pane" ${saudeTab !== 'resumo' ? 'hidden' : ''}>
+          <div class="md:col-span-2">${dxHealthHtml(true)}</div>
           ${weekSummaryHtml()}
+          <div class="custom-card rounded-2xl p-6">
+            <h2 class="font-serif-display text-xl font-bold mb-1">Hoje nos cuidados</h2>
+            <p class="text-xs text-[#8B7D95] mb-3">${medsProgressText()}</p>
+            <button onclick="saudeSetTab('medico')" class="px-4 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">Abrir suplementos e consultas</button>
+          </div>
+          <div class="custom-card rounded-2xl p-6">
+            <h2 class="font-serif-display text-xl font-bold mb-1">Consultas e exames</h2>
+            <p class="text-xs text-[#8B7D95] mb-3">${apptSummaryHtml()}</p>
+            <button onclick="saudeSetTab('medico')" class="px-4 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">Ver todos</button>
+          </div>
+          </div>
+          <div class="dx-pane" ${saudeTab !== 'corpo' ? 'hidden' : ''}>
+          ${measuresCardHtml()}
+          ${hairCardHtml()}
+          ${skinCardHtml()}
+          </div>
+          <div class="dx-pane" ${saudeTab !== 'nutricao' ? 'hidden' : ''}>
           <div class="md:col-span-2 custom-card rounded-2xl p-6">
             <h2 class="font-serif-display text-xl font-bold mb-4">Água de hoje</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2075,10 +2113,10 @@
             <p id="goal-msg" aria-live="polite" class="text-[11px] font-semibold text-red-600 dark:text-red-400 mt-2"></p>
           </div>
 
-          ${hairCardHtml()}
-          ${skinCardHtml()}
-          ${measuresCardHtml()}
-
+          ${foodCardHtml()}
+          ${shopCardHtml()}
+          </div>
+          <div class="dx-pane" ${saudeTab !== 'mente' ? 'hidden' : ''}>
           <div class="md:col-span-2 custom-card rounded-2xl p-6">
             <h2 class="font-serif-display text-xl font-bold mb-1">Sono, energia e humor</h2>
             <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-4">Um registro rápido por dia. Toque de novo no número escolhido para limpar.</p>
@@ -2115,9 +2153,13 @@
             </div>
           </div>
 
-          ${foodCardHtml()}
-          ${shopCardHtml()}
-
+          <div class="md:col-span-2 custom-card rounded-2xl p-6">
+            <h2 class="font-serif-display text-xl font-bold mb-1">Cabeça cheia?</h2>
+            <p class="text-xs text-[#8B7D95] mb-3">Escreva o que está pesando e escolha só o próximo passo.</p>
+            <button onclick="navigate('descarrega')" class="px-4 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">Abrir Descarrega a Cabeça</button>
+          </div>
+          </div>
+          <div class="dx-pane" ${saudeTab !== 'medico' ? 'hidden' : ''}>
           <div class="custom-card rounded-2xl p-6">
             <h2 class="font-serif-display text-xl font-bold mb-1">Suplementos e medicamentos</h2>
             <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-4">${medsProgressText()}</p>
@@ -2159,6 +2201,7 @@
               <button onclick="addAppt()" class="px-4 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">+ Adicionar</button>
             </div>
             <p id="appt-msg" aria-live="polite" class="text-[11px] font-semibold text-red-600 dark:text-red-400 mt-1"></p>
+          </div>
           </div>
         </div>
       `;
@@ -2822,14 +2865,18 @@
           <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Fichas, divisão semanal e treino do dia</p>
         </header>
 
+        ${academiaTabsHtml()}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="dx-pane" ${academiaTab !== 'hoje' ? 'hidden' : ''}>
           ${wkTodayHtml()}
           ${wkNoteCardHtml()}
-          ${wkWeekHtml()}
           ${wkFreqCardHtml()}
+          </div>
+          <div class="dx-pane" ${academiaTab !== 'semana' ? 'hidden' : ''}>
+          ${wkWeekHtml()}
           ${wkMonthSummaryHtml()}
-          ${wkEvolutionHtml()}
-          ${wkSleepCardHtml()}
+          </div>
+          <div class="dx-pane" ${academiaTab !== 'fichas' ? 'hidden' : ''}>
           ${wkData.workouts.map(wkCardHtml).join('')}
           <div class="custom-card rounded-2xl p-6">
             <h3 class="font-serif-display text-xl font-bold mb-3">Modelos prontos</h3>
@@ -2842,6 +2889,11 @@
             <input type="text" id="wk-new-name" maxlength="40" aria-label="Nome do novo treino" placeholder="Ex.: Treino D ou Cardio" onkeydown="if (event.key === 'Enter') newWorkout()" class="w-full mb-2 px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-[#FAF5FC] dark:bg-[#2C153A] text-xs">
             <button onclick="newWorkout()" class="px-4 py-2 bg-[#A56ABD] text-white font-bold text-xs rounded-xl">+ Criar ficha</button>
             <p id="wk-msg" aria-live="polite" class="text-[11px] font-semibold text-red-600 dark:text-red-400 mt-2"></p>
+          </div>
+          </div>
+          <div class="dx-pane" ${academiaTab !== 'evolucao' ? 'hidden' : ''}>
+          ${wkEvolutionHtml()}
+          ${wkSleepCardHtml()}
           </div>
         </div>
       `;
@@ -3022,14 +3074,8 @@
           <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Controle de receitas, despesas e cartões</p>
         </header>
 
-        ${finYearSummaryHtml()}
-
-        <div class="custom-card rounded-2xl p-5 mb-6">
-          <h2 class="font-serif-display text-xl font-bold mb-1">Modelos de contas fixas</h2>
-          <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-3">Cria contas fixas de exemplo, sem apagar as que você já tem.</p>
-          <div class="flex flex-wrap gap-2">${Object.keys(FIN_TEMPLATES).map(k => '<button onclick="useFinTemplate(\'' + k + '\')" class="px-3 py-2 rounded-xl border border-[#A56ABD] text-[#A56ABD] text-xs font-bold">' + esc(FIN_TEMPLATES[k].label) + '</button>').join('')}</div>
-        </div>
-
+        ${finTabsHtml()}
+        <div class="dx-pane" ${(finTab === 'cartoes' || finTab === 'ano') ? 'hidden' : ''}>
         <div class="flex items-center justify-between mb-4">
           <button onclick="finShiftMonth(-1)" aria-label="Mês anterior" class="p-2.5 rounded-xl custom-card text-[#8B7D95]">${ico('arrow-right', 16, 'rotate-180')}</button>
           <h2 class="font-serif-display text-lg md:text-xl font-bold capitalize">${finMonthLabel(finMonth)}</h2>
@@ -3051,7 +3097,10 @@
           </div>
         </div>
 
-        <div class="custom-card rounded-2xl p-5 mb-6">
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="dx-pane" ${finTab !== 'mes' ? 'hidden' : ''}>
+        <div class="md:col-span-2 custom-card rounded-2xl p-5">
           <h2 class="text-xs font-bold uppercase tracking-wider text-[#8B7D95] mb-3">Novo lançamento</h2>
           <div class="grid grid-cols-2 md:grid-cols-6 gap-2">
             <select id="fin-type" onchange="finTypeChange()" aria-label="Tipo" class="${inputCls} font-medium">
@@ -3067,13 +3116,12 @@
           </div>
           <div class="flex items-center justify-between mt-3 gap-3">
             <label id="fin-card-wrap" class="text-[10px] font-bold uppercase text-[#8B7D95]">Cartão
-              <select id="fin-card" class="w-full mt-1 @INPL@"><option value="">Não foi no cartão</option>${finances.cards.map(c => '<option value="' + c.id + '">' + esc(c.name) + '</option>').join('')}</select>
+              <select id="fin-card" class="w-full mt-1 ${inputCls}"><option value="">Não foi no cartão</option>${finances.cards.map(c => '<option value="' + c.id + '">' + esc(c.name) + '</option>').join('')}</select>
             </label>
             <button onclick="addFinTx()" class="px-5 py-2.5 bg-[#A56ABD] hover:bg-[#8E4EA7] text-white font-bold text-xs rounded-xl ml-auto">+ Adicionar</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div class="custom-card rounded-2xl p-5">
             <h2 class="font-serif-display text-xl font-bold mb-4">Despesas por categoria</h2>
             ${cats.length === 0 ? '<p class="text-xs text-[#8B7D95] py-4 text-center">Nenhuma despesa neste mês.</p>' : `
@@ -3108,28 +3156,9 @@
             ${finTrendSvg()}
           </div>
 
-          ${finRecurringCardHtml()}
-
-          <div class="custom-card rounded-2xl p-5">
-            <h2 class="font-serif-display text-xl font-bold mb-1">Metas por categoria</h2>
-            <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-4">Defina um teto mensal de gasto para cada categoria.</p>
-            <div class="space-y-3">
-              ${FIN_CATS.out.map(cat => {
-                const gasto = byCat[cat] || 0, meta = finances.catGoals[cat] || 0, pct = meta > 0 ? Math.min(100, gasto / meta * 100) : 0, gid = cat.replace(/\s/g, '_');
-                return `<div>
-                  <div class="flex items-center justify-between gap-2 mb-1">
-                    <span class="text-xs font-medium">${esc(cat)}</span>
-                    <label class="flex items-center gap-1 text-[10px] text-[#8B7D95]">R$ <input type="text" inputmode="decimal" value="${meta || ''}" placeholder="sem meta" onchange="saveCatGoal('${cat}', this.value)" class="w-16 px-2 py-1.5 rounded-lg border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs font-bold"></label>
-                  </div>
-                  ${meta > 0 ? `<div class="w-full bg-[#E7DBEF] dark:bg-[#3D224D] h-1.5 rounded-full overflow-hidden"><div class="${gasto > meta ? 'bg-red-500' : pct >= 90 ? 'bg-[#C6A467]' : 'bg-[#A56ABD]'} h-full" style="width: ${pct}%"></div></div>
-                    <p class="text-[10px] text-[#8B7D95] mt-0.5">${fmtBRL(gasto)} de ${fmtBRL(meta)}${gasto > meta ? ' · passou do teto' : ''}</p>` : ''}
-                  <p id="goal-msg-${gid}" aria-live="polite" class="text-[11px] font-semibold text-red-600 dark:text-red-400"></p>
-                </div>`;
-              }).join('')}
-            </div>
           </div>
-
-          <div class="custom-card rounded-2xl p-5">
+          <div class="dx-pane" ${finTab !== 'lancamentos' ? 'hidden' : ''}>
+          <div class="md:col-span-2 custom-card rounded-2xl p-5">
             <h2 class="font-serif-display text-xl font-bold mb-3">Lançamentos</h2>
             <div class="flex flex-wrap gap-2 mb-4">
               <input type="text" id="fintx-search" placeholder="Buscar por descrição" oninput="setFinTxSearch(this.value)" value="${esc(finTxSearch)}" class="flex-1 min-w-[9rem] px-3 py-2 rounded-xl border border-[#EFE1F5] dark:border-[#3D224D] bg-[#FAF5FC] dark:bg-[#2C153A] text-xs">
@@ -3166,11 +3195,38 @@
                 `).join('')}
               </div>`; })()}
           </div>
+          </div>
+          <div class="dx-pane" ${finTab !== 'contas' ? 'hidden' : ''}>
+        <div class="md:col-span-2 custom-card rounded-2xl p-5">
+          <h2 class="font-serif-display text-xl font-bold mb-1">Modelos de contas fixas</h2>
+          <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-3">Cria contas fixas de exemplo, sem apagar as que você já tem.</p>
+          <div class="flex flex-wrap gap-2">${Object.keys(FIN_TEMPLATES).map(k => '<button onclick="useFinTemplate(\'' + k + '\')" class="px-3 py-2 rounded-xl border border-[#A56ABD] text-[#A56ABD] text-xs font-bold">' + esc(FIN_TEMPLATES[k].label) + '</button>').join('')}</div>
         </div>
 
-        ${finDreamsCardHtml()}
+          ${finRecurringCardHtml()}
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="custom-card rounded-2xl p-5">
+            <h2 class="font-serif-display text-xl font-bold mb-1">Metas por categoria</h2>
+            <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-4">Defina um teto mensal de gasto para cada categoria.</p>
+            <div class="space-y-3">
+              ${FIN_CATS.out.map(cat => {
+                const gasto = byCat[cat] || 0, meta = finances.catGoals[cat] || 0, pct = meta > 0 ? Math.min(100, gasto / meta * 100) : 0, gid = cat.replace(/\s/g, '_');
+                return `<div>
+                  <div class="flex items-center justify-between gap-2 mb-1">
+                    <span class="text-xs font-medium">${esc(cat)}</span>
+                    <label class="flex items-center gap-1 text-[10px] text-[#8B7D95]">R$ <input type="text" inputmode="decimal" value="${meta || ''}" placeholder="sem meta" onchange="saveCatGoal('${cat}', this.value)" class="w-16 px-2 py-1.5 rounded-lg border border-[#EFE1F5] dark:border-[#3D224D] bg-white dark:bg-[#200B2B] text-xs font-bold"></label>
+                  </div>
+                  ${meta > 0 ? `<div class="w-full bg-[#E7DBEF] dark:bg-[#3D224D] h-1.5 rounded-full overflow-hidden"><div class="${gasto > meta ? 'bg-red-500' : pct >= 90 ? 'bg-[#C6A467]' : 'bg-[#A56ABD]'} h-full" style="width: ${pct}%"></div></div>
+                    <p class="text-[10px] text-[#8B7D95] mt-0.5">${fmtBRL(gasto)} de ${fmtBRL(meta)}${gasto > meta ? ' · passou do teto' : ''}</p>` : ''}
+                  <p id="goal-msg-${gid}" aria-live="polite" class="text-[11px] font-semibold text-red-600 dark:text-red-400"></p>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+
+          <div class="md:col-span-2">${finDreamsCardHtml()}</div>
+          </div>
+          <div class="dx-pane" ${finTab !== 'cartoes' ? 'hidden' : ''}>
           <div class="custom-card rounded-2xl p-6">
             <h2 class="font-serif-display text-xl font-bold mb-4">Cartões</h2>
             <div class="space-y-4">
@@ -3238,6 +3294,11 @@
               </div>` : ''}
               <div id="sim-result" aria-live="polite" class="p-3 rounded-xl bg-[#FAF5FC] dark:bg-[#2C153A] border border-[#EFE1F5] dark:border-[#3D224D] text-xs"></div>
             </div>
+          </div>
+          </div>
+          <div class="dx-pane" ${finTab !== 'ano' ? 'hidden' : ''}>
+        <div class="md:col-span-2">${finYearSummaryHtml()}</div>
+
           </div>
         </div>
       `;
@@ -3688,14 +3749,10 @@
           <p class="text-xs md:text-sm text-[#8B7D95] dark:text-[#C1B1CB]">Matérias, notas, horas de estudo e ideias de conteúdo</p>
         </header>
 
+        ${eduTabsHtml()}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="dx-pane" ${eduTab !== 'estudo' ? 'hidden' : ''}>
           ${studyTimeCardHtml()}
-          <div class="custom-card rounded-2xl p-6">
-            <h3 class="font-serif-display text-xl font-bold mb-3">Modelos de rotina</h3>
-            <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-3">Cria matérias de exemplo para você editar, sem apagar as que já existem.</p>
-            <div class="flex flex-col gap-2">${Object.keys(EDU_TEMPLATES).map(k => '<button onclick="useEduTemplate(\'' + k + '\')" class="px-3 py-2 rounded-xl border border-[#A56ABD] text-[#A56ABD] text-xs font-bold text-left">' + esc(EDU_TEMPLATES[k].label) + '</button>').join('')}</div>
-          </div>
-
           <div class="custom-card rounded-2xl p-6">
             <h2 class="font-serif-display text-xl font-bold mb-4">Matérias & Cursos</h2>
             <div class="space-y-3">${eduData.subjects.map(subjectCardHtml).join('') || '<p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB]">Nenhuma matéria ainda.</p>'}</div>
@@ -3705,11 +3762,22 @@
             </div>
             <p id="sub-msg" aria-live="polite" class="text-[11px] font-semibold text-red-600 dark:text-red-400 mt-2"></p>
           </div>
-          ${ideasCardHtml()}
           ${examsCardHtml()}
+          <div class="custom-card rounded-2xl p-6">
+            <h3 class="font-serif-display text-xl font-bold mb-3">Modelos de rotina</h3>
+            <p class="text-xs text-[#8B7D95] dark:text-[#C1B1CB] mb-3">Cria matérias de exemplo para você editar, sem apagar as que já existem.</p>
+            <div class="flex flex-col gap-2">${Object.keys(EDU_TEMPLATES).map(k => '<button onclick="useEduTemplate(\'' + k + '\')" class="px-3 py-2 rounded-xl border border-[#A56ABD] text-[#A56ABD] text-xs font-bold text-left">' + esc(EDU_TEMPLATES[k].label) + '</button>').join('')}</div>
+          </div>
+
+          </div>
+          <div class="dx-pane" ${eduTab !== 'diario' ? 'hidden' : ''}>
           ${eduDiaryCardHtml()}
           ${eduMonthSummaryHtml()}
           ${eduDreamsCardHtml()}
+          </div>
+          <div class="dx-pane" ${eduTab !== 'ideias' ? 'hidden' : ''}>
+          ${ideasCardHtml()}
+          </div>
         </div>
       `;
     }
@@ -4773,7 +4841,7 @@
     function vbToggle(panel) { vbPanel = vbPanel === panel ? '' : panel; if (panel === 'novo') { dreamEditId = null; vbFormImg = undefined; } renderScreen(); const el = document.getElementById('vb-panel'); if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); }
     function vbOpen(id) { vbOpenId = id; dreamOpen[id] = true; renderScreen(); }
     function vbClose() { vbOpenId = null; renderScreen(); }
-    function vbGoCarta() { const el = document.getElementById('vb-carta'); if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); }
+    function vbGoCarta() { sonhosTab = 'fe'; renderScreen(); const el = document.getElementById('vb-carta'); if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); }
     // fotos
     function vbBannerPick(input) { const f = input.files && input.files[0]; if (!f) return; vbPhoto(f, 1100).then(d => { vbData().banner = d; saveSonhos(); renderScreen(); }).catch(() => alert('Não consegui ler essa foto.')); }
     function vbBannerClear() { vbData().banner = ''; saveSonhos(); renderScreen(); }
@@ -4880,6 +4948,8 @@
       const old = document.querySelector('.vb-sheet'), keep = old ? old.scrollTop : 0;
       if (vbOpenId != null && !sonhosData.items.some(x => x.id === vbOpenId && !x.doneOn)) vbOpenId = null;
       container.innerHTML = `
+        ${sonhosTabsHtml()}
+        <div class="dx-pane" ${sonhosTab !== 'sonhos' ? 'hidden' : ''}>
         ${vbHeaderHtml()}
         ${vbShortcutsHtml()}
         ${vbPanelHtml()}
@@ -4891,22 +4961,34 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          ${psalmCardHtml()}
           ${featuredDreamHtml()}
+          ${vbHistoryHtml()}
+          ${dreamCardHtml()}
+        </div>
+        </div>
+        <div class="dx-pane" ${sonhosTab !== 'fe' ? 'hidden' : ''}>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          ${psalmCardHtml()}
           ${faithMonthHtml()}
           ${prayerHabitCardHtml()}
           ${gratitudeCardHtml()}
-          ${vbHistoryHtml()}
-          ${dreamCardHtml()}
           ${prayerRequestsCardHtml()}
           ${notesCardHtml()}
           ${cartaCardHtml().replace('<div ', '<div id="vb-carta" ')}
+        </div>
         </div>
         ${vbDetailHtml()}
       `;
       const sh = container.querySelector('.vb-sheet'); if (sh) sh.scrollTop = keep;
     }
 
+    function backupSizeHtml() {
+      const rows = backupKeys().map(k => [k.slice(4), (localStorage.getItem(k) || '').length + k.length]).sort((a, b) => b[1] - a[1]);
+      if (!rows.length) return '';
+      const tot = rows.reduce((a, r) => a + r[1], 0);
+      const fmt = n => n >= 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+      return '<details class="mt-3"><summary class="text-[11px] font-bold cursor-pointer">Espaço usado: ' + fmt(tot) + ' (limite do navegador: cerca de 5 MB)</summary><ul class="text-[11px] mt-2 space-y-1">' + rows.slice(0, 6).map(r => '<li>' + esc(r[0]) + ': ' + fmt(r[1]) + '</li>').join('') + '</ul></details>';
+    }
     function backupCardHtml() {
       return `
         <div class="custom-card rounded-2xl p-5 mt-6">
@@ -4918,6 +5000,7 @@
             <input type="file" id="backup-file" accept="application/json,.json" class="hidden" onchange="importBackup(this)">
           </div>
           <p class="text-[11px] text-[#8B7D95] dark:text-[#C1B1CB] mt-3">${(() => { const d = getStore('lastbackup', null); const dt = d ? new Date(d) : null; return dt && !isNaN(dt) ? 'Último backup: ' + dt.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : 'Você ainda não baixou nenhum backup.'; })()}</p>
+          ${backupSizeHtml()}
           <p id="backup-msg" aria-live="polite" class="text-xs"></p>
         </div>
       `;
@@ -7311,7 +7394,14 @@
         if (el) el.scrollIntoView({ behavior: steScroll(), block: 'start' }); else window.scrollTo({ top: 0 });
       }, 90);
     }
+    const SAUDE_SEC = { 'Medidas': 'corpo', 'Rotina de Skincare': 'corpo', 'Cronograma': 'corpo', 'Rotina Alimentar': 'nutricao', 'Água': 'nutricao', 'Lista de compras': 'nutricao', 'Sono': 'mente', 'Suplementos': 'medico', 'Consultas': 'medico' };
     function navigate(screenId, section) {
+      if (screenId === 'saude') { if (section && SAUDE_SEC[section]) saudeTab = SAUDE_SEC[section]; else if (currentScreen !== 'saude') saudeTab = 'resumo'; }
+      if (screenId === 'academia' && currentScreen !== 'academia') academiaTab = 'hoje';
+      if (screenId === 'financas' && currentScreen !== 'financas') finTab = 'mes';
+      if (screenId === 'habitos' && currentScreen !== 'habitos') habTab = 'habitos';
+      if (screenId === 'estudos' && currentScreen !== 'estudos') eduTab = 'estudo';
+      if (screenId === 'sonhos' && currentScreen !== 'sonhos') sonhosTab = 'sonhos';
       currentScreen = screenId;
       renderNav();
       renderScreen();
@@ -7399,14 +7489,14 @@
     function dxMetric(icon, label, big, sub, frac, gold, extra) {
       return '<div class="dx-metric"><div><span><span style="color:' + (gold ? 'var(--gold)' : 'var(--primary)') + '">' + ico(icon, 15) + '</span>' + label + '</span>' + (extra || '') + '</div><strong>' + big + (sub ? ' <small>' + sub + '</small>' : '') + '</strong>' + (frac == null ? '' : '<div class="dx-bar' + (gold ? ' gold' : '') + '"><b style="width:' + Math.round(Math.min(1, Math.max(0, frac)) * 100) + '%"></b></div>') + '</div>';
     }
-    function dxHealthHtml() {
+    function dxHealthHtml(semBotao) {
       const h = dxHealthToday(), r = 52, C = 2 * Math.PI * r, off = C * (1 - h.pct / 100);
       const tone = h.pct >= 70 ? '' : h.pct >= 30 ? ' mid' : ' low', txt = h.pct >= 70 ? 'Em dia' : h.pct >= 30 ? 'A caminho' : 'Começando o dia';
       const cal = h.kg || h.kcal ? dxMetric('flame', 'Calorias consumidas', fmtPassos(Math.round(h.kcal)), h.kg ? '/ ' + fmtPassos(h.kg) + ' kcal' : 'kcal', h.kg ? h.kcal / h.kg : null, true) : dxMetric('flame', 'Calorias consumidas', 'Sem registro', 'marque as refeições feitas', null, true);
       return '<section class="dx-card" id="dx-saude"><div class="dx-head"><h2>Minha saúde hoje</h2><span class="dx-pill' + tone + '">' + txt + '</span></div><div class="dx-health"><div><div class="dx-ring"><svg viewBox="0 0 128 128"><defs><linearGradient id="dxrg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5BA07B"/><stop offset="1" stop-color="#8266C4"/></linearGradient></defs><circle cx="64" cy="64" r="' + r + '" fill="none" stroke="var(--ste-soft)" stroke-width="12"/><circle cx="64" cy="64" r="' + r + '" fill="none" stroke="url(#dxrg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"/></svg><div class="pct">' + h.pct + '%</div></div><p class="dx-ringcap">das metas de hoje<br>(' + h.parts.map(p => p.n).join(', ') + ')</p></div><div>' +
         cal + dxMetric('droplet', 'Água ingerida', h.w, '/ ' + h.wg + ' copos', h.w / h.wg, false, '<button type="button" class="dx-mini" onclick="addWater()" aria-label="Adicionar um copo de água">+1 copo</button>') +
         dxMetric('footprints', 'Passos do dia', fmtPassos(h.st), '/ ' + fmtPassos(h.sg), h.st / h.sg, false, '<button type="button" class="dx-mini" onclick="addSteps(500)" aria-label="Adicionar 500 passos">+500</button>') +
-        '</div></div><button type="button" class="dx-btnwide" onclick="navigate(\'saude\')">Ver detalhes da saúde ' + ico('arrow-right', 15) + '</button></section>';
+        '</div></div>' + (semBotao ? '' : '<button type="button" class="dx-btnwide" onclick="navigate(\'saude\')">Ver detalhes da saúde ' + ico('arrow-right', 15) + '</button>') + '</section>';
     }
     function dxGoalRow(icon, titulo, sub, right, ok) {
       return '<div class="dx-goal"><span class="dx-gico">' + ico(icon, 24) + '</span><div><b>' + titulo + '</b><small>' + sub + '</small></div><div class="dx-gright">' + (ok ? '<span class="dx-ok">' + ico('check', 14, '', 3) + '</span>' : right) + '</div></div>';
@@ -7695,6 +7785,30 @@
         '<section class="dx-card"><div class="dx-head"><h2>Banco de ideias</h2><button type="button" class="dx-link" onclick="navigate(\'estudos\')">Abrir ' + ico('arrow-right', 13) + '</button></div>' + (ideas.length ? ideas.map(i => '<div class="dx-row"><span class="ic">' + ico('lightbulb', 18) + '</span><span class="tx"><b style="white-space:normal">' + esc(i.text) + '</b></span><button type="button" class="dx-btn sm ghost" onclick="cpFromIdea(' + i.id + ')">Planejar</button></div>').join('') : '<p class="dx-empty">Nenhuma ideia livre no Banco de Ideias (Estudos). Anote ideias por lá ou pela captura rápida.</p>') + '</section></div>';
     }
 
+    let saudeTab = 'resumo';
+    const SAUDE_TABS = [['resumo', 'Resumo'], ['corpo', 'Corpo'], ['nutricao', 'Nutrição'], ['mente', 'Sono e humor'], ['medico', 'Consultas e remédios']];
+    function saudeSetTab(k) { saudeTab = k; renderScreen(); window.scrollTo({ top: 0, behavior: steScroll() }); }
+    function saudeTabsHtml() { return '<div class="dx-seg scroll" role="tablist" aria-label="Seções da Saúde">' + SAUDE_TABS.map(t => '<button type="button" role="tab" aria-selected="' + (saudeTab === t[0]) + '" class="' + (saudeTab === t[0] ? 'on' : '') + '" onclick="saudeSetTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('') + '</div>'; }
+    let academiaTab = 'hoje';
+    const ACAD_TABS = [['hoje', 'Treino de hoje'], ['semana', 'Semana e mês'], ['fichas', 'Minhas fichas'], ['evolucao', 'Evolução']];
+    function academiaSetTab(k) { academiaTab = k; renderScreen(); window.scrollTo({ top: 0, behavior: steScroll() }); }
+    function academiaTabsHtml() { return '<div class="dx-seg scroll" role="tablist" aria-label="Seções da Academia">' + ACAD_TABS.map(t => '<button type="button" role="tab" aria-selected="' + (academiaTab === t[0]) + '" class="' + (academiaTab === t[0] ? 'on' : '') + '" onclick="academiaSetTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('') + '</div>'; }
+    let finTab = 'mes';
+    const FIN_TABS = [['mes', 'Mês'], ['lancamentos', 'Lançamentos'], ['contas', 'Contas e metas'], ['cartoes', 'Cartões e compras'], ['ano', 'Ano']];
+    function finSetTab(k) { finTab = k; renderScreen(); window.scrollTo({ top: 0, behavior: steScroll() }); }
+    function finTabsHtml() { return '<div class="dx-seg scroll" role="tablist" aria-label="Seções de Finanças">' + FIN_TABS.map(t => '<button type="button" role="tab" aria-selected="' + (finTab === t[0]) + '" class="' + (finTab === t[0] ? 'on' : '') + '" onclick="finSetTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('') + '</div>'; }
+    let habTab = 'habitos';
+    const HAB_TABS = [['habitos', 'Hábitos e contadores'], ['resumos', 'Resumos'], ['modelos', 'Modelos de rotina']];
+    function habSetTab(k) { habTab = k; renderScreen(); window.scrollTo({ top: 0, behavior: steScroll() }); }
+    function habTabsHtml() { return '<div class="dx-seg scroll" role="tablist" aria-label="Seções de Hábitos">' + HAB_TABS.map(t => '<button type="button" role="tab" aria-selected="' + (habTab === t[0]) + '" class="' + (habTab === t[0] ? 'on' : '') + '" onclick="habSetTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('') + '</div>'; }
+    let eduTab = 'estudo';
+    const EDU_TABS = [['estudo', 'Estudos'], ['diario', 'Diário e resumo'], ['ideias', 'Ideias (TikTok)']];
+    function eduSetTab(k) { eduTab = k; renderScreen(); window.scrollTo({ top: 0, behavior: steScroll() }); }
+    function eduTabsHtml() { return '<div class="dx-seg scroll" role="tablist" aria-label="Seções de Estudos e Carreira">' + EDU_TABS.map(t => '<button type="button" role="tab" aria-selected="' + (eduTab === t[0]) + '" class="' + (eduTab === t[0] ? 'on' : '') + '" onclick="eduSetTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('') + '</div>'; }
+    let sonhosTab = 'sonhos';
+    const SONHOS_TABS = [['sonhos', 'Sonhos'], ['fe', 'Fé e gratidão']];
+    function sonhosSetTab(k) { sonhosTab = k; renderScreen(); window.scrollTo({ top: 0, behavior: steScroll() }); }
+    function sonhosTabsHtml() { return '<div class="dx-seg scroll" role="tablist" aria-label="Seções de Sonhos e Fé">' + SONHOS_TABS.map(t => '<button type="button" role="tab" aria-selected="' + (sonhosTab === t[0]) + '" class="' + (sonhosTab === t[0] ? 'on' : '') + '" onclick="sonhosSetTab(\'' + t[0] + '\')">' + t[1] + '</button>').join('') + '</div>'; }
     hydrateIcons();
     initTheme();
     renderNav();
