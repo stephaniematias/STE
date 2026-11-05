@@ -1084,6 +1084,50 @@
         backupMsg('Não foi possível gerar o backup neste navegador.', false);
       }
     }
+    function dxWriteAll(entries, antes) {
+      let falhou = '';
+      try {
+        const novas = new Set(entries.map(e => e[0]));
+        backupKeys().forEach(k => { if (!novas.has(k)) localStorage.removeItem(k); });
+        entries.slice().sort((a, b) => a[1].length - b[1].length).forEach(([k, v]) => { falhou = k; localStorage.setItem(k, v); });
+        return { ok: true };
+      } catch (e) {
+        try {
+          entries.forEach(([k]) => { if (!(k in antes)) localStorage.removeItem(k); });
+          Object.keys(antes).forEach(k => localStorage.setItem(k, antes[k]));
+        } catch (e2) {}
+        const nome = (e && e.name) || 'erro desconhecido';
+        return { ok: false, nome, falhou, cota: /quota/i.test(nome) || !!(e && (e.code === 22 || e.code === 1014)) };
+      }
+    }
+    const DX_IMG_RE = /data:image\/(?:jpeg|jpg|png|webp);base64,[A-Za-z0-9+\/=]+/g;
+    function dxShrinkOne(url, maxDim, q) {
+      return new Promise(res => {
+        const im = new Image();
+        im.onload = () => {
+          try {
+            const sc = Math.min(1, maxDim / Math.max(im.width, im.height)), c = document.createElement('canvas');
+            c.width = Math.max(1, Math.round(im.width * sc)); c.height = Math.max(1, Math.round(im.height * sc));
+            const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height);
+            const out = c.toDataURL('image/jpeg', q);
+            res(out.length < url.length ? out : url);
+          } catch (e) { res(url); }
+        };
+        im.onerror = () => res(url);
+        im.src = url;
+      });
+    }
+    async function dxShrinkEntries(entries, maxDim, q) {
+      const out = [];
+      for (const [k, v] of entries) {
+        const urls = v.match(DX_IMG_RE);
+        if (!urls) { out.push([k, v]); continue; }
+        const cache = {};
+        for (const u of urls) { if (!(u in cache)) cache[u] = await dxShrinkOne(u, maxDim, q); }
+        out.push([k, v.replace(DX_IMG_RE, m => cache[m])]);
+      }
+      return out;
+    }
     function importBackup(input) {
       const file = input.files && input.files[0];
       input.value = '';
@@ -1106,22 +1150,25 @@
         const antes = {};
         backupKeys().forEach(k => { antes[k] = localStorage.getItem(k); });
         const total = entries.reduce((a, e) => a + e[0].length + e[1].length, 0);
-        let falhou = '';
-        try {
-          const novas = new Set(entries.map(e => e[0]));
-          backupKeys().forEach(k => { if (!novas.has(k)) localStorage.removeItem(k); });
-          entries.slice().sort((a, b) => a[1].length - b[1].length).forEach(([k, v]) => { falhou = k; localStorage.setItem(k, v); });
-        } catch (e) {
-          try {
-            entries.forEach(([k]) => { if (!(k in antes)) localStorage.removeItem(k); });
-            Object.keys(antes).forEach(k => localStorage.setItem(k, antes[k]));
-          } catch (e2) {}
-          const nome = (e && e.name) || 'erro desconhecido', cota = /quota/i.test(nome) || (e && (e.code === 22 || e.code === 1014));
+        const r = dxWriteAll(entries, antes);
+        if (r.ok) { location.reload(); return; }
+        const falha = x => {
           const mb = (total / 1048576).toFixed(1).replace('.', ',');
-          backupMsg('O navegador recusou os dados (' + nome + (falhou ? ' em "' + falhou.replace('ste_', '') + '"' : '') + '). O backup tem cerca de ' + mb + ' MB de texto. Mantive os dados atuais. ' + (cota ? 'Este navegador guarda por volta de 5 MB por site: no aparelho de origem, apague fotos grandes do Dream Board (veja a lista de espaço usado acima) e baixe o backup de novo.' : 'Se você abriu o arquivo pelo app Arquivos, abra o STE pelo endereço do site ou pelo ícone da tela de início e tente de novo.'), false);
+          backupMsg('O navegador recusou os dados (' + x.nome + (x.falhou ? ' em "' + x.falhou.replace('ste_', '') + '"' : '') + '). O backup tem cerca de ' + mb + ' MB de texto. Mantive os dados atuais. ' + (x.cota ? 'Este navegador guarda por volta de 5 MB por site: no aparelho de origem, apague fotos grandes do Dream Board (veja a lista de espaço usado acima) e baixe o backup de novo.' : 'Se você abriu o arquivo pelo app Arquivos, abra o STE pelo endereço do site ou pelo ícone da tela de início e tente de novo.'), false);
+        };
+        if (r.cota && entries.some(e => e[1].indexOf('data:image') >= 0)) {
+          backupMsg('Este aparelho guarda menos que o backup. Reduzindo o tamanho das fotos para caber, aguarde...', true);
+          (async () => {
+            for (const [d, q] of [[640, 0.6], [480, 0.5], [360, 0.45], [260, 0.4]]) {
+              const reduzido = await dxShrinkEntries(entries, d, q);
+              if (dxWriteAll(reduzido, antes).ok) { alert('Backup restaurado. As fotos foram reduzidas para caber neste aparelho.'); location.reload(); return; }
+            }
+            falha(r);
+          })();
           return;
         }
-        location.reload();
+        falha(r);
+        return;
       };
       reader.readAsText(file);
     }
